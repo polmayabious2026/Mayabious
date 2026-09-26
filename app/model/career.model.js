@@ -158,4 +158,7 @@ const perksbenifitModel = sequelize.define(
   },
 );
 
+
+
+
 module.exports = { careerModel, valueModel, jobvacancyModel,perksbenifitModel };
