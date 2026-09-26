@@ -19,7 +19,9 @@ const team = require("../model/team.model")
 // news
 const news = require("../model/news.model")
 // blog
-const news = require("../model/blog.model")
+const blog = require("../model/blog.model")
+// career
+const { career, value, jobvacancy,perksbenifit } = require("../model/career.model")
 
 
 
@@ -68,6 +70,36 @@ serviceSubCategory.hasMany(services,{
     foreignKey:"service_sub_category_id",
     as:"subcategory"
  })
+
+// career-jobvacancy
+ career.hasMany(jobvacancy, {
+  foreignKey: "career_id",
+  onDelete: "CASCADE",
+});
+
+jobvacancy.belongsTo(career, {
+  foreignKey: "career_id",
+});
+// career-value
+career.hasMany(value, {
+  foreignKey: "career_id",
+  onDelete: "CASCADE",
+});
+
+value.belongsTo(career, {
+  foreignKey: "career_id",
+});
+
+// career-perksandbenifit
+career.hasMany(perksbenifit, {
+  foreignKey: "career_id",
+  onDelete: "CASCADE",
+});
+
+perksbenifit.belongsTo(career, {
+  foreignKey: "career_id",
+});
+
 
 
 

@@ -12,10 +12,26 @@ const {
 
 const uploadImage = require("../middleware/fileupload_image");
 
-router.post("/add-blogs", uploadImage.single("image"),  createBlog);
-router.get("/get-blogs",getallBlog);
+router.post(
+  "/add-blogs",
+  uploadImage.fields([
+    { name: "small_image", maxCount: 1 },
+    { name: "big_image", maxCount: 1 },
+  ]),
+  createBlog,
+);
+router.get("/get-blogs", getallBlog);
+
 router.get("/get-singleblogs/:id", getsingleBlog);
-router.put("/update-blogs/:id",uploadImage.single("image"),updateBllog);
+
+router.put(
+  "/update-blogs/:id",
+  uploadImage.fields([
+    { name: "small_image", maxCount: 1 },
+    { name: "big_image", maxCount: 1 },
+  ]),
+  updateBllog,
+);
 router.delete("/delete-blogs/:id", deleteBlog);
 
 module.exports = router;

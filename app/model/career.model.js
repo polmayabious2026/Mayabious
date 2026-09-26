@@ -1,7 +1,7 @@
 const sequelize = require("../config/db");
 const { DataTypes } = require("sequelize");
 
-const careerModel = sequelize.define(
+const career = sequelize.define(
   "career",
   {
     id: {
@@ -32,7 +32,7 @@ const careerModel = sequelize.define(
     updatedAt: "updated_at",
   },
 );
-const jobvacancyModel = sequelize.define(
+const jobvacancy = sequelize.define(
   "jobvacancy",
   {
     id: {
@@ -83,7 +83,7 @@ const jobvacancyModel = sequelize.define(
     updatedAt: "updated_at",
   },
 );
-const valueModel = sequelize.define(
+const value = sequelize.define(
   "value",
   {
     id: {
@@ -122,7 +122,7 @@ const valueModel = sequelize.define(
     updatedAt: "updated_at",
   },
 );
-const perksbenifitModel = sequelize.define(
+const perksbenifit = sequelize.define(
   "perksandbenifit",
   {
     id: {
@@ -161,4 +161,5 @@ const perksbenifitModel = sequelize.define(
 
 
 
-module.exports = { careerModel, valueModel, jobvacancyModel,perksbenifitModel };
+
+module.exports = { career, value, jobvacancy,perksbenifit };

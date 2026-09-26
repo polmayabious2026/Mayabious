@@ -1,3 +1,5 @@
+const sequelize = require("../config/db");
+
 const blog = require("../model/blog.model");
 
 const path = require("path");
@@ -24,8 +26,8 @@ const createBlog = async (req, res) => {
     }
     const createData = await blog.create({
       date: date,
-      heading: heading,
-      title: title,
+      heading: heading.toUpperCase(),
+      title: title.toUpperCase(),
       content: content,
       description: description,
       small_image: req.file.filename,

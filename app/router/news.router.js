@@ -15,7 +15,7 @@ router.post("/add_news", upload.single("image"), addNews);
 
 router.get("/all_news", getAllNews);
 
-router.get("/get_singlenews:id", getSingleNews);
+router.get("/get_singlenews/:id", getSingleNews);
 
 router.put("/update_news/:id", upload.single("image"), updateNews);
 

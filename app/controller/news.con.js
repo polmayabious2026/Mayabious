@@ -38,8 +38,8 @@ const addNews = async (req, res) => {
     }
 
     const newsData = await news.create({
-      channel_name:channel_name,
-      description:description,
+      channel_name:channel_name.toUpperCase(),
+      description:description.toUpperCase(),
       image: req.file.filename,
       date:date,
       status: status || "1",
@@ -137,11 +137,11 @@ const updateNews = async (req, res) => {
     const updateData = {};
 
     if (channel_name !== undefined) {
-      updateData.channel_name = channel_name;
+      updateData.channel_name = channel_name.toUpperCase();
     }
 
     if (description !== undefined) {
-      updateData.description = description;
+      updateData.description = description.toUpperCase();
     }
 
     if (date !== undefined) {

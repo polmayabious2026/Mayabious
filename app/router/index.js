@@ -20,5 +20,7 @@ router.use("/admin",require("../router/clients.router"))
 router.use("/admin",require("../router/team.router"))
 // news
 router.use("/admin",require("../router/news.router"))
+// blog
+router.use("/admin",require("../router/blog.router"))
 
 module.exports= router
