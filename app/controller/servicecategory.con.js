@@ -1,4 +1,5 @@
 const servicecategory = require("../model/service.categoty.model");
+const serviceSubCategory = require("../model/service.subcategory.model")
 
 const addServiceCategory = async (req, res) => {
   try {
@@ -44,7 +45,12 @@ const addServiceCategory = async (req, res) => {
 
 const getServiceCategories = async (req, res) => {
   try {
-    const data = await servicecategory.findAll();
+    const data = await servicecategory.findAll({
+      include:{
+        model:serviceSubCategory,
+        as:"subcategory"
+      }
+    });
 
     return res.status(200).json({
       status: true,
@@ -66,7 +72,15 @@ const getServiceCategoryById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const data = await servicecategory.findByPk(id);
+    const data = await servicecategory.findOne({
+      where:{
+        id:id
+      },
+      include:{
+        model:serviceSubCategory,
+        as:"subcategory"
+      }
+    });
 
     if (!data) {
       return res.status(404).json({

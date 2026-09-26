@@ -1,23 +1,27 @@
 const sequelize = require("../config/db");
 const { DataTypes } = require("sequelize");
 
-const serviceSubCategory = sequelize.define(
-  "serviceSubCategory",
+const teams = sequelize.define(
+  "team",
   {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
-    service_category_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    description: {
+    designation: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    image: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    content: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -34,11 +38,11 @@ const serviceSubCategory = sequelize.define(
     },
   },
   {
-    tableName: "serviceSubCategory",
+    tableName: "teams",
     timestamps: true,
     createdAt: "created_at",
     updatedAt: "updated_at",
   },
 );
 
-module.exports = serviceSubCategory;
+module.exports = teams;

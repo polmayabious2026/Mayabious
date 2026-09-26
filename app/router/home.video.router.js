@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const upload = require("../middleware/fileupload");
+const uploadVideo = require("../middleware/fileupload_video");
 
 const {
   addVideo,
@@ -17,10 +17,10 @@ router.get("/", (req, res) => {
   });
 });
 
-router.post("/add-video", upload.array("video", 10), addVideo);
+router.post("/add-video", uploadVideo.array("video", 10), addVideo);
 router.get("/getall-video", getallVideo);
 router.get("/getsingle-video/:id", getSingleVideo);
-router.put("/update-video/:id", upload.single("video"), updateVideo);
+router.put("/update-video/:id", uploadVideo.single("video"), updateVideo);
 router.delete("/delete-video/:id", deleteVideo);
 
 module.exports = router;
