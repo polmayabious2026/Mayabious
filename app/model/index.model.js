@@ -21,7 +21,15 @@ const news = require("../model/news.model")
 // blog
 const blog = require("../model/blog.model")
 // career
-const { career, value, jobvacancy,perksbenifit } = require("../model/career.model")
+const {
+  career,
+  value,
+  jobvacancy,
+  perksbenifit,
+  department,
+  designation,
+  applycandidate,
+} = require("../model/career.model");
 
 
 
@@ -71,14 +79,34 @@ serviceSubCategory.hasMany(services,{
     as:"subcategory"
  })
 
-// career-jobvacancy
- career.hasMany(jobvacancy, {
-  foreignKey: "career_id",
-  onDelete: "CASCADE",
+// department-jobvacancy
+department.hasMany(jobvacancy, {
+  foreignKey: "department_id",
+  as:"department",
 });
 
-jobvacancy.belongsTo(career, {
-  foreignKey: "career_id",
+jobvacancy.belongsTo(department, {
+  foreignKey: "department_id",
+});
+// designation-jobvacancy
+designation.hasMany(jobvacancy, {
+  foreignKey: "designation_id",
+  as:"designation",
+});
+
+jobvacancy.belongsTo(designation, {
+  foreignKey: "designation_id",
+});
+
+// department - designation
+ department.hasMany(designation, {
+  foreignKey: "department_id",
+  as:"designation",
+});
+
+designation.belongsTo(department, {
+  foreignKey: "department_id",
+   as:"department"
 });
 // career-value
 career.hasMany(value, {
@@ -100,6 +128,26 @@ perksbenifit.belongsTo(career, {
   foreignKey: "career_id",
 });
 
+// department-applycandidate
+department.hasMany(applycandidate, {
+  foreignKey: "department_id",
+  as: "candidates",
+});
+
+applycandidate.belongsTo(department, {
+  foreignKey: "department_id",
+  as: "department",
+});
+// designation-applycandidate
+designation.hasMany(applycandidate, {
+  foreignKey: "designation_id",
+  as: "candidates",
+});
+
+applycandidate.belongsTo(designation, {
+  foreignKey: "designation_id",
+  as: "designation",
+});
 
 
 

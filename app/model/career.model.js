@@ -40,20 +40,16 @@ const jobvacancy = sequelize.define(
       autoIncrement: true,
       primaryKey: true,
     },
-    career_id: {
+    // career_id: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: false,
+    // },
+    department_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    servicecategory_id: {
+    designation_id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    serviceSubCategory_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    title: {
-      type: DataTypes.STRING,
       allowNull: false,
     },
     content: {
@@ -157,9 +153,125 @@ const perksbenifit = sequelize.define(
     updatedAt: "updated_at",
   },
 );
+const department = sequelize.define(
+  "department",
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    status: {
+      type: DataTypes.STRING,
+      comment: "1 = active, 0 = inactive",
+      defaultValue: "1",
+    },
+    created_at: {
+      type: DataTypes.DATE,
+    },
+    updated_at: {
+      type: DataTypes.DATE,
+    },
+  },
+  {
+    tableName: "department",
+    timestamps: true,
+    createdAt: "created_at",
+    updatedAt: "updated_at",
+  },
+);
+const designation = sequelize.define(
+  "designation",
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    department_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    status: {
+      type: DataTypes.STRING,
+      comment: "1 = active, 0 = inactive",
+      defaultValue: "1",
+    },
+    created_at: {
+      type: DataTypes.DATE,
+    },
+    updated_at: {
+      type: DataTypes.DATE,
+    },
+  },
+  {
+    tableName: "designation",
+    timestamps: true,
+    createdAt: "created_at",
+    updatedAt: "updated_at",
+  },
+);
+const applycandidate = sequelize.define(
+  "applycandidate",
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    department_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    designation_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    user_name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    phone: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    resume: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    created_at: {
+      type: DataTypes.DATE,
+    },
+    updated_at: {
+      type: DataTypes.DATE,
+    },
+  },
+  {
+    tableName: "applycandidate",
+    timestamps: true,
+    createdAt: "created_at",
+    updatedAt: "updated_at",
+  },
+);
 
-
-
-
-
-module.exports = { career, value, jobvacancy,perksbenifit };
+module.exports = {
+  career,
+  value,
+  jobvacancy,
+  perksbenifit,
+  department,
+  designation,
+  applycandidate,
+};

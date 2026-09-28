@@ -1,0 +1,2463 @@
+{
+  "info": {
+    "_postman_id": "91d57aa8-9065-4976-ad9d-265e369233b9",
+    "name": "Mayabious",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "48478502",
+    "_collection_link": "https://go.postman.co/collection/48478502-91d57aa8-9065-4976-ad9d-265e369233b9?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "HOME",
+      "item": [
+        {
+          "name": "HOME VIDEO",
+          "item": [
+            {
+              "name": "ADD VIDEOS",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/add-video",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "add-video"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET ALL VIDEO",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/getall-video",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "getall-video"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET SINGLE VIDEO",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/getsingle-video/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "getsingle-video",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "UPDATE VIDEO",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "position",
+                      "value": "2",
+                      "type": "text"
+                    },
+                    {
+                      "key": "video",
+                      "type": "file",
+                      "src": [
+                        "/C:/Users/Web-04/Downloads/43551-436719118_medium.mp4"
+                      ]
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/update-video/3",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "update-video",
+                    "3"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE VIDEO",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/delete-video/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "delete-video",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "SERVICE CATEGORY",
+          "item": [
+            {
+              "name": "CRAETE CATEGORY",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\":\"website and app\",\r\n    \"description\":\"Websites act as the primary face of a corporation/ organization in a rapidly progessing digital world\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/add-category",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "add-category"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET ALL CATEGORY",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/getall-category",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "getall-category"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET SINGLE CATEGORY BY ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/get-singlecategory/2",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "get-singlecategory",
+                    "2"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "UPDATE CATEGORY",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n   \"description\" :\"Checking Update\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/update-category/3",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "update-category",
+                    "3"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE CATEGORY",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/delete-category/3",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "delete-category",
+                    "3"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "SERVICE SUB CATEGORY",
+          "item": [
+            {
+              "name": "CREATE SUB CATEGORY",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"service_category_id\":1,\r\n    \"name\":\"3d amenity design\",\r\n    \"description\":\"With 3D amenity design, even the most complex fun and lifestyle can find their useful potential marketed and enhanecd.\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/add-subcategory",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "add-subcategory"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET ALL SUB CATEGORY",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/getall-subcategory",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "getall-subcategory"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET SINGLE SUB CATEGORY",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/get-singlesubcategory/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "get-singlesubcategory",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "UPDATE SUB CATEGORY",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\":\"Update Check\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/update-subcategory/2",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "update-subcategory",
+                    "2"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE SUB CATEGORY",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/delete-subcategory/2",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "delete-subcategory",
+                    "2"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "HOME IAMGE GALLERY",
+          "item": [
+            {
+              "name": "CREATE HOME IMAGE GALLERY",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "service_category_id",
+                      "value": "9",
+                      "type": "text"
+                    },
+                    {
+                      "key": "service_sub_category_id",
+                      "value": "2",
+                      "type": "text"
+                    },
+                    {
+                      "key": "title",
+                      "value": "Innovative virtual showcasing",
+                      "type": "text"
+                    },
+                    {
+                      "key": "image",
+                      "type": "file",
+                      "src": [
+                        "/C:/Users/Web-04/Desktop/Pol Sarkar/images/mob/Events.webp"
+                      ]
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/home-image-gallery",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "home-image-gallery"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET ALL HOME IMAGE GALLERY",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/get-home-image-gallery",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "get-home-image-gallery"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET SINGLE HOME IMAGE GALLERY",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/getsingle-home-image-gallery/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "getsingle-home-image-gallery",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "UPDATE HOME IMAGE GALLERY",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/update-home-image-gallery/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "update-home-image-gallery",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE HOME IMAGE GALLERY",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/delete-home-image-gallery/3",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "delete-home-image-gallery",
+                    "3"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "SERVICES",
+      "item": [
+        {
+          "name": "CREATE SERVICES",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "service_category_id",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "service_sub_category_id",
+                  "value": "2",
+                  "type": "text"
+                },
+                {
+                  "key": "title",
+                  "value": "Design_one",
+                  "type": "text"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/Web-04/Downloads/Screenshot 2026-09-24 170733.jpg"
+                  ]
+                },
+                {
+                  "key": "title",
+                  "value": "Design_two",
+                  "type": "text"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/Web-04/Downloads/Screenshot 2026-09-24 170830.jpg"
+                  ]
+                },
+                {
+                  "key": "title",
+                  "value": "Design_three",
+                  "type": "text"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/Web-04/Downloads/Screenshot 2026-09-24 170849.jpg"
+                  ]
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:4001/api/admin/services",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "services"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET ALL SERVICES",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4001/api/admin/getall-services",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "getall-services"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET SINGLE SERVICES",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4001/api/admin/getsingle-services/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "getsingle-services",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "UPDATE SERVICES",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "Design_Three_2D",
+                  "type": "text"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/Web-04/Desktop/Pol Sarkar/images/kb-mart.webp"
+                  ]
+                },
+                {
+                  "key": "service_category_id",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "service_sub_category_id",
+                  "value": "2",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:4001/api/admin/update-services/3",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "update-services",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE SERVICES",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4001/api/admin/delete-services/5",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "delete-services",
+                "5"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "AWARDS",
+      "item": [
+        {
+          "name": "CREATE AWARDS",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "most creative animated design",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "Mayabious Group earned a Bronze at the ET Awards for Design & Creativity for Ambuja Neotia Utpalla Walkthrough",
+                  "type": "text"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/Web-04/Downloads/Screenshot 2026-09-25 153749.jpg"
+                  ]
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:4001/api/admin/add-awards",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "add-awards"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET AWARDS",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4001/api/admin/get-awards",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "get-awards"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET SINGLE AWRADS",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4001/api/admin/get-singleawards/2",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "get-singleawards",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "UPDATE AWARDS",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "date",
+                  "value": "20-09-2026",
+                  "type": "text"
+                },
+                {
+                  "key": "title",
+                  "value": "CREATIVE ANIMATED DESIGN",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:4001/api/admin/update-awards/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "update-awards",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE AWARDS",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4001/api/admin/delete-awards/5",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "delete-awards",
+                "5"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "CLIENTS",
+      "item": [
+        {
+          "name": "CREATE CLIENTS",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "tata steel",
+                  "type": "text"
+                },
+                {
+                  "key": "logo",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/Web-04/Downloads/tata-steel-logo.png"
+                  ]
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:4001/api/admin/add-clients",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "add-clients"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET CLIENTS",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4001/api/admin/get-clients",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "get-clients"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET SINGLE CLIENT",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4001/api/admin/get-singleclients/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "get-singleclients",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "UPDATE CLIENTS",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "tata steel .",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:4001/api/admin/update-clients/2",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "update-clients",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE CLIENTS",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4001/api/admin/delete-clients/5",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "delete-clients",
+                "5"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "TEAM",
+      "item": [
+        {
+          "name": "CREATE TEAM",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "arindam das gupta",
+                  "type": "text"
+                },
+                {
+                  "key": "designation",
+                  "value": "Founder & CEO",
+                  "type": "text"
+                },
+                {
+                  "key": "content",
+                  "value": "This is Content",
+                  "type": "text"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/Web-04/Downloads/istockphoto-2172317014-612x612.jpg"
+                  ]
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:4001/api/admin/add-team",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "add-team"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET TEAM",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4001/api/admin/all-team",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "all-team"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET SINGLE TEAM",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4001/api/admin/get-singleteam/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "get-singleteam",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "UPDATE TEAM",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4001/api/admin/update-team/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "update-team",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE TEAM",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4001/api/admin/delete-team/2",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "delete-team",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "NEWS",
+      "item": [
+        {
+          "name": "CREATE NEWS",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "channel_name",
+                  "value": "ani news",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "mayabious group win four metals at the economic times",
+                  "type": "text"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/Web-04/Downloads/Screenshot 2026-09-26 180355.jpg"
+                  ]
+                },
+                {
+                  "key": "date",
+                  "value": "July 10 ,2026",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:4001/api/admin/add_news",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "add_news"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET NEWS",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4001/api/admin/all_news",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "all_news"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET SINGLE NEWS",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4001/api/admin/get_singlenews/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "get_singlenews",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "UPDATE NEWS",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "description",
+                  "value": "MAYABIOUS GROUP WIN FOUR METALS AT THE ECONOMIC TIMES there",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:4001/api/admin/update_news/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "update_news",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE NEWS",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4001/api/admin/delete_news/2",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "delete_news",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "BLOG",
+      "item": [
+        {
+          "name": "New Request",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "date",
+                  "value": "July 10,2026",
+                  "type": "text"
+                },
+                {
+                  "key": "heading",
+                  "value": "best location for nris investing in siliguri",
+                  "type": "text"
+                },
+                {
+                  "key": "title",
+                  "value": "",
+                  "type": "text"
+                },
+                {
+                  "key": "content",
+                  "value": "",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "",
+                  "type": "text"
+                },
+                {
+                  "key": "small_image",
+                  "type": "file",
+                  "src": []
+                },
+                {
+                  "key": "big_image",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:4001/api/admin/add-blogs",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "add-blogs"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET BLOG",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4001/api/admin/get-blogs",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "get-blogs"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET SINGLE BLOG",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4001/api/admin/get-singleblogs/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "get-singleblogs",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "UPDATE BLOG",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4001/api/admin/update-blogs/2",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "update-blogs",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE BLOG",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4001/api/admin/delete-blogs/2",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "delete-blogs",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "CAREER",
+      "item": [
+        {
+          "name": "CAREER_BANNER",
+          "item": [
+            {
+              "name": "CREATE CAREER BANNER",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "bannerimage",
+                      "type": "file",
+                      "src": [
+                        "/C:/Users/Web-04/Downloads/Career_banner 2026-09-28 173314.jpg"
+                      ]
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/career",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "career"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET CAREER BANNER",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/career",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "career"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET SINGLE CAREER BANNER",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/career/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "career",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "UPDATE CAREER BANNER",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "bannerimage",
+                      "type": "file",
+                      "src": []
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/career/2?",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "career",
+                    "2"
+                  ],
+                  "query": [
+                    {
+                      "key": "",
+                      "value": ""
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE CAREEER BANNER",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/career/2",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "career",
+                    "2"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "JOB VACANCY",
+          "item": [
+            {
+              "name": "CREATE JOB VACANCY",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"content\":\"HYBRID MODE\",\r\n    \"description\":\"We are seeking a highly skilled Full Stack Developer with deep expertise in React.js to join our growing engineering team. In this role, you will take high ownership of core product surfaces end-to-end—spanning clean backend system architecture, high-performance frontend execution, and database optimization\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/departments/3/designations/1/job-vacancies",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "departments",
+                    "3",
+                    "designations",
+                    "1",
+                    "job-vacancies"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET JOB VANCANCY",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/jobvacancy",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "jobvacancy"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET SINGLE JOB VACANCY",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/jobvacancy/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "jobvacancy",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "UPDATE JOB VACANCAY",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"content\":\"5 DAY OFFICE PER WEEK\"\r\n  \r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/departments/3/designations/1/job-vacancies/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "departments",
+                    "3",
+                    "designations",
+                    "1",
+                    "job-vacancies",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE JOB VACANCY",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/departments/3/designations/1/job-vacancies/2",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "departments",
+                    "3",
+                    "designations",
+                    "1",
+                    "job-vacancies",
+                    "2"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "VALUE",
+          "item": [
+            {
+              "name": "CREATE VALUE",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"career_id\":1,\r\n    \"title\":\"a commitment to excellence\",\r\n    \"description\":\"This is the description of commitment to excellence\"\r\n    \r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/value",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "value"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET VALUE",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/value",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "value"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET SINGLE VALUE",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/value/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "value",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "UPDATE VALUE",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"description\":\"This is the description of commitment to excellence updated things\"\r\n    \r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/value/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "value",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE VALUE",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/value/2",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "value",
+                    "2"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "PERKS BENIFITS",
+          "item": [
+            {
+              "name": "CREATE PERKS BENIFITS",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"career_id\": 1,\r\n  \"options\": [\r\n    \"Embrace Flexiblity with Adaptable Schedules and Versatile Working Hours\",\r\n    \"Strategic Compensation and Employee Recognition Packages\",\r\n    \"Unlocking Peak Productivity Through a Remote First Work Model\",\r\n    \"Annual Bonus\",\r\n    \"Paid Leave\"\r\n  ]\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/perks-benefit",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "perks-benefit"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET ALL PERKS",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/perks-benefit",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "perks-benefit"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET SINGLE PERKS",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/perks-benefit/3",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "perks-benefit",
+                    "3"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "UPDATE PERKS",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"option\":\"Paid LeaveSSSSSSSSSSSSSSSSS\"\r\n  \r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/perks-benefit/5",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "perks-benefit",
+                    "5"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "New Request",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/perks-benefit/5",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "perks-benefit",
+                    "5"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "DEPARTMENT",
+          "item": [
+            {
+              "name": "CREATE DEPARTMENT",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"Operations\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/create_department",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "create_department"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET ALL DEPARTMENT",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/getall_department",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "getall_department"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET SINGLE DEPARRTMENT",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/getsingle_department/3",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "getsingle_department",
+                    "3"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "UPDATE DEPARTMENT",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\":\"UPDATE\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/department/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "department",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE DEPARTMENT",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/department/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "department",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "DESIGNATION",
+          "item": [
+            {
+              "name": "CREATE DESIGNATION",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\":\"node js developer)\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/designation/3",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "designation",
+                    "3"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET DESIGNATION",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/designation",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "designation"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET SINGLE DESIGNATION",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/designation/2",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "designation",
+                    "2"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "UPDATE DESIGNATION",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\":\"fullstack developer (go+react)\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/departments/3/designations/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "departments",
+                    "3",
+                    "designations",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE DESIGNATION",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/designation/2",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "designation",
+                    "2"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "APPLY CANDIDATE",
+          "item": [
+            {
+              "name": "CREATE APPLY CANDIDATE",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "department_id",
+                      "value": "3",
+                      "type": "text"
+                    },
+                    {
+                      "key": "designation_id",
+                      "value": "1",
+                      "type": "text"
+                    },
+                    {
+                      "key": "user_name",
+                      "value": "Pol Sarkar",
+                      "type": "text"
+                    },
+                    {
+                      "key": "phone",
+                      "value": "9876543210",
+                      "type": "text"
+                    },
+                    {
+                      "key": "email",
+                      "value": "johnpol@gmail.com",
+                      "type": "text"
+                    },
+                    {
+                      "key": "resume",
+                      "type": "file",
+                      "src": [
+                        "/C:/Users/Web-04/Downloads/discussion_1781698237507.pdf"
+                      ]
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/apply-candidate",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "apply-candidate"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET ALL APPLY CANDIDATE",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/apply-candidate",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "apply-candidate"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET SINGLE APPLY CANDIDATE",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/apply-candidate/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "apply-candidate",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "UPDATE APPLY CANDIDATE",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/apply-candidate/5",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "apply-candidate",
+                    "5"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE APPLY CANDIDADATE",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/apply-candidate/5",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "apply-candidate",
+                    "5"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "HEALTH CHECK",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:4001/api/admin",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "4001",
+          "path": [
+            "api",
+            "admin"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
