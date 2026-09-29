@@ -415,24 +415,24 @@
                   "formdata": [
                     {
                       "key": "service_category_id",
-                      "value": "9",
+                      "value": "1",
                       "type": "text"
                     },
                     {
                       "key": "service_sub_category_id",
-                      "value": "2",
+                      "value": "1",
                       "type": "text"
                     },
                     {
                       "key": "title",
-                      "value": "Innovative virtual showcasing",
+                      "value": "advanced product engagement",
                       "type": "text"
                     },
                     {
                       "key": "image",
                       "type": "file",
                       "src": [
-                        "/C:/Users/Web-04/Desktop/Pol Sarkar/images/mob/Events.webp"
+                        "/C:/Users/Web-04/Downloads/image_gallery_Screenshot 2026-09-29 202158.jpg"
                       ]
                     }
                   ]
@@ -501,8 +501,18 @@
               "request": {
                 "method": "PUT",
                 "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "title",
+                      "value": "ADVANCED PRODUCT ENGAGEMENT up",
+                      "type": "text"
+                    }
+                  ]
+                },
                 "url": {
-                  "raw": "http://localhost:4001/api/admin/update-home-image-gallery/1",
+                  "raw": "http://localhost:4001/api/admin/update-home-image-gallery/2",
                   "protocol": "http",
                   "host": [
                     "localhost"
@@ -512,7 +522,7 @@
                     "api",
                     "admin",
                     "update-home-image-gallery",
-                    "1"
+                    "2"
                   ]
                 }
               },
@@ -1324,7 +1334,7 @@
       "name": "BLOG",
       "item": [
         {
-          "name": "New Request",
+          "name": "CREATE BLOG",
           "request": {
             "method": "POST",
             "header": [],
@@ -1343,28 +1353,32 @@
                 },
                 {
                   "key": "title",
-                  "value": "",
+                  "value": "Should Be Your Next Travel Destination",
                   "type": "text"
                 },
                 {
                   "key": "content",
-                  "value": "",
+                  "value": "A blog is a type of website that presents frequently updated content in reverse chronological order, with the newest entries appearing first. ",
                   "type": "text"
                 },
                 {
                   "key": "description",
-                  "value": "",
+                  "value": "If you’re a tech junkie, you may want to share your passion through a blog.\n\nA tech blog usually features the latest news on technology and its applications in various fields such as science, entertainment, and business. Some technology blogs also feature reviews of newly released gadgets, making it one of the most profitable blog niches you can choose.",
                   "type": "text"
                 },
                 {
                   "key": "small_image",
                   "type": "file",
-                  "src": []
+                  "src": [
+                    "/C:/Users/Web-04/Downloads/blog_small_image_2026-09-26 182705.jpg"
+                  ]
                 },
                 {
                   "key": "big_image",
                   "type": "file",
-                  "src": []
+                  "src": [
+                    "/C:/Users/Web-04/Downloads/Blogs_Big_image_2026-09-26 182744.jpg"
+                  ]
                 }
               ]
             },
@@ -1432,6 +1446,16 @@
           "request": {
             "method": "PUT",
             "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "description",
+                  "value": "If you’re a tech junkie, you may want to share your passion through a blog updated checkkkkk",
+                  "type": "text"
+                }
+              ]
+            },
             "url": {
               "raw": "http://localhost:4001/api/admin/update-blogs/2",
               "protocol": "http",
@@ -1627,7 +1651,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"content\":\"HYBRID MODE\",\r\n    \"description\":\"We are seeking a highly skilled Full Stack Developer with deep expertise in React.js to join our growing engineering team. In this role, you will take high ownership of core product surfaces end-to-end—spanning clean backend system architecture, high-performance frontend execution, and database optimization\"\r\n}",
+                  "raw": "{\r\n   \r\n    \"jobtype_id\": [1, 2, 4],\r\n    \"description\":\"We are seeking a highly skilled Full Stack Developer with deep expertise in React.js to join our growing engineering team. In this role, you will take high ownership of core product surfaces end-to-end—spanning clean backend system architecture, high-performance frontend execution, and database optimization\"\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -1770,7 +1794,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"career_id\":1,\r\n    \"title\":\"a commitment to excellence\",\r\n    \"description\":\"This is the description of commitment to excellence\"\r\n    \r\n}",
+                  "raw": "{\r\n  \"career_id\": 1,\r\n  \"options\": [\r\n    {\r\n      \"title\": \"Work Life Balance\",\r\n      \"description\": \"We provide a healthy work-life balance.\"\r\n    },\r\n    {\r\n      \"title\": \"Career Growth\",\r\n      \"description\": \"We provide excellent opportunities for career growth.\"\r\n    },\r\n    {\r\n      \"title\": \"Learning\",\r\n      \"description\": \"Employees get continuous learning opportunities.\"\r\n    }\r\n  ]\r\n}\r\n",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -1900,13 +1924,50 @@
                 "method": "POST",
                 "header": [],
                 "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n  \"career_id\": 1,\r\n  \"options\": [\r\n    \"Embrace Flexiblity with Adaptable Schedules and Versatile Working Hours\",\r\n    \"Strategic Compensation and Employee Recognition Packages\",\r\n    \"Unlocking Peak Productivity Through a Remote First Work Model\",\r\n    \"Annual Bonus\",\r\n    \"Paid Leave\"\r\n  ]\r\n}\r\n",
-                  "options": {
-                    "raw": {
-                      "language": "json"
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "career_id",
+                      "value": "1",
+                      "type": "text"
+                    },
+                    {
+                      "key": "option",
+                      "value": "Embrace Flexiblity with Adaptable Schedules and Versatile Working Hours",
+                      "type": "text"
+                    },
+                    {
+                      "key": "image",
+                      "type": "file",
+                      "src": [
+                        "/C:/Users/Web-04/Downloads/perksimage1.jpg"
+                      ]
+                    },
+                    {
+                      "key": "option",
+                      "value": "Strategic Compensation and Employee Recognition Packages",
+                      "type": "text"
+                    },
+                    {
+                      "key": "image",
+                      "type": "file",
+                      "src": [
+                        "/C:/Users/Web-04/Downloads/perksimage2.jpg"
+                      ]
+                    },
+                    {
+                      "key": "option",
+                      "value": "Unlocking Peak Productivity Through a Remote First Work Model",
+                      "type": "text"
+                    },
+                    {
+                      "key": "image",
+                      "type": "file",
+                      "src": [
+                        "/C:/Users/Web-04/Downloads/perksimage3_2026-09-29 165900.jpg"
+                      ]
                     }
-                  }
+                  ]
                 },
                 "url": {
                   "raw": "http://localhost:4001/api/admin/perks-benefit",
@@ -2430,6 +2491,137 @@
                     "admin",
                     "apply-candidate",
                     "5"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "JOB TYPE",
+          "item": [
+            {
+              "name": "CREATE JOB TYPE",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"title\": [\r\n    \"FULL TIME\",\r\n    \"PART TIME\",\r\n    \"CONTRACT\",\r\n    \"INTERNSHIP\"\r\n  ]\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/job-type",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "job-type"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET ALL JOB TYPE",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/job-type",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "job-type"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET SINGLE JOB TYPE",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/job-type/2",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "job-type",
+                    "2"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "UPDATE JOB TYPE",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"title\": \"FULL-TIME\"\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/job-type/3",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "job-type",
+                    "3"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE JOB TYPE",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/job-type/3",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "job-type",
+                    "3"
                   ]
                 }
               },
