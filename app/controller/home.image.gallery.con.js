@@ -77,7 +77,7 @@ const getHomeImageGallery = async (req, res) => {
           as: "subcategory",
         },
       ],
-      order: [["id", "DESC"]],
+      // order: [["id", "DESC"]],
     });
 
     return res.status(200).json({

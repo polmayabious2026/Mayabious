@@ -6,7 +6,7 @@ const {
   createBlog,
   getallBlog,
   getsingleBlog,
-  updateBllog,
+  updateBlog,
   deleteBlog,
 } = require("../controller/blog.con");
 
@@ -30,7 +30,7 @@ router.put(
     { name: "small_image", maxCount: 1 },
     { name: "big_image", maxCount: 1 },
   ]),
-  updateBllog,
+  updateBlog,
 );
 router.delete("/delete-blogs/:id", deleteBlog);
 

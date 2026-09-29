@@ -40,6 +40,12 @@ const {
   getSingleDesignation,
   updateDesignation,
   deleteDesignation,
+  // jobtype
+    addJobType,
+  getAllJobType,
+  getSingleJobType,
+  updateJobType,
+  deleteJobType,
 
     // applynow
     addApplyCandidate,
@@ -84,10 +90,10 @@ router.put("/value/:id", updateValue);
 router.delete("/value/:id", deleteValue);
 
 // Perks & Benefits
-router.post("/perks-benefit", addPerksBenefit);
+router.post("/perks-benefit",upload.array("image"), addPerksBenefit);
 router.get("/perks-benefit", getAllPerksBenefit);
 router.get("/perks-benefit/:id", getSinglePerksBenefit);
-router.put("/perks-benefit/:id", updatePerksBenefit);
+router.put("/perks-benefit/:id",upload.array("image"), updatePerksBenefit);
 router.delete("/perks-benefit/:id", deletePerksBenefit);
 
 
@@ -104,6 +110,13 @@ router.get("/designation",getDesignation)
 router.get("/designation/:id",getSingleDesignation)
 router.put("/departments/:department_id/designations/:id",updateDesignation)
 router.delete("/designation/:id",deleteDesignation)
+
+// Jobtype
+router.post("/job-type", addJobType);
+router.get("/job-type", getAllJobType);
+router.get("/job-type/:id", getSingleJobType);
+router.put("/job-type/:id", updateJobType);
+router.delete("/job-type/:id", deleteJobType);
 
 // applycandidate
 router.post("/apply-candidate", uploadResume.single("resume"), addApplyCandidate);

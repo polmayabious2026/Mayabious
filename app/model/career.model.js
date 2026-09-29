@@ -40,34 +40,32 @@ const jobvacancy = sequelize.define(
       autoIncrement: true,
       primaryKey: true,
     },
-    // career_id: {
-    //   type: DataTypes.INTEGER,
-    //   allowNull: false,
-    // },
+
     department_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+
     designation_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    content: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
+
     description: {
       type: DataTypes.STRING,
       allowNull: false,
     },
+
     status: {
       type: DataTypes.STRING,
       comment: "1 = active, 0 = inactive",
       defaultValue: "1",
     },
+
     created_at: {
       type: DataTypes.DATE,
     },
+
     updated_at: {
       type: DataTypes.DATE,
     },
@@ -77,7 +75,7 @@ const jobvacancy = sequelize.define(
     timestamps: true,
     createdAt: "created_at",
     updatedAt: "updated_at",
-  },
+  }
 );
 const value = sequelize.define(
   "value",
@@ -133,6 +131,10 @@ const perksbenifit = sequelize.define(
     option: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    image:{
+      type:DataTypes.STRING,
+      allowNull:false,
     },
     status: {
       type: DataTypes.STRING,
@@ -219,6 +221,61 @@ const designation = sequelize.define(
     updatedAt: "updated_at",
   },
 );
+const jobtype = sequelize.define("jobtype",{
+  id:{
+    type:DataTypes.INTEGER,
+    primaryKey:true,
+    autoIncrement:true,
+  },
+  title:{
+    type:DataTypes.STRING,
+    allowNull:false,
+  },created_at: {
+      type: DataTypes.DATE,
+    },
+    updated_at: {
+      type: DataTypes.DATE,
+    },
+},{
+  tableName:"jobtype",
+  timestamps:true,
+  createdAt: "created_at",
+  updatedAt: "updated_at",
+});
+const jobvacancyjobtype = sequelize.define(
+  "jobvacancyjobtype",
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+
+    jobvacancy_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+
+    jobtype_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+
+    created_at: {
+      type: DataTypes.DATE,
+    },
+
+    updated_at: {
+      type: DataTypes.DATE,
+    },
+  },
+  {
+    tableName: "jobvacancyjobtype",
+    timestamps: true,
+    createdAt: "created_at",
+    updatedAt: "updated_at",
+  }
+);
 const applycandidate = sequelize.define(
   "applycandidate",
   {
@@ -273,5 +330,7 @@ module.exports = {
   perksbenifit,
   department,
   designation,
+  jobtype,
+  jobvacancyjobtype,
   applycandidate,
 };

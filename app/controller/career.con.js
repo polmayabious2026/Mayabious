@@ -6,6 +6,8 @@ const {
   perksbenifit,
   department,
   designation,
+  jobtype,
+  jobvacancyjobtype,
   applycandidate,
 } = require("../model/career.model");
 
@@ -214,74 +216,174 @@ const deleteCareer = async (req, res) => {
 //  JOB VACANCY*********************************
 
 const addJobVacancy = async (req, res) => {
+  const t = await sequelize.transaction();
+
   try {
     const { department_id, designation_id } = req.params;
-    const { content, description, status } = req.body;
+    let { jobtype_id, description, status } = req.body;
+
+    
     if (!department_id) {
+      await t.rollback();
+
       return res.status(400).json({
         status: false,
         message: "Please provide department id",
       });
     }
+
+  
     if (!designation_id) {
+      await t.rollback();
+
       return res.status(400).json({
         status: false,
-        message: "Please provide service designation_id",
+        message: "Please provide designation id",
       });
     }
-    if (!content) {
+
+   
+    if (jobtype_id === undefined || jobtype_id === null) {
+      await t.rollback();
+
       return res.status(400).json({
         status: false,
-        message: "Please provide content",
+        message: "Please provide jobtype id",
       });
     }
-    if (!description) {
+
+
+    if (!Array.isArray(jobtype_id)) {
+      jobtype_id = [jobtype_id];
+    }
+
+    if (!jobtype_id.length) {
+      await t.rollback();
+
+      return res.status(400).json({
+        status: false,
+        message: "Please provide at least one jobtype id",
+      });
+    }
+
+
+    jobtype_id = [...new Set(jobtype_id)];
+
+
+    if (!description || !description.trim()) {
+      await t.rollback();
+
       return res.status(400).json({
         status: false,
         message: "Please provide description",
       });
     }
 
-    const department_Data = await department.findByPk(department_id);
 
-    if (!department_Data) {
+    const departmentData = await department.findByPk(department_id, {
+      transaction: t,
+    });
+
+    if (!departmentData) {
+      await t.rollback();
+
       return res.status(404).json({
         status: false,
         message: "Department not found",
       });
     }
 
-    const designation_Data = await designation.findOne({
+ 
+    const designationData = await designation.findOne({
       where: {
         id: designation_id,
         department_id: department_id,
       },
+      transaction: t,
     });
 
-    if (!designation_Data) {
+    if (!designationData) {
+      await t.rollback();
+
       return res.status(404).json({
         status: false,
         message: "Designation not present under this department",
       });
     }
 
-    const jobData = await jobvacancy.create({
-      department_id: department_id,
-      designation_id: designation_id,
-      content: content,
-      description: description,
-      status: status || "1",
+    const jobTypeData = await jobtype.findAll({
+      where: {
+        id: jobtype_id,
+      },
+      transaction: t,
+    });
+
+    if (jobTypeData.length !== jobtype_id.length) {
+      await t.rollback();
+
+      return res.status(404).json({
+        status: false,
+        message: "One or more job types not found",
+      });
+    }
+
+ 
+    const jobData = await jobvacancy.create(
+      {
+        department_id,
+        designation_id,
+        description: description.trim(),
+        status: status || "1",
+      },
+      {
+        transaction: t,
+      }
+    );
+
+ 
+    const jobTypeMappings = jobtype_id.map((jobTypeId) => ({
+      jobvacancy_id: jobData.id,
+      jobtype_id: jobTypeId,
+    }));
+
+    await jobvacancyjobtype.bulkCreate(jobTypeMappings, {
+      transaction: t,
+    });
+
+    await t.commit();
+
+
+    const result = await jobvacancy.findByPk(jobData.id, {
+      include: [
+        {
+          model: department,
+          as: "department",
+        },
+        {
+          model: designation,
+          as: "designation",
+        },
+        {
+          model: jobtype,
+          as: "jobtypes",
+          through: {
+            attributes: [],
+          },
+        },
+      ],
     });
 
     return res.status(201).json({
       status: true,
       message: "Job vacancy added successfully",
-      data: jobData,
+      data: result,
     });
   } catch (error) {
+    await t.rollback();
+
     console.log("addJobVacancy Error:", error);
 
-    return res.status(400).json({
+    return res.status(500).json({
       status: false,
       message: "Something went wrong",
       error: error.message,
@@ -293,6 +395,7 @@ const getAllJobVacancy = async (req, res) => {
   try {
     const data = await jobvacancy.findAll({
       order: [["id", "DESC"]],
+
       include: [
         {
           model: department,
@@ -301,6 +404,13 @@ const getAllJobVacancy = async (req, res) => {
         {
           model: designation,
           as: "designation",
+        },
+        {
+          model: jobtype,
+          as: "jobtypes",
+          through: {
+            attributes: [],
+          },
         },
       ],
     });
@@ -313,7 +423,7 @@ const getAllJobVacancy = async (req, res) => {
   } catch (error) {
     console.log("getAllJobVacancy Error:", error);
 
-    return res.status(400).json({
+    return res.status(500).json({
       status: false,
       message: "Something went wrong",
       error: error.message,
@@ -325,10 +435,14 @@ const getSingleJobVacancy = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const data = await jobvacancy.findOne({
-      where: {
-        id: id,
-      },
+    if (!id) {
+      return res.status(400).json({
+        status: false,
+        message: "Please provide job vacancy id",
+      });
+    }
+
+    const data = await jobvacancy.findByPk(id, {
       include: [
         {
           model: department,
@@ -337,6 +451,13 @@ const getSingleJobVacancy = async (req, res) => {
         {
           model: designation,
           as: "designation",
+        },
+        {
+          model: jobtype,
+          as: "jobtypes",
+          through: {
+            attributes: [],
+          },
         },
       ],
     });
@@ -356,7 +477,7 @@ const getSingleJobVacancy = async (req, res) => {
   } catch (error) {
     console.log("getSingleJobVacancy Error:", error);
 
-    return res.status(400).json({
+    return res.status(500).json({
       status: false,
       message: "Something went wrong",
       error: error.message,
@@ -365,104 +486,224 @@ const getSingleJobVacancy = async (req, res) => {
 };
 
 const updateJobVacancy = async (req, res) => {
+  const t = await sequelize.transaction();
+
   try {
-    const { department_id, designation_id, id } = req.params;
-    const { content, description, status } = req.body;
+    const { id } = req.params;
 
-    if (!department_id) {
-      return res.status(400).json({
-        status: false,
-        message: "Please provide department id",
-      });
-    }
+    let {
+      department_id,
+      designation_id,
+      jobtype_id,
+      description,
+      status,
+    } = req.body;
 
-    if (!designation_id) {
-      return res.status(400).json({
-        status: false,
-        message: "Please provide designation id",
-      });
-    }
-
+  
     if (!id) {
+      await t.rollback();
+
       return res.status(400).json({
         status: false,
         message: "Please provide job vacancy id",
       });
     }
 
-    if (!content?.trim()) {
-      return res.status(400).json({
-        status: false,
-        message: "Please provide content",
-      });
-    }
-
-    // if (!description?.trim()) {
-    //   return res.status(400).json({
-    //     status: false,
-    //     message: "Please provide description",
-    //   });
-    // }
-
-    const department_Data = await department.findByPk(department_id);
-
-    if (!department_Data) {
-      return res.status(404).json({
-        status: false,
-        message: "Department not found",
-      });
-    }
-
-    const designation_Data = await designation.findOne({
-      where: {
-        id: designation_id,
-        department_id: department_id,
-      },
-    });
-
-    if (!designation_Data) {
-      return res.status(404).json({
-        status: false,
-        message: "Designation not present under this department",
-      });
-    }
-
-    const jobData = await jobvacancy.findOne({
-      where: {
-        id: id,
-        department_id: department_id,
-        designation_id: designation_id,
-      },
+    const jobData = await jobvacancy.findByPk(id, {
+      transaction: t,
     });
 
     if (!jobData) {
+      await t.rollback();
+
       return res.status(404).json({
         status: false,
         message: "Job vacancy not found",
       });
     }
 
+
+    if (department_id !== undefined) {
+      const departmentData = await department.findByPk(department_id, {
+        transaction: t,
+      });
+
+      if (!departmentData) {
+        await t.rollback();
+
+        return res.status(404).json({
+          status: false,
+          message: "Department not found",
+        });
+      }
+    }
+
+
+    const finalDepartmentId =
+      department_id !== undefined
+        ? department_id
+        : jobData.department_id;
+
+
+    if (designation_id !== undefined) {
+      const designationData = await designation.findOne({
+        where: {
+          id: designation_id,
+          department_id: finalDepartmentId,
+        },
+        transaction: t,
+      });
+
+      if (!designationData) {
+        await t.rollback();
+
+        return res.status(404).json({
+          status: false,
+          message: "Designation not present under this department",
+        });
+      }
+    }
+
+
+    if (jobtype_id !== undefined) {
+   
+      if (!Array.isArray(jobtype_id)) {
+        jobtype_id = [jobtype_id];
+      }
+
+      if (!jobtype_id.length) {
+        await t.rollback();
+
+        return res.status(400).json({
+          status: false,
+          message: "Please provide at least one jobtype id",
+        });
+      }
+
+    
+      jobtype_id = [...new Set(jobtype_id)];
+
+      const jobTypeData = await jobtype.findAll({
+        where: {
+          id: jobtype_id,
+        },
+        transaction: t,
+      });
+
+      if (jobTypeData.length !== jobtype_id.length) {
+        await t.rollback();
+
+        return res.status(404).json({
+          status: false,
+          message: "One or more job types not found",
+        });
+      }
+    }
+
+
+    if (
+      description !== undefined &&
+      (!description || !description.trim())
+    ) {
+      await t.rollback();
+
+      return res.status(400).json({
+        status: false,
+        message: "Description cannot be empty",
+      });
+    }
+
+
     const updateData = {};
 
-    if (content !== undefined) {
-      updateData.content = content;
-    }
-    if (description !== undefined) {
-      updateData.description = description;
+    if (department_id !== undefined) {
+      updateData.department_id = department_id;
     }
 
-    await jobData.update({
-      updateData,
-      status: status ?? jobData.status,
+    if (designation_id !== undefined) {
+      updateData.designation_id = designation_id;
+    }
+
+    if (description !== undefined) {
+      updateData.description = description.trim();
+    }
+
+    if (status !== undefined) {
+      updateData.status = status;
+    }
+
+    if (Object.keys(updateData).length) {
+      await jobData.update(updateData, {
+        transaction: t,
+      });
+    }
+
+
+    if (jobtype_id !== undefined) {
+      
+      await jobvacancyjobtype.destroy({
+        where: {
+          jobvacancy_id: id,
+        },
+        transaction: t,
+      });
+
+      
+      const mappings = jobtype_id.map((jobTypeId) => ({
+        jobvacancy_id: id,
+        jobtype_id: jobTypeId,
+      }));
+
+      await jobvacancyjobtype.bulkCreate(mappings, {
+        transaction: t,
+      });
+    }
+
+
+    if (
+      !Object.keys(updateData).length &&
+      jobtype_id === undefined
+    ) {
+      await t.rollback();
+
+      return res.status(400).json({
+        status: false,
+        message: "Please provide data to update",
+      });
+    }
+
+    await t.commit();
+
+
+    const result = await jobvacancy.findByPk(id, {
+      include: [
+        {
+          model: department,
+          as: "department",
+        },
+        {
+          model: designation,
+          as: "designation",
+        },
+        {
+          model: jobtype,
+          as: "jobtypes",
+          through: {
+            attributes: [],
+          },
+        },
+      ],
     });
 
     return res.status(200).json({
       status: true,
       message: "Job vacancy updated successfully",
-      data: jobData,
+      data: result,
     });
   } catch (error) {
-    console.error("updateJobVacancy Error:", error);
+    await t.rollback();
+
+    console.log("updateJobVacancy Error:", error);
 
     return res.status(500).json({
       status: false,
@@ -473,91 +714,71 @@ const updateJobVacancy = async (req, res) => {
 };
 
 const deleteJobVacancy = async (req, res) => {
+  const t = await sequelize.transaction();
+
   try {
-    const { department_id, designation_id, id } = req.params;
+    const { id } = req.params;
 
-    if (!department_id) {
-      return res.status(400).json({
-        status: false,
-        message: "Please provide department id",
-      });
-    }
-
-    if (!designation_id) {
-      return res.status(400).json({
-        status: false,
-        message: "Please provide designation id",
-      });
-    }
 
     if (!id) {
+      await t.rollback();
+
       return res.status(400).json({
         status: false,
         message: "Please provide job vacancy id",
       });
     }
 
-    // Check department
-    const department_Data = await department.findByPk(department_id);
-
-    if (!department_Data) {
-      return res.status(404).json({
-        status: false,
-        message: "Department not found",
-      });
-    }
-
-    // Check designation under this department
-    const designation_Data = await designation.findOne({
-      where: {
-        id: designation_id,
-        department_id: department_id,
-      },
-    });
-
-    if (!designation_Data) {
-      return res.status(404).json({
-        status: false,
-        message: "Designation not present under this department",
-      });
-    }
-
-    // Find job vacancy
-    const jobData = await jobvacancy.findOne({
-      where: {
-        id: id,
-        department_id: department_id,
-        designation_id: designation_id,
-      },
+    const jobData = await jobvacancy.findByPk(id, {
+      transaction: t,
     });
 
     if (!jobData) {
+      await t.rollback();
+
       return res.status(404).json({
         status: false,
         message: "Job vacancy not found",
       });
     }
 
-    await jobData.destroy();
+
+    await jobvacancyjobtype.destroy({
+      where: {
+        jobvacancy_id: id,
+      },
+      transaction: t,
+    });
+
+
+    await jobData.destroy({
+      transaction: t,
+    });
+
+    await t.commit();
 
     return res.status(200).json({
       status: true,
       message: "Job vacancy deleted successfully",
     });
   } catch (error) {
-    console.error("deleteJobVacancy Error:", error);
+    await t.rollback();
+
+    console.log("deleteJobVacancy Error:", error);
 
     return res.status(500).json({
       status: false,
       message: "Something went wrong",
+      error: error.message,
     });
   }
 };
 
+
 //  VALUE******************************
 const addValue = async (req, res) => {
   try {
-    const { career_id, title, description, status } = req.body;
+    const { career_id, options } = req.body;
 
     if (!career_id) {
       return res.status(400).json({
@@ -566,17 +787,10 @@ const addValue = async (req, res) => {
       });
     }
 
-    if (!title) {
+    if (!options || !Array.isArray(options) || !options.length) {
       return res.status(400).json({
         status: false,
-        message: "Please provide title",
-      });
-    }
-
-    if (!description) {
-      return res.status(400).json({
-        status: false,
-        message: "Please provide description",
+        message: "Please provide options",
       });
     }
 
@@ -589,25 +803,26 @@ const addValue = async (req, res) => {
       });
     }
 
-    const valueData = await value.create({
-      career_id,
-      title: title.toUpperCase(),
-      description,
-      status: status || "1",
-    });
+    const valueData = await value.bulkCreate(
+      options.map((option) => ({
+        career_id,
+        title: option.title.toUpperCase(),
+        description: option.description,
+        status: option.status || "1",
+      })),
+    );
 
     return res.status(201).json({
       status: true,
-      message: "Value added successfully",
+      message: "Values added successfully",
       data: valueData,
     });
   } catch (error) {
     console.log("addValue Error:", error);
 
-    return res.status(400).json({
+    return res.status(500).json({
       status: false,
       message: "Something went wrong",
-      error: error.message,
     });
   }
 };
@@ -615,7 +830,7 @@ const addValue = async (req, res) => {
 const getAllValue = async (req, res) => {
   try {
     const data = await value.findAll({
-      order: [["id", "DESC"]],
+      // order: [["id", "DESC"]],
     });
 
     return res.status(200).json({
@@ -780,26 +995,66 @@ const deleteValue = async (req, res) => {
 //  PERKS AND BENEFIT**********************
 
 const addPerksBenefit = async (req, res) => {
+  const t = await sequelize.transaction();
+
   try {
-    const { career_id, options } = req.body;
+    const { career_id } = req.body;
+
+    let { option } = req.body;
+
+    // console.log("============================");
+    // console.log("CAREER ID:", career_id);
+    // console.log("OPTIONS:", option);
+    // console.log("FILES:", req.files);
+    // console.log("============================");
 
     if (!career_id) {
+      await t.rollback();
+
       return res.status(400).json({
         status: false,
         message: "Please provide career id",
       });
     }
 
-    if (!options || !options.length) {
+    if (!Array.isArray(option)) {
+      option = option ? [option] : [];
+    }
+
+    if (!option.length) {
+      await t.rollback();
+
       return res.status(400).json({
         status: false,
-        message: "Please provide options",
+        message: "Please provide option",
       });
     }
 
-    const careerData = await career.findByPk(career_id);
+    if (!req.files || !req.files.length) {
+      await t.rollback();
+
+      return res.status(400).json({
+        status: false,
+        message: "Please provide images",
+      });
+    }
+
+    if (option.length !== req.files.length) {
+      await t.rollback();
+
+      return res.status(400).json({
+        status: false,
+        message: "Number of options and images must be the same",
+      });
+    }
+
+    const careerData = await career.findByPk(career_id, {
+      transaction: t,
+    });
 
     if (!careerData) {
+      await t.rollback();
+
       return res.status(404).json({
         status: false,
         message: "Career not found",
@@ -807,12 +1062,18 @@ const addPerksBenefit = async (req, res) => {
     }
 
     const perkData = await perksbenifit.bulkCreate(
-      options.map((option) => ({
+      option.map((item, index) => ({
         career_id,
-        option,
+        option: item,
+        image: req.files[index].filename,
         status: "1",
       })),
+      {
+        transaction: t,
+      },
     );
+
+    await t.commit();
 
     return res.status(201).json({
       status: true,
@@ -820,11 +1081,14 @@ const addPerksBenefit = async (req, res) => {
       data: perkData,
     });
   } catch (error) {
+    await t.rollback();
+
     console.log("addPerksBenefit Error:", error);
 
     return res.status(500).json({
       status: false,
       message: "Something went wrong",
+      error: error.message,
     });
   }
 };
@@ -843,7 +1107,7 @@ const getAllPerksBenefit = async (req, res) => {
   } catch (error) {
     console.log("getAllPerksBenefit Error:", error);
 
-    return res.status(400).json({
+    return res.status(500).json({
       status: false,
       message: "Something went wrong",
       error: error.message,
@@ -872,7 +1136,7 @@ const getSinglePerksBenefit = async (req, res) => {
   } catch (error) {
     console.log("getSinglePerksBenefit Error:", error);
 
-    return res.status(400).json({
+    return res.status(500).json({
       status: false,
       message: "Something went wrong",
       error: error.message,
@@ -881,16 +1145,18 @@ const getSinglePerksBenefit = async (req, res) => {
 };
 
 const updatePerksBenefit = async (req, res) => {
-  const transaction = await sequelize.transaction();
+  const t = await sequelize.transaction();
 
   try {
     const { id } = req.params;
     const { career_id, option, status } = req.body;
 
-    const data = await perksbenifit.findByPk(id);
+    const data = await perksbenifit.findByPk(id, {
+      transaction: t,
+    });
 
     if (!data) {
-      await transaction.rollback();
+      await t.rollback();
 
       return res.status(404).json({
         status: false,
@@ -898,11 +1164,14 @@ const updatePerksBenefit = async (req, res) => {
       });
     }
 
+    // Check career if career_id is being updated
     if (career_id !== undefined) {
-      const careerData = await career.findByPk(career_id);
+      const careerData = await career.findByPk(career_id, {
+        transaction: t,
+      });
 
       if (!careerData) {
-        await transaction.rollback();
+        await t.rollback();
 
         return res.status(404).json({
           status: false,
@@ -913,23 +1182,41 @@ const updatePerksBenefit = async (req, res) => {
 
     const updateData = {};
 
+   
     if (career_id !== undefined) {
       updateData.career_id = career_id;
     }
 
+    
     if (option !== undefined) {
       updateData.option = option;
     }
 
+    
+    if (req.file) {
+      updateData.image = req.file.filename;
+    }
+
+   
     if (status !== undefined) {
       updateData.status = status;
     }
 
+    
+    if (!Object.keys(updateData).length) {
+      await t.rollback();
+
+      return res.status(400).json({
+        status: false,
+        message: "Please provide data to update",
+      });
+    }
+
     await data.update(updateData, {
-      transaction,
+      transaction: t,
     });
 
-    await transaction.commit();
+    await t.commit();
 
     return res.status(200).json({
       status: true,
@@ -937,11 +1224,11 @@ const updatePerksBenefit = async (req, res) => {
       data,
     });
   } catch (error) {
-    await transaction.rollback();
+    await t.rollback();
 
     console.log("updatePerksBenefit Error:", error);
 
-    return res.status(400).json({
+    return res.status(500).json({
       status: false,
       message: "Something went wrong",
       error: error.message,
@@ -950,15 +1237,17 @@ const updatePerksBenefit = async (req, res) => {
 };
 
 const deletePerksBenefit = async (req, res) => {
-  const transaction = await sequelize.transaction();
+  const t = await sequelize.transaction();
 
   try {
     const { id } = req.params;
 
-    const data = await perksbenifit.findByPk(id);
+    const data = await perksbenifit.findByPk(id, {
+      transaction: t,
+    });
 
     if (!data) {
-      await transaction.rollback();
+      await t.rollback();
 
       return res.status(404).json({
         status: false,
@@ -967,27 +1256,28 @@ const deletePerksBenefit = async (req, res) => {
     }
 
     await data.destroy({
-      transaction,
+      transaction: t,
     });
 
-    await transaction.commit();
+    await t.commit();
 
     return res.status(200).json({
       status: true,
       message: "Perk and benefit deleted successfully",
     });
   } catch (error) {
-    await transaction.rollback();
+    await t.rollback();
 
     console.log("deletePerksBenefit Error:", error);
 
-    return res.status(400).json({
+    return res.status(500).json({
       status: false,
       message: "Something went wrong",
       error: error.message,
     });
   }
 };
+
 
 //  DEPARTMENT******************
 
@@ -1374,6 +1664,220 @@ const deleteDesignation = async (req, res) => {
   }
 };
 
+// jobtype*********************
+const addJobType = async (req, res) => {
+  const t = await sequelize.transaction();
+
+  try {
+    let { title } = req.body;
+
+    // Convert single title to array
+    if (!Array.isArray(title)) {
+      title = title ? [title] : [];
+    }
+
+    if (!title.length) {
+      await t.rollback();
+
+      return res.status(400).json({
+        status: false,
+        message: "Please provide title",
+      });
+    }
+
+    // Validate titles
+    for (const item of title) {
+      if (!item || !item.trim()) {
+        await t.rollback();
+
+        return res.status(400).json({
+          status: false,
+          message: "Title cannot be empty",
+        });
+      }
+    }
+
+    // Create multiple job types
+    const jobTypeData = await jobtype.bulkCreate(
+      title.map((item) => ({
+        title: item.trim(),
+      })),
+      {
+        transaction: t,
+      }
+    );
+
+    await t.commit();
+
+    return res.status(201).json({
+      status: true,
+      message: "Job type added successfully",
+      data: jobTypeData,
+    });
+  } catch (error) {
+    await t.rollback();
+
+    console.log("addJobType Error:", error);
+
+    return res.status(500).json({
+      status: false,
+      message: "Something went wrong",
+      error: error.message,
+    });
+  }
+};
+
+const getAllJobType = async (req, res) => {
+  try {
+    const data = await jobtype.findAll({
+      // order: [["id", "DESC"]],
+    });
+
+    return res.status(200).json({
+      status: true,
+      message: "Job types fetched successfully",
+      data,
+    });
+  } catch (error) {
+    console.log("getAllJobType Error:", error);
+
+    return res.status(500).json({
+      status: false,
+      message: "Something went wrong",
+      error: error.message,
+    });
+  }
+};
+
+const getSingleJobType = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const data = await jobtype.findByPk(id);
+
+    if (!data) {
+      return res.status(404).json({
+        status: false,
+        message: "Job type not found",
+      });
+    }
+
+    return res.status(200).json({
+      status: true,
+      message: "Job type fetched successfully",
+      data,
+    });
+  } catch (error) {
+    console.log("getSingleJobType Error:", error);
+
+    return res.status(500).json({
+      status: false,
+      message: "Something went wrong",
+      error: error.message,
+    });
+  }
+};
+
+const updateJobType = async (req, res) => {
+  const t = await sequelize.transaction();
+
+  try {
+    const { id } = req.params;
+    const { title } = req.body;
+
+    const data = await jobtype.findByPk(id, {
+      transaction: t,
+    });
+
+    if (!data) {
+      await t.rollback();
+
+      return res.status(404).json({
+        status: false,
+        message: "Job type not found",
+      });
+    }
+
+    if (title === undefined || !title.trim()) {
+      await t.rollback();
+
+      return res.status(400).json({
+        status: false,
+        message: "Please provide title",
+      });
+    }
+
+    await data.update(
+      {
+        title: title.trim(),
+      },
+      {
+        transaction: t,
+      }
+    );
+
+    await t.commit();
+
+    return res.status(200).json({
+      status: true,
+      message: "Job type updated successfully",
+      data,
+    });
+  } catch (error) {
+    await t.rollback();
+
+    console.log("updateJobType Error:", error);
+
+    return res.status(500).json({
+      status: false,
+      message: "Something went wrong",
+      error: error.message,
+    });
+  }
+};
+
+const deleteJobType = async (req, res) => {
+  const t = await sequelize.transaction();
+
+  try {
+    const { id } = req.params;
+
+    const data = await jobtype.findByPk(id, {
+      transaction: t,
+    });
+
+    if (!data) {
+      await t.rollback();
+
+      return res.status(404).json({
+        status: false,
+        message: "Job type not found",
+      });
+    }
+
+    await data.destroy({
+      transaction: t,
+    });
+
+    await t.commit();
+
+    return res.status(200).json({
+      status: true,
+      message: "Job type deleted successfully",
+    });
+  } catch (error) {
+    await t.rollback();
+
+    console.log("deleteJobType Error:", error);
+
+    return res.status(500).json({
+      status: false,
+      message: "Something went wrong",
+      error: error.message,
+    });
+  }
+};
+
 //  ApplyNow********************
 
 const addApplyCandidate = async (req, res) => {
@@ -1705,6 +2209,13 @@ module.exports = {
   getSingleDesignation,
   updateDesignation,
   deleteDesignation,
+
+  // jobtype
+    addJobType,
+  getAllJobType,
+  getSingleJobType,
+  updateJobType,
+  deleteJobType,
 
   // applynow
   addApplyCandidate,

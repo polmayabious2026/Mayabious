@@ -28,6 +28,8 @@ const {
   perksbenifit,
   department,
   designation,
+  jobtype,
+  jobvacancyjobtype,
   applycandidate,
 } = require("../model/career.model");
 
@@ -108,6 +110,15 @@ designation.belongsTo(department, {
   foreignKey: "department_id",
    as:"department"
 });
+// jobtype-jobvacancy
+jobtype.hasMany(jobvacancy, {
+  foreignKey: "jobtype_id",
+  as:"jobtypes",
+});
+
+jobvacancy.belongsTo(jobtype, {
+  foreignKey: "jobtype_id",
+});
 // career-value
 career.hasMany(value, {
   foreignKey: "career_id",
@@ -148,6 +159,22 @@ applycandidate.belongsTo(designation, {
   foreignKey: "designation_id",
   as: "designation",
 });
+
+// jobvacancy-jobvacancytype
+jobvacancy.belongsToMany(jobtype, {
+  through: jobvacancyjobtype,
+  foreignKey: "jobvacancy_id",
+  otherKey: "jobtype_id",
+  as: "jobtypes",
+});
+
+jobtype.belongsToMany(jobvacancy, {
+  through: jobvacancyjobtype,
+  foreignKey: "jobtype_id",
+  otherKey: "jobvacancy_id",
+  as: "jobvacancies",
+});
+
 
 
 
