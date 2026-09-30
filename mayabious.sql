@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 29, 2026 at 05:21 PM
+-- Generation Time: Sep 30, 2026 at 05:20 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -82,10 +82,10 @@ CREATE TABLE `blog` (
   `date` varchar(255) NOT NULL,
   `heading` varchar(255) NOT NULL,
   `title` varchar(255) NOT NULL,
-  `content` mediumtext DEFAULT NULL,
   `description` longtext NOT NULL,
   `small_image` varchar(255) NOT NULL,
   `big_image` varchar(255) NOT NULL,
+  `popular_blogs` varchar(255) DEFAULT '0' COMMENT '1 = yes,0 = no',
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -94,9 +94,56 @@ CREATE TABLE `blog` (
 -- Dumping data for table `blog`
 --
 
-INSERT INTO `blog` (`id`, `date`, `heading`, `title`, `content`, `description`, `small_image`, `big_image`, `created_at`, `updated_at`) VALUES
-(1, 'July 10,2026', 'BEST LOCATION FOR NRIS INVESTING IN SILIGURI', 'SHOULD BE YOUR NEXT TRAVEL DESTINATION', 'A blog is a type of website that presents frequently updated content in reverse chronological order, with the newest entries appearing first. ', 'If you’re a tech junkie, you may want to share your passion through a blog.\r\n\r\nA tech blog usually features the latest news on technology and its applications in various fields such as science, entertainment, and business. Some technology blogs also feature reviews of newly released gadgets, making it one of the most profitable blog niches you can choose.', '1790692648112-blog_small_image_2026-09-26 182705.jpg', '1790692648116-Blogs_Big_image_2026-09-26 182744.jpg', '2026-09-29 14:37:28', '2026-09-29 14:37:28'),
-(2, 'July 21,2026', 'BEST LOCATION FOR NRIS INVESTING IN SILIGURI NO TWO', 'SHOULD BE YOUR NEXT TRAVEL DESTINATION NO TWO', 'A blog is a type of website that presents frequently updated content in reverse chronological order, with the newest entries appearing first. ', 'If you’re a tech junkie, you may want to share your passion through a blog updated checkkkkk', '1790692927869-blog_small_image_2026-09-26 182705.jpg', '1790692927876-Blogs_Big_image_2026-09-26 182744.jpg', '2026-09-29 14:42:07', '2026-09-29 14:44:01');
+INSERT INTO `blog` (`id`, `date`, `heading`, `title`, `description`, `small_image`, `big_image`, `popular_blogs`, `created_at`, `updated_at`) VALUES
+(3, 'July 21,2026', 'BEST LOCATION FOR NRIS INVESTING IN SILIGURI NO TWO', 'SHOULD BE YOUR NEXT TRAVEL DESTINATION NO TWO', 'If you’re a tech junkie, you may want to share your passion through a blog.\r\n\r\nA tech blog usually features the latest news on technology and its applications in various fields such as science, entertainment, and business. Some technology blogs also feature reviews of newly released gadgets, making it one of the most profitable blog niches you can choose.', '1790764144784-blog_small_image_2026-09-26 182705.jpg', '1790764144788-Blogs_Big_image_2026-09-26 182744.jpg', '1', '2026-09-30 10:29:04', '2026-09-30 10:29:04'),
+(4, 'June 05,2025', 'BEST LOCATION FOR NRIS INVESTING IN SILIGURI NO TWO', 'SHOULD BE YOUR NEXT TRAVEL DESTINATION NO TWO', 'If you’re a tech junkie, you may want to share your passion through a blog updated checkkkkk twoo', '1790765110741-blog_small_image_2026-09-26 182705.jpg', '1790765110745-Blogs_Big_image_2026-09-26 182744.jpg', '1', '2026-09-30 10:45:10', '2026-09-30 10:46:07');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `blogcategory`
+--
+
+CREATE TABLE `blogcategory` (
+  `id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `status` varchar(255) DEFAULT '1' COMMENT '1 = active, 0 = inactive',
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `blogcategory`
+--
+
+INSERT INTO `blogcategory` (`id`, `title`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'INVEST', '1', '2026-09-30 10:14:24', '2026-09-30 10:14:24'),
+(2, 'BLOCK CHAIN', '1', '2026-09-30 10:14:24', '2026-09-30 10:14:24'),
+(4, 'NEWS', '1', '2026-09-30 10:44:36', '2026-09-30 10:44:36');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `blognblogcategory`
+--
+
+CREATE TABLE `blognblogcategory` (
+  `id` int(11) NOT NULL,
+  `blog_id` int(11) NOT NULL,
+  `blogcategory_id` int(11) NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `blognblogcategory`
+--
+
+INSERT INTO `blognblogcategory` (`id`, `blog_id`, `blogcategory_id`, `created_at`, `updated_at`) VALUES
+(1, 3, 1, '2026-09-30 10:29:04', '2026-09-30 10:29:04'),
+(2, 3, 2, '2026-09-30 10:29:04', '2026-09-30 10:29:04'),
+(6, 4, 1, '2026-09-30 10:47:34', '2026-09-30 10:47:34'),
+(7, 4, 4, '2026-09-30 10:47:34', '2026-09-30 10:47:34');
 
 -- --------------------------------------------------------
 
@@ -127,7 +174,7 @@ INSERT INTO `career` (`id`, `bannerimage`, `status`, `created_at`, `updated_at`)
 
 CREATE TABLE `clients` (
   `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
   `logo` varchar(255) NOT NULL,
   `status` varchar(255) DEFAULT '1' COMMENT '1 = active, 0 = inactive',
   `created_at` datetime DEFAULT NULL,
@@ -141,6 +188,33 @@ CREATE TABLE `clients` (
 INSERT INTO `clients` (`id`, `name`, `logo`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'PS GROUP', '1790339679241-psgroup_images.png', '1', '2026-09-25 12:34:39', '2026-09-25 12:34:39'),
 (2, 'TATA STEEL .', '1790340514860-tata-steel-logo.png', '1', '2026-09-25 12:48:34', '2026-09-25 13:00:49');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `contact`
+--
+
+CREATE TABLE `contact` (
+  `id` int(11) NOT NULL,
+  `phone` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `office_hours` varchar(255) NOT NULL,
+  `facebook` varchar(255) DEFAULT NULL,
+  `linkedin` varchar(255) DEFAULT NULL,
+  `twitter` varchar(255) DEFAULT NULL,
+  `instagram` varchar(255) DEFAULT NULL,
+  `status` varchar(255) DEFAULT '1' COMMENT '1 = active, 0 = inactive',
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `contact`
+--
+
+INSERT INTO `contact` (`id`, `phone`, `email`, `office_hours`, `facebook`, `linkedin`, `twitter`, `instagram`, `status`, `created_at`, `updated_at`) VALUES
+(1, '+91 33 2367 0142 / +91 80170 88220 / +91 90 0744 8711  HR Contact: +91 80170 88223', 'contactus@mygabious.com', 'Mon - Sat: 10am - 6pm\nSun - Closed', 'https://facebook.com/mayabious', 'https://linkedin.com/company/mayabious', 'https://twitter.com/mayabious', 'https://instagram.com/mayabious', '1', '2026-09-30 13:49:07', '2026-09-30 14:47:06');
 
 -- --------------------------------------------------------
 
@@ -440,7 +514,11 @@ CREATE TABLE `teams` (
   `name` varchar(255) NOT NULL,
   `designation` varchar(255) NOT NULL,
   `image` varchar(255) NOT NULL,
-  `content` varchar(255) NOT NULL,
+  `content` text NOT NULL,
+  `facebook` varchar(255) DEFAULT NULL,
+  `linkedin` varchar(255) DEFAULT NULL,
+  `twitter` varchar(255) DEFAULT NULL,
+  `instagram` varchar(255) DEFAULT NULL,
   `status` varchar(255) DEFAULT '1' COMMENT '1 = active, 0 = inactive',
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
@@ -450,8 +528,9 @@ CREATE TABLE `teams` (
 -- Dumping data for table `teams`
 --
 
-INSERT INTO `teams` (`id`, `name`, `designation`, `image`, `content`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'ARINDAM DAS GUPTA', 'Founder & CEO', '1790345131514-istockphoto-2172317014-612x612.jpg', 'This is Content', '1', '2026-09-25 14:05:31', '2026-09-25 14:05:31');
+INSERT INTO `teams` (`id`, `name`, `designation`, `image`, `content`, `facebook`, `linkedin`, `twitter`, `instagram`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'ARINDAM DAS GUPTA', 'Founder & CEO', '1790770027645-team_istockphoto-2172317014-612x612.jpg', 'This is Content', 'user@facebook.com', NULL, NULL, 'user@instagram.com', '1', '2026-09-30 12:07:07', '2026-09-30 12:07:07'),
+(2, 'SOURAV DAS', 'CTO', '1790770118393-team_istockphoto-2172317014-612x612.jpg', 'This is Content section', NULL, 'user@linkedin.com', 'user@twitter.com', NULL, '1', '2026-09-30 12:08:38', '2026-09-30 12:08:38');
 
 -- --------------------------------------------------------
 
@@ -463,7 +542,7 @@ CREATE TABLE `value` (
   `id` int(11) NOT NULL,
   `career_id` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
-  `description` varchar(255) NOT NULL,
+  `description` text NOT NULL,
   `status` varchar(255) DEFAULT '1' COMMENT '1 = active, 0 = inactive',
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
@@ -503,6 +582,20 @@ ALTER TABLE `blog`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `blogcategory`
+--
+ALTER TABLE `blogcategory`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `blognblogcategory`
+--
+ALTER TABLE `blognblogcategory`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `blognblogcategory_blogcategory_id_blog_id_unique` (`blog_id`,`blogcategory_id`),
+  ADD KEY `blogcategory_id` (`blogcategory_id`);
+
+--
 -- Indexes for table `career`
 --
 ALTER TABLE `career`
@@ -512,6 +605,12 @@ ALTER TABLE `career`
 -- Indexes for table `clients`
 --
 ALTER TABLE `clients`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `contact`
+--
+ALTER TABLE `contact`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -631,7 +730,19 @@ ALTER TABLE `awards`
 -- AUTO_INCREMENT for table `blog`
 --
 ALTER TABLE `blog`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `blogcategory`
+--
+ALTER TABLE `blogcategory`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `blognblogcategory`
+--
+ALTER TABLE `blognblogcategory`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `career`
@@ -644,6 +755,12 @@ ALTER TABLE `career`
 --
 ALTER TABLE `clients`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `contact`
+--
+ALTER TABLE `contact`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `department`
@@ -721,7 +838,7 @@ ALTER TABLE `servicesubcategory`
 -- AUTO_INCREMENT for table `teams`
 --
 ALTER TABLE `teams`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `value`
@@ -739,6 +856,13 @@ ALTER TABLE `value`
 ALTER TABLE `applycandidate`
   ADD CONSTRAINT `applycandidate_ibfk_1` FOREIGN KEY (`department_id`) REFERENCES `department` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `applycandidate_ibfk_2` FOREIGN KEY (`designation_id`) REFERENCES `designation` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `blognblogcategory`
+--
+ALTER TABLE `blognblogcategory`
+  ADD CONSTRAINT `blognblogcategory_ibfk_1` FOREIGN KEY (`blog_id`) REFERENCES `blog` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `blognblogcategory_ibfk_2` FOREIGN KEY (`blogcategory_id`) REFERENCES `blogcategory` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `designation`

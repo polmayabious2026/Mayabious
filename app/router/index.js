@@ -24,5 +24,7 @@ router.use("/admin",require("../router/news.router"))
 router.use("/admin",require("../router/blog.router"))
 // career
 router.use("/admin",require("../router/career.router"))
+// contact
+router.use("/admin",require("../router/contact.router"))
 
 module.exports= router

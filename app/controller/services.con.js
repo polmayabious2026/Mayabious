@@ -155,14 +155,17 @@ const createServices = async (req, res) => {
 const getallServices = async (req, res) => {
   try {
     const data = await services.findAll({
+      attributes:["id","title","image"],
       include: [
         {
           model: servicecategory,
           as: "category",
+          attributes:["id","name"]
         },
         {
           model: serviceSubCategory,
           as: "subcategory",
+          attributes:["id","name"]
         },
       ],
       order: [["id", "DESC"]],
@@ -187,16 +190,19 @@ const getSingleServices = async (req, res) => {
 
     const data = await services.findOne({
       where: {
-        id,
+        id, 
       },
+      attributes:["id","title","image"],
       include: [
         {
           model: servicecategory,
           as: "category",
+          attributes:["id","name"]
         },
         {
           model: serviceSubCategory,
           as: "subcategory",
+          attributes:["id","name"]
         },
       ],
       order: [["id", "DESC"]],

@@ -1,43 +1,40 @@
 const sequelize = require("../config/db");
-const { DataTypes } = require("sequelize");
 
-const teams = sequelize.define(
-  "team",
+const { DataTypes, Model } = require("sequelize");
+
+const contact = sequelize.define(
+  "contact",
   {
     id: {
       type: DataTypes.INTEGER,
-      autoIncrement: true,
       primaryKey: true,
+      autoIncrement: true,
     },
-    name: {
+    phone: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    designation: {
+    email: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    image: {
+    office_hours: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    content: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
-    facebook:{
+    facebook: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    linkedin:{
+    linkedin: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    twitter:{
+    twitter: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    instagram:{
+    instagram: {
       type: DataTypes.STRING,
       allowNull: true,
     },
@@ -54,11 +51,11 @@ const teams = sequelize.define(
     },
   },
   {
-    tableName: "teams",
+    tableName: "contact",
     timestamps: true,
     createdAt: "created_at",
     updatedAt: "updated_at",
   },
 );
 
-module.exports = teams;
+module.exports = contact

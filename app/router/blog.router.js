@@ -3,11 +3,19 @@ const express = require("express");
 const router = express.Router();
 
 const {
+  // blog
   createBlog,
   getallBlog,
   getsingleBlog,
   updateBlog,
   deleteBlog,
+
+  // blogcategory
+  addBlogCategory,
+  getAllCategory,
+  getSingleCategory,
+  updateBlogCategory,
+  deleteBlogCategory,
 } = require("../controller/blog.con");
 
 const uploadImage = require("../middleware/fileupload_image");
@@ -33,5 +41,18 @@ router.put(
   updateBlog,
 );
 router.delete("/delete-blogs/:id", deleteBlog);
+
+
+// blogcategory
+router.post("/add_blogcategory", addBlogCategory);
+
+router.get("/all_blogcategory", getAllCategory);
+
+router.get("/blogcategory/:id", getSingleCategory);
+
+router.put("/blogcategory/:id", updateBlogCategory);
+
+router.delete("/blogcategory/:id", deleteBlogCategory);
+
 
 module.exports = router;

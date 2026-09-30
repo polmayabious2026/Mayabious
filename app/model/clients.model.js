@@ -11,11 +11,10 @@ const clients = sequelize.define(
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
-    logo:{
-        type:DataTypes.STRING,
-        allowNull:false,
+    logo: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     status: {
       type: DataTypes.STRING,

@@ -5,7 +5,16 @@ const fs = require("fs");
 
 const addTeam = async (req, res) => {
   try {
-    const { name, designation, content, status } = req.body;
+    const {
+      name,
+      designation,
+      content,
+      status,
+      facebook,
+      linkedin,
+      twitter,
+      instagram,
+    } = req.body;
 
     if (!name) {
       return res.status(400).json({
@@ -36,11 +45,15 @@ const addTeam = async (req, res) => {
     }
 
     const teamData = await team.create({
-      name: name.toUpperCase(),
-      designation: designation,
+      name: name.trim().toUpperCase(),
+      designation: designation.trim(),
       image: req.file.filename,
-      content: content,
+      content: content.trim(),
       status: status || "1",
+      facebook: facebook?.trim() || null,
+      linkedin: linkedin?.trim() || null,
+      twitter: twitter?.trim() || null,
+      instagram: instagram?.trim() || null,
     });
 
     return res.status(201).json({
@@ -113,7 +126,16 @@ const updateTeam = async (req, res) => {
 
   try {
     const { id } = req.params;
-    const { name, designation, content, status } = req.body;
+    const {
+      name,
+      designation,
+      content,
+      status,
+      facebook,
+      linkedin,
+      twitter,
+      instagram,
+    } = req.body;
 
     const data = await team.findByPk(id);
 
@@ -129,11 +151,27 @@ const updateTeam = async (req, res) => {
     const oldImage = data.image;
 
     const updateData = {
-      name: name !== undefined ? name.toUpperCase() : data.name,
-      designation: designation !== undefined ? designation : data.designation,
-      content: content !== undefined ? content : data.content,
+      name: name !== undefined ? name.trim().toUpperCase() : data.name,
+
+      designation:
+        designation !== undefined ? designation.trim() : data.designation,
+
+      content: content !== undefined ? content.trim() : data.content,
+
       status: status !== undefined ? status : data.status,
+
       image: req.file ? req.file.filename : data.image,
+
+      facebook:
+        facebook !== undefined ? facebook.trim() || null : data.facebook,
+
+      linkedin:
+        linkedin !== undefined ? linkedin.trim() || null : data.linkedin,
+
+      twitter: twitter !== undefined ? twitter.trim() || null : data.twitter,
+
+      instagram:
+        instagram !== undefined ? instagram.trim() || null : data.instagram,
     };
 
     await data.update(updateData, {

@@ -53,7 +53,8 @@ const getServiceSubCategories = async (req, res) => {
     const data = await serviceSubCategory.findAll({
         include:{
             model:servicecategory,
-            as:"category"
+            as:"category",
+            attributes:["id","name"]
         }
     });
 
@@ -83,7 +84,8 @@ const getServiceSubCategoryById = async (req, res) => {
         },
         include:{
             model:servicecategory,
-            as:"category"
+            as:"category",
+            attributes:["id","name"]
         }
     });
 

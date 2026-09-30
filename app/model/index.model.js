@@ -19,7 +19,10 @@ const team = require("../model/team.model")
 // news
 const news = require("../model/news.model")
 // blog
-const blog = require("../model/blog.model")
+const {
+  blogModel,
+  blogcategory,
+  blognblogcategory} = require("../model/blog.model")
 // career
 const {
   career,
@@ -175,6 +178,20 @@ jobtype.belongsToMany(jobvacancy, {
   as: "jobvacancies",
 });
 
+// blog-blogcategory
+blogModel.belongsToMany(blogcategory, {
+  through: blognblogcategory,
+  foreignKey: "blog_id",
+  otherKey: "blogcategory_id",
+  as: "blogcategories",
+});
+
+blogcategory.belongsToMany(blogModel, {
+  through: blognblogcategory,
+  foreignKey: "blogcategory_id",
+  otherKey: "blog_id",
+  as: "blogs",
+});
 
 
 

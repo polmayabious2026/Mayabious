@@ -1053,25 +1053,45 @@
               "formdata": [
                 {
                   "key": "name",
-                  "value": "arindam das gupta",
+                  "value": "sourav das",
                   "type": "text"
                 },
                 {
                   "key": "designation",
-                  "value": "Founder & CEO",
+                  "value": "CTO",
                   "type": "text"
                 },
                 {
                   "key": "content",
-                  "value": "This is Content",
+                  "value": "This is Content section",
                   "type": "text"
                 },
                 {
                   "key": "image",
                   "type": "file",
                   "src": [
-                    "/C:/Users/Web-04/Downloads/istockphoto-2172317014-612x612.jpg"
+                    "/C:/Users/Web-04/Downloads/team_istockphoto-2172317014-612x612.jpg"
                   ]
+                },
+                {
+                  "key": "facebook",
+                  "value": "",
+                  "type": "text"
+                },
+                {
+                  "key": "linkedin",
+                  "value": "user@linkedin.com",
+                  "type": "text"
+                },
+                {
+                  "key": "twitter",
+                  "value": "user@twitter.com",
+                  "type": "text"
+                },
+                {
+                  "key": "instagram",
+                  "value": "",
+                  "type": "text"
                 }
               ]
             },
@@ -1334,6 +1354,137 @@
       "name": "BLOG",
       "item": [
         {
+          "name": "BLOG CATEGORY",
+          "item": [
+            {
+              "name": "CREATE BLOG CATEGORY",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"title\":[\r\n        \"invest\",\r\n        \"block chain\",\r\n        \"news\"\r\n    ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/add_blogcategory",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "add_blogcategory"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET BLOG CATEGORY",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/all_blogcategory",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "all_blogcategory"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET SINGEL BLOG CATEGORY",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/blogcategory/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "blogcategory",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "UPDATE BLOG CATEGORY",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"title\":\"UPDATE\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/blogcategory/3",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "blogcategory",
+                    "3"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE BLOG CATEGORY",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/blogcategory/3",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "blogcategory",
+                    "3"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
           "name": "CREATE BLOG",
           "request": {
             "method": "POST",
@@ -1343,22 +1494,17 @@
               "formdata": [
                 {
                   "key": "date",
-                  "value": "July 10,2026",
+                  "value": "June 05,2025",
                   "type": "text"
                 },
                 {
                   "key": "heading",
-                  "value": "best location for nris investing in siliguri",
+                  "value": "best location for nris investing in siliguri no two",
                   "type": "text"
                 },
                 {
                   "key": "title",
-                  "value": "Should Be Your Next Travel Destination",
-                  "type": "text"
-                },
-                {
-                  "key": "content",
-                  "value": "A blog is a type of website that presents frequently updated content in reverse chronological order, with the newest entries appearing first. ",
+                  "value": "Should Be Your Next Travel Destination no two",
                   "type": "text"
                 },
                 {
@@ -1379,6 +1525,16 @@
                   "src": [
                     "/C:/Users/Web-04/Downloads/Blogs_Big_image_2026-09-26 182744.jpg"
                   ]
+                },
+                {
+                  "key": "popular_blogs",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "category_id",
+                  "value": "1,2,4",
+                  "type": "text"
                 }
               ]
             },
@@ -1403,6 +1559,10 @@
           "request": {
             "method": "GET",
             "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            },
             "url": {
               "raw": "http://localhost:4001/api/admin/get-blogs",
               "protocol": "http",
@@ -1425,7 +1585,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:4001/api/admin/get-singleblogs/1",
+              "raw": "http://localhost:4001/api/admin/get-singleblogs/4",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -1435,7 +1595,7 @@
                 "api",
                 "admin",
                 "get-singleblogs",
-                "1"
+                "4"
               ]
             }
           },
@@ -1451,13 +1611,18 @@
               "formdata": [
                 {
                   "key": "description",
-                  "value": "If you’re a tech junkie, you may want to share your passion through a blog updated checkkkkk",
+                  "value": "If you’re a tech junkie, you may want to share your passion through a blog updated checkkkkk twoo",
+                  "type": "text"
+                },
+                {
+                  "key": "category_ids",
+                  "value": "1,4",
                   "type": "text"
                 }
               ]
             },
             "url": {
-              "raw": "http://localhost:4001/api/admin/update-blogs/2",
+              "raw": "http://localhost:4001/api/admin/update-blogs/4",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -1467,7 +1632,7 @@
                 "api",
                 "admin",
                 "update-blogs",
-                "2"
+                "4"
               ]
             }
           },
@@ -2628,6 +2793,115 @@
               "response": []
             }
           ]
+        }
+      ]
+    },
+    {
+      "name": "CONTACT",
+      "item": [
+        {
+          "name": "CREATE CONTACT",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"phone\": \"+91 33 2367 0142 / +91 80170 88220 / +91 90 0744 8711  HR Contact: +91 80170 88223\",\r\n  \"email\": \"contactus@mygabious.com\",\r\n  \"office_hours\": \"Mon - Sat: 10am - 6pm\\nSun - Closed\",\r\n   \"facebook\": \"https://facebook.com/mayabious\",\r\n  \"linkedin\": \"https://linkedin.com/company/mayabious\",\r\n  \"twitter\": \"https://twitter.com/mayabious\",\r\n  \"instagram\": \"https://instagram.com/mayabious\",\r\n  \"status\": \"1\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:4001/api/admin/createcontact",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "createcontact"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET ALL CONTACT",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4001/api/admin/getcontact",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "getcontact"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "UPDATE CONTACT",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"status\":1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:4001/api/admin/updatecontact/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "updatecontact",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE CONTACT",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4001/api/admin/deletecontact/2",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "deletecontact",
+                "2"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
