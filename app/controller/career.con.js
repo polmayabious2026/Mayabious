@@ -354,6 +354,7 @@ const addJobVacancy = async (req, res) => {
 
 
     const result = await jobvacancy.findByPk(jobData.id, {
+
       include: [
         {
           model: department,
@@ -395,15 +396,18 @@ const getAllJobVacancy = async (req, res) => {
   try {
     const data = await jobvacancy.findAll({
       order: [["id", "DESC"]],
+      attributes:["id","description"],
 
       include: [
         {
           model: department,
           as: "department",
+          attributes:["id","name"],
         },
         {
           model: designation,
           as: "designation",
+          attributes:["id","name"],
         },
         {
           model: jobtype,
