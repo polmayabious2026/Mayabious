@@ -1,5 +1,7 @@
 const sequelize = require("../config/db")
 
+// ADMIN
+const admin = require("../model/admin.model")
 // homevideo
 const homeVideo = require("../model/homevideo.model")
 // service_category
