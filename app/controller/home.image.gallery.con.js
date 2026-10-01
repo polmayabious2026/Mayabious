@@ -67,14 +67,17 @@ const createHomeImageGallery = async (req, res) => {
 const getHomeImageGallery = async (req, res) => {
   try {
     const data = await homeImageGallery.findAll({
+      attributes:["id","title","image"],
       include: [
         {
           model: servicecategory,
           as: "category",
+          attributes:["id","name"]
         },
         {
           model: serviceSubCategory,
           as: "subcategory",
+          attributes:["id","name"]
         },
       ],
       // order: [["id", "DESC"]],

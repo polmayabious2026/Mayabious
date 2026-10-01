@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 30, 2026 at 05:20 PM
+-- Generation Time: Oct 01, 2026 at 03:14 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -20,6 +20,28 @@ SET time_zone = "+00:00";
 --
 -- Database: `mayabious`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admin`
+--
+
+CREATE TABLE `admin` (
+  `id` int(11) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `status` varchar(255) DEFAULT '1' COMMENT '1 = active, 0 = inactive',
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `admin`
+--
+
+INSERT INTO `admin` (`id`, `username`, `password`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'polsarkar', '$2b$10$IlPyTkC1085AffHCicgIaunAScZprQUWNSMtYv8jcp1gu5oWd8/PO', '1', '2026-10-01 09:19:18', '2026-10-01 09:19:18');
 
 -- --------------------------------------------------------
 
@@ -562,6 +584,12 @@ INSERT INTO `value` (`id`, `career_id`, `title`, `description`, `status`, `creat
 --
 
 --
+-- Indexes for table `admin`
+--
+ALTER TABLE `admin`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `applycandidate`
 --
 ALTER TABLE `applycandidate`
@@ -713,6 +741,12 @@ ALTER TABLE `value`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `admin`
+--
+ALTER TABLE `admin`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `applycandidate`

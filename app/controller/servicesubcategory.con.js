@@ -51,6 +51,7 @@ const addServiceSubCategory = async (req, res) => {
 const getServiceSubCategories = async (req, res) => {
   try {
     const data = await serviceSubCategory.findAll({
+      attributes:["id","name","description"],
         include:{
             model:servicecategory,
             as:"category",

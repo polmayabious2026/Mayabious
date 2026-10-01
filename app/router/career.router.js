@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-
+const adminCheck = require("../middleware/admin_check")
 const {
     // Career
   addCareer,
@@ -60,70 +60,73 @@ const upload = require("../middleware/fileupload_image");
 const uploadResume = require("../middleware/fileupload_pdf");
 
 // Career
-router.post("/career", upload.single("bannerimage"), addCareer);
+router.post("/career", upload.single("bannerimage"),adminCheck, addCareer);
 router.get("/career", getAllCareer);
-router.get("/career/:id", getSingleCareer);
-router.put("/career/:id", upload.single("bannerimage"), updateCareer);
-router.delete("/career/:id", deleteCareer);
+router.get("/career/:id",adminCheck, getSingleCareer);
+router.put("/career/:id", upload.single("bannerimage"),adminCheck, updateCareer);
+router.delete("/career/:id",adminCheck, deleteCareer);
 
 // Job Vacancy
 router.post(
   "/departments/:department_id/designations/:designation_id/job-vacancies",
+  adminCheck,
   addJobVacancy
 );
 router.get("/jobvacancy", getAllJobVacancy);
-router.get("/jobvacancy/:id", getSingleJobVacancy);
+router.get("/jobvacancy/:id",adminCheck, getSingleJobVacancy);
 router.put(
   "/departments/:department_id/designations/:designation_id/job-vacancies/:id",
+  adminCheck,
   updateJobVacancy
 );
 router.delete(
   "/departments/:department_id/designations/:designation_id/job-vacancies/:id",
+  adminCheck,
   deleteJobVacancy
 );
 
 // Value
-router.post("/value", addValue);
+router.post("/value",adminCheck, addValue);
 router.get("/value", getAllValue);
-router.get("/value/:id", getSingleValue);
-router.put("/value/:id", updateValue);
-router.delete("/value/:id", deleteValue);
+router.get("/value/:id",adminCheck, getSingleValue);
+router.put("/value/:id",adminCheck, updateValue);
+router.delete("/value/:id",adminCheck, deleteValue);
 
 // Perks & Benefits
-router.post("/perks-benefit",upload.array("image"), addPerksBenefit);
+router.post("/perks-benefit",upload.array("image"),adminCheck, addPerksBenefit);
 router.get("/perks-benefit", getAllPerksBenefit);
-router.get("/perks-benefit/:id", getSinglePerksBenefit);
-router.put("/perks-benefit/:id",upload.array("image"), updatePerksBenefit);
-router.delete("/perks-benefit/:id", deletePerksBenefit);
+router.get("/perks-benefit/:id",adminCheck, getSinglePerksBenefit);
+router.put("/perks-benefit/:id",upload.array("image"),adminCheck, updatePerksBenefit);
+router.delete("/perks-benefit/:id",adminCheck, deletePerksBenefit);
 
 
  // DEPARTMENT
-router.post("/create_department",addDepartment)
+router.post("/create_department",adminCheck,addDepartment)
 router.get("/getall_department",getDepartment)
-router.get("/getsingle_department/:id",getSingleDepartment)
-router.put("/department/:id",updateDepartment)
-router.delete("/department/:id", deleteDepartment);
+router.get("/getsingle_department/:id",adminCheck,getSingleDepartment)
+router.put("/department/:id",adminCheck,updateDepartment)
+router.delete("/department/:id", adminCheck,deleteDepartment);
 
  // Designation
-router.post("/designation/:department_id",addDesignation)
+router.post("/designation/:department_id",adminCheck,addDesignation)
 router.get("/designation",getDesignation)
-router.get("/designation/:id",getSingleDesignation)
-router.put("/departments/:department_id/designations/:id",updateDesignation)
-router.delete("/designation/:id",deleteDesignation)
+router.get("/designation/:id",adminCheck,getSingleDesignation)
+router.put("/departments/:department_id/designations/:id",adminCheck,updateDesignation)
+router.delete("/designation/:id",adminCheck,deleteDesignation)
 
 // Jobtype
-router.post("/job-type", addJobType);
+router.post("/job-type",adminCheck, addJobType);
 router.get("/job-type", getAllJobType);
-router.get("/job-type/:id", getSingleJobType);
-router.put("/job-type/:id", updateJobType);
-router.delete("/job-type/:id", deleteJobType);
+router.get("/job-type/:id",adminCheck, getSingleJobType);
+router.put("/job-type/:id",adminCheck, updateJobType);
+router.delete("/job-type/:id",adminCheck, deleteJobType);
 
 // applycandidate
-router.post("/apply-candidate", uploadResume.single("resume"), addApplyCandidate);
+router.post("/apply-candidate", uploadResume.single("resume"),adminCheck, addApplyCandidate);
 router.get("/apply-candidate", getAllApplyCandidate);
-router.get("/apply-candidate/:id", getSingleApplyCandidate);
-router.put("/apply-candidate/:id",uploadResume.single("resume"),updateApplyCandidate,);
-router.delete("/apply-candidate/:id", deleteApplyCandidate);
+router.get("/apply-candidate/:id",adminCheck, getSingleApplyCandidate);
+router.put("/apply-candidate/:id",uploadResume.single("resume"),adminCheck,updateApplyCandidate,);
+router.delete("/apply-candidate/:id",adminCheck, deleteApplyCandidate);
 
 
 

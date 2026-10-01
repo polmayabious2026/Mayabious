@@ -1,7 +1,7 @@
 const express = require("express");
 
 const router = express.Router();
-
+const adminCheck = require("../middleware/admin_check")
 const {
   addServiceSubCategory,
  getServiceSubCategories,
@@ -10,11 +10,11 @@ const {
   deleteServiceSubCategory ,
 } = require("../controller/servicesubcategory.con");
 
-router.post("/add-subcategory", addServiceSubCategory);
+router.post("/add-subcategory",adminCheck, addServiceSubCategory);
 router.get("/getall-subcategory", getServiceSubCategories);
-router.get("/get-singlesubcategory/:id", getServiceSubCategoryById);
+router.get("/get-singlesubcategory/:id",adminCheck, getServiceSubCategoryById);
 
-router.put("/update-subcategory/:id", updateServiceSubCategory);
-router.delete("/delete-subcategory/:id",deleteServiceSubCategory );
+router.put("/update-subcategory/:id",adminCheck, updateServiceSubCategory);
+router.delete("/delete-subcategory/:id",adminCheck,deleteServiceSubCategory );
 
 module.exports = router;

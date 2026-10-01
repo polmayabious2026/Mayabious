@@ -1,6 +1,7 @@
 const express = require("express");
 
 const router = express.Router();
+const adminCheck = require("../middleware/admin_check")
 
 const {
     addAwards,
@@ -12,10 +13,10 @@ const {
 
 const uploadImage = require("../middleware/fileupload_image");
 
-router.post("/add-awards", uploadImage.single("image"), addAwards);
+router.post("/add-awards",adminCheck, uploadImage.single("image"), addAwards);
 router.get("/get-awards", getAwards);
-router.get("/get-singleawards/:id", getSingleAwards);
-router.put("/update-awards/:id",uploadImage.single("image"),updateAwards);
-router.delete("/delete-awards/:id", deleteAwards);
+router.get("/get-singleawards/:id",adminCheck, getSingleAwards);
+router.put("/update-awards/:id",adminCheck,uploadImage.single("image"),updateAwards);
+router.delete("/delete-awards/:id",adminCheck, deleteAwards);
 
 module.exports = router;

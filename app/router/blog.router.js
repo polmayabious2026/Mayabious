@@ -2,6 +2,8 @@ const express = require("express");
 
 const router = express.Router();
 
+const adminCheck = require("../middleware/admin_check")
+
 const {
   // blog
   createBlog,
@@ -26,11 +28,12 @@ router.post(
     { name: "small_image", maxCount: 1 },
     { name: "big_image", maxCount: 1 },
   ]),
+  adminCheck,
   createBlog,
 );
 router.get("/get-blogs", getallBlog);
 
-router.get("/get-singleblogs/:id", getsingleBlog);
+router.get("/get-singleblogs/:id",adminCheck, getsingleBlog);
 
 router.put(
   "/update-blogs/:id",
@@ -38,21 +41,22 @@ router.put(
     { name: "small_image", maxCount: 1 },
     { name: "big_image", maxCount: 1 },
   ]),
+  adminCheck,
   updateBlog,
 );
-router.delete("/delete-blogs/:id", deleteBlog);
+router.delete("/delete-blogs/:id",adminCheck, deleteBlog);
 
 
 // blogcategory
-router.post("/add_blogcategory", addBlogCategory);
+router.post("/add_blogcategory",adminCheck, addBlogCategory);
 
-router.get("/all_blogcategory", getAllCategory);
+router.get("/all_blogcategory",adminCheck, getAllCategory);
 
-router.get("/blogcategory/:id", getSingleCategory);
+router.get("/blogcategory/:id",adminCheck, getSingleCategory);
 
-router.put("/blogcategory/:id", updateBlogCategory);
+router.put("/blogcategory/:id",adminCheck, updateBlogCategory);
 
-router.delete("/blogcategory/:id", deleteBlogCategory);
+router.delete("/blogcategory/:id",adminCheck, deleteBlogCategory);
 
 
 module.exports = router;

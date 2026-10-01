@@ -2906,6 +2906,401 @@
       ]
     },
     {
+      "name": "ADMIN",
+      "item": [
+        {
+          "name": "CREATE ADMIN",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\":\"polsarkar\",\r\n    \"password\":\"pol@123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:4001/api/admin/register",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "LOGIN ADMIN",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\":\"polsarkar\",\r\n    \"password\":\"pol@123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:4001/api/admin/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "FRONTEND ROUTES",
+      "item": [
+        {
+          "name": "CAREER",
+          "item": [
+            {
+              "name": "CAREER BANNER",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/career",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "career"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "JOB VACANCY",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/jobvacancy",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "jobvacancy"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "VALUES",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/value",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "value"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "PERKS BENIFITS",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/perks-benefit",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "perks-benefit"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "HOME",
+          "item": [
+            {
+              "name": "VIDEOS",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/getall-video",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "getall-video"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "SERVICES CATEGORY",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/getall-category",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "getall-category"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "SERVICE SUB-CATEGORY",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/getall-subcategory",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "getall-subcategory"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "IMAGE GALLERY",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/get-home-image-gallery",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "get-home-image-gallery"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "SERVICES",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4001/api/admin/getall-services",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "getall-services"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "AWARDS",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4001/api/admin/get-awards",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "get-awards"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CLIENTS",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4001/api/admin/get-clients",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "get-clients"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TEAMS",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4001/api/admin/all-team",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "all-team"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "NEWS",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4001/api/admin/all_news",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "all_news"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "BLOGS",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4001/api/admin/get-blogs",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "get-blogs"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CONTACT",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4001/api/admin/getcontact",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "getcontact"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
       "name": "HEALTH CHECK",
       "request": {
         "method": "GET",
