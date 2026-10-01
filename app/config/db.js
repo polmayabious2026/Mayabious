@@ -1,8 +1,9 @@
 const {Sequelize}= require("sequelize")
-
-const sequelize = new Sequelize('mayabious', 'root', '', {
+require("dotenv").config();
+const sequelize = new Sequelize(process.env.DB_NAME, 'root', '', {
   host: 'localhost',
-  dialect: "mysql"
+  dialect: "mysql",
+  logging: false
 });
 
 sequelize.authenticate()
