@@ -245,7 +245,7 @@ const createServices = async (req, res) => {
 const getallServices = async (req, res) => {
   try {
     const data = await services.findAll({
-      attributes: ["id", "title", "image"],
+      attributes: ["id", "title", "small_image","big_image"],
       include: [
         {
           model: servicecategory,
@@ -282,7 +282,7 @@ const getSingleServices = async (req, res) => {
       where: {
         id,
       },
-      attributes: ["id", "title", "image"],
+      attributes: ["id", "title", "small_image","big_image"],
       include: [
         {
           model: servicecategory,
