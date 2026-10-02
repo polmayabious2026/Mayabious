@@ -58,12 +58,6 @@ const createBlog = async (req, res) => {
       category_id,
     } = req.body;
 
-    console.log("BODY:", req.body);
-    console.log("FILES:", req.files);
-
-    // =====================================================
-    // VALIDATION
-    // =====================================================
 
     if (!date || !String(date).trim()) {
       await transaction.rollback();
