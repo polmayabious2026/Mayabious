@@ -577,38 +577,50 @@
                 },
                 {
                   "key": "title",
-                  "value": "Design_one",
+                  "value": "3d elevation design",
                   "type": "text"
                 },
                 {
-                  "key": "image",
+                  "key": "description",
+                  "value": "This is description of 3D elevation design",
+                  "type": "text"
+                },
+                {
+                  "key": "small_image",
                   "type": "file",
                   "src": [
-                    "/C:/Users/Web-04/Downloads/Screenshot 2026-09-24 170733.jpg"
+                    "/C:/Users/Web-04/Downloads/service_small_image.jpg"
+                  ]
+                },
+                {
+                  "key": "big_image",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/Web-04/Downloads/service_big_image.jpg"
                   ]
                 },
                 {
                   "key": "title",
-                  "value": "Design_two",
+                  "value": "aerial view",
                   "type": "text"
                 },
                 {
-                  "key": "image",
+                  "key": "description",
+                  "value": "This is description of aerial view",
+                  "type": "text"
+                },
+                {
+                  "key": "small_image",
                   "type": "file",
                   "src": [
-                    "/C:/Users/Web-04/Downloads/Screenshot 2026-09-24 170830.jpg"
+                    "/C:/Users/Web-04/Downloads/service_small_image-2.jpg"
                   ]
                 },
                 {
-                  "key": "title",
-                  "value": "Design_three",
-                  "type": "text"
-                },
-                {
-                  "key": "image",
+                  "key": "big_image",
                   "type": "file",
                   "src": [
-                    "/C:/Users/Web-04/Downloads/Screenshot 2026-09-24 170849.jpg"
+                    "/C:/Users/Web-04/Downloads/service_big_image.jpg"
                   ]
                 }
               ]
@@ -653,6 +665,16 @@
         {
           "name": "GET SINGLE SERVICES",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{json_web_token_0unq}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [],
             "url": {
@@ -675,6 +697,16 @@
         {
           "name": "UPDATE SERVICES",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{json_web_token_0unq}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "PUT",
             "header": [],
             "body": {
@@ -682,11 +714,11 @@
               "formdata": [
                 {
                   "key": "title",
-                  "value": "Design_Three_2D",
+                  "value": "aerial view 2d",
                   "type": "text"
                 },
                 {
-                  "key": "image",
+                  "key": "big_image",
                   "type": "file",
                   "src": [
                     "/C:/Users/Web-04/Desktop/Pol Sarkar/images/kb-mart.webp"
@@ -705,7 +737,7 @@
               ]
             },
             "url": {
-              "raw": "http://localhost:4001/api/admin/update-services/3",
+              "raw": "http://localhost:4001/api/admin/update-services/2",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -715,7 +747,7 @@
                 "api",
                 "admin",
                 "update-services",
-                "3"
+                "2"
               ]
             }
           },
@@ -3319,6 +3351,12 @@
         }
       },
       "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "json_web_token_0unq",
+      "secret": true
     }
   ]
 }

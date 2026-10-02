@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 01, 2026 at 03:14 PM
+-- Generation Time: Oct 02, 2026 at 01:39 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -485,7 +485,9 @@ CREATE TABLE `services` (
   `service_category_id` int(11) NOT NULL,
   `service_sub_category_id` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
-  `image` varchar(255) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `small_image` varchar(255) NOT NULL,
+  `big_image` varchar(255) NOT NULL,
   `status` varchar(255) DEFAULT '1' COMMENT '1 = active, 0 = inactive',
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
@@ -495,10 +497,9 @@ CREATE TABLE `services` (
 -- Dumping data for table `services`
 --
 
-INSERT INTO `services` (`id`, `service_category_id`, `service_sub_category_id`, `title`, `image`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, 2, 'DESIGN_ONE', '1790251122684-Screenshot 2026-09-24 170733.jpg', '1', '2026-09-24 11:58:42', '2026-09-24 11:58:42'),
-(2, 1, 2, 'DESIGN_TWO', '1790251122690-Screenshot 2026-09-24 170830.jpg', '1', '2026-09-24 11:58:42', '2026-09-24 11:58:42'),
-(3, 1, 2, 'DESIGN_THREE_2D', '1790251122694-Screenshot 2026-09-24 170849.jpg', '1', '2026-09-24 11:58:42', '2026-09-24 12:16:29');
+INSERT INTO `services` (`id`, `service_category_id`, `service_sub_category_id`, `title`, `description`, `small_image`, `big_image`, `status`, `created_at`, `updated_at`) VALUES
+(1, 1, 2, '3D ELEVATION DESIGN', 'This is description of 3D elevation design', '1790935075936-service_small_image.jpg', '1790935075940-service_big_image.jpg', '1', '2026-10-02 09:57:55', '2026-10-02 09:57:55'),
+(2, 1, 2, 'AERIAL VIEW 2D', 'This is description of aerial view', '1790935075944-service_small_image-2.jpg', '1790935508005-kb-mart.webp', '1', '2026-10-02 09:57:55', '2026-10-02 10:05:08');
 
 -- --------------------------------------------------------
 
@@ -860,7 +861,7 @@ ALTER TABLE `servicecategory`
 -- AUTO_INCREMENT for table `services`
 --
 ALTER TABLE `services`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `servicesubcategory`
