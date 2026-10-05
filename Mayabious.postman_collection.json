@@ -3357,6 +3357,10 @@
     {
       "key": "json_web_token_0unq",
       "secret": true
+    },
+    {
+      "key": "json_web_token_159w",
+      "secret": true
     }
   ]
 }

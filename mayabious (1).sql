@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 02, 2026 at 01:39 PM
+-- Generation Time: Oct 05, 2026 at 05:29 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -209,7 +209,10 @@ CREATE TABLE `clients` (
 
 INSERT INTO `clients` (`id`, `name`, `logo`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'PS GROUP', '1790339679241-psgroup_images.png', '1', '2026-09-25 12:34:39', '2026-09-25 12:34:39'),
-(2, 'TATA STEEL .', '1790340514860-tata-steel-logo.png', '1', '2026-09-25 12:48:34', '2026-09-25 13:00:49');
+(2, 'TATA STEEL .', '1790340514860-tata-steel-logo.png', '1', '2026-09-25 12:48:34', '2026-09-25 13:00:49'),
+(3, 'SHAPOORJI PALLONJI', '1791208927850-shapoorji 2026-10-05 191741.jpg', '1', '2026-10-05 14:02:07', '2026-10-05 14:02:07'),
+(4, 'LLOYAD', '1791208927853-LLOYDS 2026-10-05 192034.jpg', '1', '2026-10-05 14:02:07', '2026-10-05 14:02:07'),
+(5, 'DESIGN CELL', '1791208927854-DESIGN CELL-2026-10-05 192005.jpg', '1', '2026-10-05 14:02:07', '2026-10-05 14:02:07');
 
 -- --------------------------------------------------------
 
@@ -415,6 +418,8 @@ CREATE TABLE `news` (
   `image` varchar(255) NOT NULL,
   `date` varchar(255) NOT NULL,
   `status` varchar(255) DEFAULT '1' COMMENT '1 = active, 0 = inactive',
+  `type` varchar(255) DEFAULT '1' COMMENT '1 = Digital Media, 0 = Print Media',
+  `url` varchar(255) NOT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -423,8 +428,9 @@ CREATE TABLE `news` (
 -- Dumping data for table `news`
 --
 
-INSERT INTO `news` (`id`, `channel_name`, `description`, `image`, `date`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'ANI NEWS', 'MAYABIOUS GROUP WIN FOUR METALS AT THE ECONOMIC TIMES THERE', '1790426269762-Screenshot 2026-09-26 180355.jpg', 'July 10 ,2026', '1', '2026-09-26 12:37:49', '2026-09-26 12:43:13');
+INSERT INTO `news` (`id`, `channel_name`, `description`, `image`, `date`, `status`, `type`, `url`, `created_at`, `updated_at`) VALUES
+(1, 'ANI NEWS', 'MAYABIOUS GROUP WIN FOUR METALS AT THE ECONOMIC TIMES FOR DESIGN  AND CREATIVITY', '1791211795065-Screenshot 2026-09-26 180355.jpg', 'April 9,2026', '1', '1', 'https://aninews.in/news/business/mayabious-group-wins-four-metals-at-the-economic-times-award-for-design-and-creativity20260409174349/', '2026-10-05 14:49:55', '2026-10-05 14:49:55'),
+(2, 'HINDUSTHAN SAMACHAR', 'MAYABIOUS GROUP RECIEVES NATIONAL RECOGNITION FOR', '1791211953414-Screenshot 2026-09-26 180355.jpg', 'April 8,2026', '1', '0', 'https://bengali.hindusthansamachar.in/Encyc/2026/4/8/Mayabious-Group-won-Awards.php', '2026-10-05 14:52:33', '2026-10-05 14:52:33');
 
 -- --------------------------------------------------------
 
@@ -789,7 +795,7 @@ ALTER TABLE `career`
 -- AUTO_INCREMENT for table `clients`
 --
 ALTER TABLE `clients`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `contact`
@@ -843,7 +849,7 @@ ALTER TABLE `jobvacancyjobtype`
 -- AUTO_INCREMENT for table `news`
 --
 ALTER TABLE `news`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `perksandbenifit`
