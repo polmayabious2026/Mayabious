@@ -30,6 +30,15 @@ const newsModel = sequelize.define(
       comment: "1 = active, 0 = inactive",
       defaultValue: "1",
     },
+    type:{
+      type: DataTypes.STRING,
+      comment: "1 = Digital Media, 0 = Print Media",
+      defaultValue: "1",
+    },
+    url: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     created_at: {
       type: DataTypes.DATE,
     },

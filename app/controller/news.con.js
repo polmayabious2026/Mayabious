@@ -4,32 +4,43 @@ const news = require("../model/news.model");
 const path = require("path");
 const fs = require("fs");
 
-
 const addNews = async (req, res) => {
   try {
-    const { channel_name, description, date, status } = req.body;
+    const { channel_name, description, date, status, type, url } = req.body;
 
-    if (!channel_name) {
+    // Channel name
+    if (!channel_name?.trim()) {
       return res.status(400).json({
         status: false,
         message: "Please provide channel name",
       });
     }
 
-    if (!description) {
+    // Description
+    if (!description?.trim()) {
       return res.status(400).json({
         status: false,
         message: "Please provide description",
       });
     }
 
-    if (!date) {
+    // Date
+    if (!date?.trim()) {
       return res.status(400).json({
         status: false,
         message: "Please provide date",
       });
     }
 
+    // URL
+    if (!url?.trim()) {
+      return res.status(400).json({
+        status: false,
+        message: "Please provide URL",
+      });
+    }
+
+    // Image
     if (!req.file) {
       return res.status(400).json({
         status: false,
@@ -38,11 +49,13 @@ const addNews = async (req, res) => {
     }
 
     const newsData = await news.create({
-      channel_name:channel_name.toUpperCase(),
-      description:description.toUpperCase(),
+      channel_name: channel_name.trim().toUpperCase(),
+      description: description.trim().toUpperCase(),
       image: req.file.filename,
-      date:date,
+      date: date.trim(),
       status: status || "1",
+      type: type || "1",
+      url: url.trim(),
     });
 
     return res.status(201).json({
@@ -60,7 +73,6 @@ const addNews = async (req, res) => {
     });
   }
 };
-
 
 const getAllNews = async (req, res) => {
   try {
@@ -81,7 +93,6 @@ const getAllNews = async (req, res) => {
     });
   }
 };
-
 
 const getSingleNews = async (req, res) => {
   try {
@@ -112,13 +123,13 @@ const getSingleNews = async (req, res) => {
   }
 };
 
-
 const updateNews = async (req, res) => {
   const transaction = await sequelize.transaction();
 
   try {
     const { id } = req.params;
-    const { channel_name, description, date, status } = req.body;
+
+    const { channel_name, description, date, status, type, url } = req.body;
 
     const data = await news.findByPk(id);
 
@@ -133,37 +144,105 @@ const updateNews = async (req, res) => {
 
     const oldImage = data.image;
 
-    
     const updateData = {};
 
+    // Channel name
     if (channel_name !== undefined) {
-      updateData.channel_name = channel_name.toUpperCase();
+      if (!channel_name.trim()) {
+        await transaction.rollback();
+
+        return res.status(400).json({
+          status: false,
+          message: "Channel name cannot be empty",
+        });
+      }
+
+      updateData.channel_name = channel_name.trim().toUpperCase();
     }
 
+    // Description
     if (description !== undefined) {
-      updateData.description = description.toUpperCase();
+      if (!description.trim()) {
+        await transaction.rollback();
+
+        return res.status(400).json({
+          status: false,
+          message: "Description cannot be empty",
+        });
+      }
+
+      updateData.description = description.trim().toUpperCase();
     }
 
+    // Date
     if (date !== undefined) {
-      updateData.date = date;
+      if (!date.trim()) {
+        await transaction.rollback();
+
+        return res.status(400).json({
+          status: false,
+          message: "Date cannot be empty",
+        });
+      }
+
+      updateData.date = date.trim();
     }
 
+    // URL
+    if (url !== undefined) {
+      if (!url.trim()) {
+        await transaction.rollback();
+
+        return res.status(400).json({
+          status: false,
+          message: "URL cannot be empty",
+        });
+      }
+
+      updateData.url = url.trim();
+    }
+
+    // Status
     if (status !== undefined) {
-      updateData.status = status;
+      if (!["0", "1"].includes(String(status))) {
+        await transaction.rollback();
+
+        return res.status(400).json({
+          status: false,
+          message: "Status must be 0 or 1",
+        });
+      }
+
+      updateData.status = String(status);
     }
 
-    // Update image only if new image is uploaded
+    // Type
+    if (type !== undefined) {
+      if (!["0", "1"].includes(String(type))) {
+        await transaction.rollback();
+
+        return res.status(400).json({
+          status: false,
+          message: "Type must be 0 (Print Media) or 1 (Digital Media)",
+        });
+      }
+
+      updateData.type = String(type);
+    }
+
+    // Image
     if (req.file) {
       updateData.image = req.file.filename;
     }
 
+    // Update database
     await data.update(updateData, {
       transaction,
     });
 
     await transaction.commit();
 
-    // Delete old image after successful database update
+    // Delete old image only after successful database update
     if (req.file && oldImage && oldImage !== req.file.filename) {
       const oldImagePath = path.join(__dirname, "../uploads", oldImage);
 
@@ -189,7 +268,6 @@ const updateNews = async (req, res) => {
     });
   }
 };
-
 
 const deleteNews = async (req, res) => {
   const transaction = await sequelize.transaction();
