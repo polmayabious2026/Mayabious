@@ -4,29 +4,39 @@ const clients = require("../model/clients.model");
 
 const addClients = async (req, res) => {
   try {
-    const { name, status } = req.body;
-    if (!name) {
+    const names = Array.isArray(req.body.name)
+      ? req.body.name
+      : req.body.name
+        ? [req.body.name]
+        : [];
+
+    const logos = req.files?.logo || [];
+
+    if (logos.length === 0) {
       return res.status(400).json({
         status: false,
-        message: "Please provide name",
+        message: "Please provide at least one logo",
       });
     }
-    if (!req.file) {
+    if (names.length > 0 && names.length !== logos.length) {
       return res.status(400).json({
         status: false,
-        message: "Please provide logo",
+        message: "Number of names and logos must be the same",
       });
     }
-    const clientsData = await clients.create({
-      name: name.toUpperCase(),
-      logo: req.file.filename,
-      status: status || "1",
-    });
+
+    const data = logos.map((file, index) => ({
+      name: names[index] ? names[index].toUpperCase() : null,
+      logo: file.filename,
+      status: "1",
+    }));
+
+    const createdClients = await clients.bulkCreate(data);
 
     return res.status(201).json({
       status: true,
-      message: "Clients added successfully",
-      data: clientsData,
+      message: `${createdClients.length} client(s) added successfully`,
+      data: createdClients,
     });
   } catch (error) {
     console.log("createClients Error:", error);
@@ -38,6 +48,7 @@ const addClients = async (req, res) => {
     });
   }
 };
+
 const getallclients = async (req, res) => {
   try {
     const alClients = await clients.findAll();
