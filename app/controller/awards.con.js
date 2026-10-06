@@ -2,6 +2,9 @@ const sequelize = require("../config/db");
 
 const awards = require("../model/awards.model");
 
+const path = require("path")
+const fs = require("fs")
+
 const addAwards = async (req, res) => {
   const transaction = await sequelize.transaction();
   try {
@@ -215,7 +218,9 @@ const deleteAwards = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const data = await awards.findByPk(id);
+    const data = await awards.findByPk(id, {
+      transaction,
+    });
 
     if (!data) {
       await transaction.rollback();
@@ -237,8 +242,12 @@ const deleteAwards = async (req, res) => {
     if (imageName) {
       const imagePath = path.join(__dirname, "../uploads", imageName);
 
-      if (fs.existsSync(imagePath)) {
-        fs.unlinkSync(imagePath);
+      try {
+        if (fs.existsSync(imagePath)) {
+          fs.unlinkSync(imagePath);
+        }
+      } catch (fileError) {
+        console.error("Image deletion error:", fileError);
       }
     }
 
@@ -247,7 +256,9 @@ const deleteAwards = async (req, res) => {
       message: "Award deleted successfully",
     });
   } catch (error) {
-    await transaction.rollback();
+    if (!transaction.finished) {
+      await transaction.rollback();
+    }
 
     console.log("deleteAwards Error:", error);
 
@@ -258,6 +269,7 @@ const deleteAwards = async (req, res) => {
     });
   }
 };
+
 
 module.exports = {
   addAwards,

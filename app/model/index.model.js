@@ -3,7 +3,7 @@ const sequelize = require("../config/db")
 // ADMIN
 const admin = require("../model/admin.model")
 // homevideo
-const homeVideo = require("../model/homevideo.model")
+const { homeVideo, homeVideoSet, homeVideo_nhomeVideoSet } = require("../model/homevideo.model")
 // service_category
 const servicecategory = require("../model/service.categoty.model")
 // service_subcategory
@@ -193,6 +193,20 @@ blogcategory.belongsToMany(blogModel, {
   foreignKey: "blogcategory_id",
   otherKey: "blog_id",
   as: "blogs",
+});
+// homeVideo-homeVideoset
+homeVideoSet.belongsToMany(homeVideo, {
+  through: homeVideo_nhomeVideoSet,
+  foreignKey: "homevideoset_id",
+  otherKey: "homevideo_id",
+  as: "homevideos",
+});
+
+homeVideo.belongsToMany(homeVideoSet, {
+  through: homeVideo_nhomeVideoSet, 
+  foreignKey: "homevideo_id",
+  otherKey: "homevideoset_id",
+  as: "homevideosets",
 });
 
 

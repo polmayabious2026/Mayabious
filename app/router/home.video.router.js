@@ -9,6 +9,12 @@ const {
   getSingleVideo,
   updateVideo,
   deleteVideo,
+    // homevideoSet
+  addhomeVideoSet,
+  gethomeVideoSet,
+  getSingleHomeVideoSet,
+  updatehomeVideoSet,
+  deletehomeVideoSet ,
 } = require("../controller/home.video.con");
 
 router.get("/", (req, res) => {
@@ -18,10 +24,18 @@ router.get("/", (req, res) => {
   });
 });
 
-router.post("/add-video", uploadVideo.array("video", 10),adminCheck, addVideo);
+router.post("/add-video/:homevideoset_id", uploadVideo.array("video", 9),adminCheck, addVideo);
 router.get("/getall-video", getallVideo);
 router.get("/getsingle-video/:id",adminCheck, getSingleVideo);
 router.put("/update-video/:id", uploadVideo.single("video"),adminCheck, updateVideo);
 router.delete("/delete-video/:id",adminCheck, deleteVideo);
+
+
+// homevideoset
+router.post("/add-videoset",adminCheck,addhomeVideoSet);
+router.get("/getall-videoset",  gethomeVideoSet);
+router.get("/getsingle-videoset/:id",adminCheck,getSingleHomeVideoSet);
+router.put("/update-videoset/:id",adminCheck,  updatehomeVideoSet);
+router.delete("/delete-videoset/:id",adminCheck, deletehomeVideoSet);
 
 module.exports = router;

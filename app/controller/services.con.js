@@ -27,11 +27,13 @@ const createServices = async (req, res) => {
       service_sub_category_id,
       title,
       description,
+      youtube_link,
       status,
     } = req.body;
 
-    // console.log("CREATE SERVICE BODY:", req.body);
-    // console.log("CREATE SERVICE FILES:", req.files);
+    // --------------------------------------------------
+    // BASIC VALIDATION
+    // --------------------------------------------------
 
     if (!service_category_id) {
       await transaction.rollback();
@@ -51,6 +53,10 @@ const createServices = async (req, res) => {
       });
     }
 
+    // --------------------------------------------------
+    // NORMALIZE TITLE
+    // --------------------------------------------------
+
     let titles = title;
 
     if (!Array.isArray(titles)) {
@@ -67,22 +73,30 @@ const createServices = async (req, res) => {
     }
 
     // Validate every title
-    for (const item of titles) {
-      if (!item || !String(item).trim()) {
+    for (let i = 0; i < titles.length; i++) {
+      if (!titles[i] || !String(titles[i]).trim()) {
         await transaction.rollback();
 
         return res.status(400).json({
           status: false,
-          message: "Title cannot be empty",
+          message: `Title at index ${i} cannot be empty`,
         });
       }
     }
 
+    // --------------------------------------------------
+    // NORMALIZE DESCRIPTION
+    // --------------------------------------------------
+
     let descriptions = description;
 
     if (!Array.isArray(descriptions)) {
-      descriptions = descriptions !== undefined ? [descriptions] : [];
+      descriptions =
+        descriptions !== undefined && descriptions !== null
+          ? [descriptions]
+          : [];
     }
+
     if (
       descriptions.length !== 0 &&
       descriptions.length !== 1 &&
@@ -99,6 +113,40 @@ const createServices = async (req, res) => {
       });
     }
 
+    // --------------------------------------------------
+    // NORMALIZE YOUTUBE LINKS
+    // --------------------------------------------------
+
+    let youtubeLinks = youtube_link;
+
+    if (!Array.isArray(youtubeLinks)) {
+      youtubeLinks =
+        youtubeLinks !== undefined &&
+        youtubeLinks !== null &&
+        String(youtubeLinks).trim() !== ""
+          ? [youtubeLinks]
+          : [];
+    }
+
+    // Make sure array has same number of positions as titles.
+    // Missing positions become null.
+    const normalizedYoutubeLinks = Array.from(
+      { length: titles.length },
+      (_, index) => {
+        const link = youtubeLinks[index];
+
+        if (link === undefined || link === null || !String(link).trim()) {
+          return null;
+        }
+
+        return String(link).trim();
+      }
+    );
+
+    // --------------------------------------------------
+    // STATUS
+    // --------------------------------------------------
+
     const serviceStatus = status ?? "1";
 
     if (!["0", "1", 0, 1].includes(serviceStatus)) {
@@ -110,7 +158,15 @@ const createServices = async (req, res) => {
       });
     }
 
-    if (!req.files || !req.files.small_image || !req.files.small_image.length) {
+    // --------------------------------------------------
+    // FILE VALIDATION
+    // --------------------------------------------------
+
+    const smallImages = req.files?.small_image || [];
+    const bigImages = req.files?.big_image || [];
+
+    // Small image is required for every title
+    if (!smallImages.length) {
       await transaction.rollback();
 
       return res.status(400).json({
@@ -118,18 +174,6 @@ const createServices = async (req, res) => {
         message: "Please provide small image",
       });
     }
-
-    if (!req.files || !req.files.big_image || !req.files.big_image.length) {
-      await transaction.rollback();
-
-      return res.status(400).json({
-        status: false,
-        message: "Please provide big image",
-      });
-    }
-
-    const smallImages = req.files.small_image;
-    const bigImages = req.files.big_image;
 
     if (smallImages.length !== titles.length) {
       await transaction.rollback();
@@ -142,20 +186,74 @@ const createServices = async (req, res) => {
       });
     }
 
-    if (bigImages.length !== titles.length) {
+    // --------------------------------------------------
+    // BIG IMAGE / YOUTUBE VALIDATION
+    // --------------------------------------------------
+    //
+    // Every title MUST have:
+    //      either big_image
+    //      OR youtube_link
+    //
+    // But NOT both.
+    //
+    // Example:
+    //
+    // title[0] -> big_image[0]
+    // title[1] -> youtube_link[1]
+    // title[2] -> big_image[2]
+    //
+    // --------------------------------------------------
+
+    if (bigImages.length > titles.length) {
       await transaction.rollback();
 
       return res.status(400).json({
         status: false,
-        message: "Number of big images must be equal to number of titles",
+        message: "Too many big images provided",
         titleCount: titles.length,
         bigImageCount: bigImages.length,
       });
     }
 
-    const checkcategory = await servicecategory.findByPk(service_category_id, {
-      transaction,
-    });
+    for (let i = 0; i < titles.length; i++) {
+      const hasBigImage = !!bigImages[i];
+      const hasYoutubeLink = !!normalizedYoutubeLinks[i];
+
+      // Neither image nor youtube
+      if (!hasBigImage && !hasYoutubeLink) {
+        await transaction.rollback();
+
+        return res.status(400).json({
+          status: false,
+          message: `Please provide either big image or youtube link for title at index ${i}`,
+          title: String(titles[i]).trim(),
+          index: i,
+        });
+      }
+
+      // Both image and youtube provided
+      if (hasBigImage && hasYoutubeLink) {
+        await transaction.rollback();
+
+        return res.status(400).json({
+          status: false,
+          message: `Provide either big image or youtube link, not both, for title at index ${i}`,
+          title: String(titles[i]).trim(),
+          index: i,
+        });
+      }
+    }
+
+    // --------------------------------------------------
+    // CHECK CATEGORY
+    // --------------------------------------------------
+
+    const checkcategory = await servicecategory.findByPk(
+      service_category_id,
+      {
+        transaction,
+      }
+    );
 
     if (!checkcategory) {
       await transaction.rollback();
@@ -165,6 +263,10 @@ const createServices = async (req, res) => {
         message: "Category not found",
       });
     }
+
+    // --------------------------------------------------
+    // CHECK SUB CATEGORY
+    // --------------------------------------------------
 
     const checkSubCategory = await serviceSubCategory.findOne({
       where: {
@@ -183,6 +285,10 @@ const createServices = async (req, res) => {
       });
     }
 
+    // --------------------------------------------------
+    // CREATE SERVICE DATA
+    // --------------------------------------------------
+
     const serviceData = titles.map((item, index) => {
       let serviceDescription = null;
 
@@ -192,6 +298,9 @@ const createServices = async (req, res) => {
         serviceDescription = descriptions[index];
       }
 
+      const hasBigImage = !!bigImages[index];
+      const hasYoutubeLink = !!normalizedYoutubeLinks[index];
+
       return {
         service_category_id,
         service_sub_category_id,
@@ -199,13 +308,20 @@ const createServices = async (req, res) => {
         title: String(item).trim().toUpperCase(),
 
         description:
-          serviceDescription !== undefined && serviceDescription !== null
+          serviceDescription !== undefined &&
+          serviceDescription !== null
             ? String(serviceDescription).trim()
             : null,
 
         small_image: smallImages[index].filename,
 
-        big_image: bigImages[index].filename,
+        big_image: hasBigImage
+          ? bigImages[index].filename
+          : null,
+
+        youtube_link: hasYoutubeLink
+          ? normalizedYoutubeLinks[index]
+          : null,
 
         status: String(serviceStatus),
       };
@@ -213,9 +329,17 @@ const createServices = async (req, res) => {
 
     console.log("SERVICE DATA:", serviceData);
 
+    // --------------------------------------------------
+    // BULK CREATE
+    // --------------------------------------------------
+
     const data = await services.bulkCreate(serviceData, {
       transaction,
     });
+
+    // --------------------------------------------------
+    // COMMIT
+    // --------------------------------------------------
 
     await transaction.commit();
 
@@ -228,6 +352,7 @@ const createServices = async (req, res) => {
       data,
     });
   } catch (error) {
+    // Don't rollback an already committed/rolled-back transaction
     if (transaction && !transaction.finished) {
       await transaction.rollback();
     }
@@ -245,7 +370,7 @@ const createServices = async (req, res) => {
 const getallServices = async (req, res) => {
   try {
     const data = await services.findAll({
-      attributes: ["id", "title", "small_image","big_image","description"],
+      attributes: ["id", "title", "small_image","big_image","description","youtube_link"],
       include: [
         {
           model: servicecategory,
@@ -282,7 +407,7 @@ const getSingleServices = async (req, res) => {
       where: {
         id,
       },
-      attributes: ["id", "title", "small_image","big_image","description"],
+      attributes: ["id", "title", "small_image","big_image","description","youtube_link"],
       include: [
         {
           model: servicecategory,
@@ -329,11 +454,13 @@ const updateServices = async (req, res) => {
       service_sub_category_id,
       title,
       description,
+      youtube_link,
       status,
     } = req.body;
 
-    // console.log("UPDATE SERVICE BODY:", req.body);
-    // console.log("UPDATE SERVICE FILES:", req.files);
+    // --------------------------------------------------
+    // FIND SERVICE
+    // --------------------------------------------------
 
     const service = await services.findByPk(id, {
       transaction,
@@ -353,6 +480,10 @@ const updateServices = async (req, res) => {
 
     const updateData = {};
 
+    // --------------------------------------------------
+    // CATEGORY
+    // --------------------------------------------------
+
     if (service_category_id !== undefined) {
       if (!service_category_id) {
         await transaction.rollback();
@@ -365,6 +496,10 @@ const updateServices = async (req, res) => {
 
       updateData.service_category_id = service_category_id;
     }
+
+    // --------------------------------------------------
+    // SUB CATEGORY
+    // --------------------------------------------------
 
     if (service_sub_category_id !== undefined) {
       if (!service_sub_category_id) {
@@ -379,6 +514,10 @@ const updateServices = async (req, res) => {
       updateData.service_sub_category_id = service_sub_category_id;
     }
 
+    // --------------------------------------------------
+    // TITLE
+    // --------------------------------------------------
+
     if (title !== undefined) {
       if (!String(title).trim()) {
         await transaction.rollback();
@@ -392,10 +531,32 @@ const updateServices = async (req, res) => {
       updateData.title = String(title).trim().toUpperCase();
     }
 
+    // --------------------------------------------------
+    // DESCRIPTION
+    // --------------------------------------------------
+
     if (description !== undefined) {
       updateData.description =
-        description !== null ? String(description).trim() : null;
+        description !== null
+          ? String(description).trim()
+          : null;
     }
+
+    // --------------------------------------------------
+    // YOUTUBE LINK
+    // --------------------------------------------------
+
+    if (youtube_link !== undefined) {
+      updateData.youtube_link =
+        youtube_link !== null &&
+        String(youtube_link).trim() !== ""
+          ? String(youtube_link).trim()
+          : null;
+    }
+
+    // --------------------------------------------------
+    // STATUS
+    // --------------------------------------------------
 
     if (status !== undefined) {
       if (!["0", "1", 0, 1].includes(status)) {
@@ -409,6 +570,10 @@ const updateServices = async (req, res) => {
 
       updateData.status = String(status);
     }
+
+    // --------------------------------------------------
+    // CATEGORY + SUB CATEGORY VALIDATION
+    // --------------------------------------------------
 
     const finalCategoryId =
       service_category_id !== undefined
@@ -424,9 +589,12 @@ const updateServices = async (req, res) => {
       service_category_id !== undefined ||
       service_sub_category_id !== undefined
     ) {
-      const checkcategory = await servicecategory.findByPk(finalCategoryId, {
-        transaction,
-      });
+      const checkcategory = await servicecategory.findByPk(
+        finalCategoryId,
+        {
+          transaction,
+        }
+      );
 
       if (!checkcategory) {
         await transaction.rollback();
@@ -455,17 +623,33 @@ const updateServices = async (req, res) => {
       }
     }
 
+    // --------------------------------------------------
+    // SMALL IMAGE
+    // --------------------------------------------------
+
     if (
-      req.files &&
-      req.files.small_image &&
+      req.files?.small_image &&
       req.files.small_image.length > 0
     ) {
-      updateData.small_image = req.files.small_image[0].filename;
+      updateData.small_image =
+        req.files.small_image[0].filename;
     }
 
-    if (req.files && req.files.big_image && req.files.big_image.length > 0) {
-      updateData.big_image = req.files.big_image[0].filename;
+    // --------------------------------------------------
+    // BIG IMAGE
+    // --------------------------------------------------
+
+    if (
+      req.files?.big_image &&
+      req.files.big_image.length > 0
+    ) {
+      updateData.big_image =
+        req.files.big_image[0].filename;
     }
+
+    // --------------------------------------------------
+    // CHECK UPDATE DATA
+    // --------------------------------------------------
 
     if (!Object.keys(updateData).length) {
       await transaction.rollback();
@@ -476,11 +660,23 @@ const updateServices = async (req, res) => {
       });
     }
 
+    // --------------------------------------------------
+    // UPDATE DATABASE
+    // --------------------------------------------------
+
     await service.update(updateData, {
       transaction,
     });
 
+    // --------------------------------------------------
+    // COMMIT
+    // --------------------------------------------------
+
     await transaction.commit();
+
+    // --------------------------------------------------
+    // DELETE OLD SMALL IMAGE
+    // --------------------------------------------------
 
     if (
       updateData.small_image &&
@@ -490,6 +686,10 @@ const updateServices = async (req, res) => {
       deleteImage(oldSmallImage);
     }
 
+    // --------------------------------------------------
+    // DELETE OLD BIG IMAGE
+    // --------------------------------------------------
+
     if (
       updateData.big_image &&
       oldBigImage &&
@@ -497,6 +697,10 @@ const updateServices = async (req, res) => {
     ) {
       deleteImage(oldBigImage);
     }
+
+    // --------------------------------------------------
+    // GET UPDATED SERVICE
+    // --------------------------------------------------
 
     const updatedService = await services.findByPk(id);
 

@@ -1,6 +1,8 @@
 const sequelize = require("../config/db");
 
 const clients = require("../model/clients.model");
+const path = require("path")
+const fs = require("fs")
 
 const addClients = async (req, res) => {
   try {
@@ -48,7 +50,6 @@ const addClients = async (req, res) => {
     });
   }
 };
-
 const getallclients = async (req, res) => {
   try {
     const alClients = await clients.findAll();
@@ -144,7 +145,8 @@ const updateClients = async (req, res) => {
       data,
     });
   } catch (error) {
-    await transaction.rollback();
+    if(!transaction.finished){
+    await transaction.rollback();}
 
     console.log("updateAwards Error:", error);
 
@@ -193,8 +195,9 @@ const deleteClients = async (req, res) => {
       message: "Clients deleted successfully",
     });
   } catch (error) {
-    await transaction.rollback();
-
+     if(!transaction.finished){
+    await transaction.rollback();}
+    
     console.log("deleteClients Error:", error);
 
     return res.status(400).json({

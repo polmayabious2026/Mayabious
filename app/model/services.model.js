@@ -30,7 +30,9 @@ const services = sequelize.define(
     },
     big_image: {
       type: DataTypes.STRING,
-      allowNull: false,
+    },
+    youtube_link:{
+     type: DataTypes.STRING,
     },
     status: {
       type: DataTypes.STRING,
