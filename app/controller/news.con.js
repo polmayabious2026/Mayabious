@@ -257,7 +257,8 @@ const updateNews = async (req, res) => {
       data,
     });
   } catch (error) {
-    await transaction.rollback();
+     if(!transaction.finished){
+    await transaction.rollback();}
 
     console.log("updateNews Error:", error);
 
@@ -308,8 +309,9 @@ const deleteNews = async (req, res) => {
       message: "News deleted successfully",
     });
   } catch (error) {
+    if(!transaction.finished){
     await transaction.rollback();
-
+  }
     console.log("deleteNews Error:", error);
 
     return res.status(400).json({

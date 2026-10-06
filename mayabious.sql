@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 05, 2026 at 05:29 PM
+-- Generation Time: Oct 06, 2026 at 05:53 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -91,7 +91,7 @@ CREATE TABLE `awards` (
 --
 
 INSERT INTO `awards` (`id`, `title`, `description`, `image`, `date`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'CREATIVE ANIMATED DESIGN', 'Mayabious Group earned a Bronze at the ET Awards for Design & Creativity for Ambuja Neotia Utpalla Walkthrough', '1790342479415-Screenshot 2026-09-25 153749.jpg', '20-09-2026', '1', '2026-09-25 13:21:19', '2026-09-25 13:31:33');
+(4, 'MOST CREATIVE ANIMATED DESIGN THREE', 'Mayabious Group earned a Bronze at the ET Awards for Design & Creativity for Ambuja Neotia Utpalla Walkthrough', '1791282422437-Screenshot 2026-09-25 153749.jpg', 'Aug 20,2026', '1', '2026-10-06 10:27:02', '2026-10-06 10:27:02');
 
 -- --------------------------------------------------------
 
@@ -209,10 +209,9 @@ CREATE TABLE `clients` (
 
 INSERT INTO `clients` (`id`, `name`, `logo`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'PS GROUP', '1790339679241-psgroup_images.png', '1', '2026-09-25 12:34:39', '2026-09-25 12:34:39'),
-(2, 'TATA STEEL .', '1790340514860-tata-steel-logo.png', '1', '2026-09-25 12:48:34', '2026-09-25 13:00:49'),
+(2, 'TATA STEEL .', '1791283333783-tata-steel-logo.png', '1', '2026-09-25 12:48:34', '2026-10-06 10:42:13'),
 (3, 'SHAPOORJI PALLONJI', '1791208927850-shapoorji 2026-10-05 191741.jpg', '1', '2026-10-05 14:02:07', '2026-10-05 14:02:07'),
-(4, 'LLOYAD', '1791208927853-LLOYDS 2026-10-05 192034.jpg', '1', '2026-10-05 14:02:07', '2026-10-05 14:02:07'),
-(5, 'DESIGN CELL', '1791208927854-DESIGN CELL-2026-10-05 192005.jpg', '1', '2026-10-05 14:02:07', '2026-10-05 14:02:07');
+(4, 'LLOYAD', '1791208927853-LLOYDS 2026-10-05 192034.jpg', '1', '2026-10-05 14:02:07', '2026-10-05 14:02:07');
 
 -- --------------------------------------------------------
 
@@ -332,9 +331,84 @@ CREATE TABLE `homevideo` (
 --
 
 INSERT INTO `homevideo` (`id`, `video`, `position`, `status`, `created_at`, `updated_at`) VALUES
-(2, '1790078761499-197483-905015011_medium.mp4', 2, '1', '2026-09-22 12:06:01', '2026-09-22 12:06:01'),
-(3, '1790078772496-197485-905015019_medium.mp4', 3, '1', '2026-09-22 12:06:12', '2026-09-22 12:06:12'),
-(4, '1790083402958-197485-905015019_medium.mp4', 4, '1', '2026-09-22 13:23:23', '2026-09-22 13:23:23');
+(1, '1791296251035-197485-905015019_medium.mp4', 1, '1', '2026-10-06 14:17:31', '2026-10-06 14:17:31'),
+(2, '1791296251070-197483-905015011_medium.mp4', 2, '1', '2026-10-06 14:17:31', '2026-10-06 14:17:31'),
+(3, '1791298951173-43551-436719118_medium.mp4', 2, '1', '2026-10-06 14:17:31', '2026-10-06 15:02:31'),
+(4, '1791296251133-197483-905015011_medium.mp4', 4, '1', '2026-10-06 14:17:31', '2026-10-06 14:17:31'),
+(5, '1791296251149-197485-905015019_medium.mp4', 5, '1', '2026-10-06 14:17:31', '2026-10-06 14:17:31'),
+(6, '1791296251179-197485-905015019_medium.mp4', 6, '1', '2026-10-06 14:17:31', '2026-10-06 14:17:31'),
+(7, '1791296251209-197485-905015019_medium.mp4', 7, '1', '2026-10-06 14:17:31', '2026-10-06 14:17:31'),
+(8, '1791296251235-197483-905015011_medium.mp4', 8, '1', '2026-10-06 14:17:31', '2026-10-06 14:17:31'),
+(9, '1791296251258-43551-436719118_medium.mp4', 9, '1', '2026-10-06 14:17:31', '2026-10-06 14:17:31'),
+(10, '1791296260687-197485-905015019_medium.mp4', 1, '1', '2026-10-06 14:17:40', '2026-10-06 14:17:40'),
+(11, '1791296260715-197483-905015011_medium.mp4', 2, '1', '2026-10-06 14:17:40', '2026-10-06 14:17:40'),
+(12, '1791296260736-43551-436719118_medium.mp4', 3, '1', '2026-10-06 14:17:40', '2026-10-06 14:17:40'),
+(13, '1791296260771-197483-905015011_medium.mp4', 4, '1', '2026-10-06 14:17:40', '2026-10-06 14:17:40'),
+(14, '1791296260795-197485-905015019_medium.mp4', 5, '1', '2026-10-06 14:17:40', '2026-10-06 14:17:40'),
+(15, '1791296260819-197485-905015019_medium.mp4', 6, '1', '2026-10-06 14:17:40', '2026-10-06 14:17:40'),
+(16, '1791296260850-197485-905015019_medium.mp4', 7, '1', '2026-10-06 14:17:40', '2026-10-06 14:17:40'),
+(17, '1791296260875-197483-905015011_medium.mp4', 8, '1', '2026-10-06 14:17:40', '2026-10-06 14:17:40'),
+(18, '1791296260894-43551-436719118_medium.mp4', 9, '1', '2026-10-06 14:17:40', '2026-10-06 14:17:40');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `homevideoset`
+--
+
+CREATE TABLE `homevideoset` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `homevideoset`
+--
+
+INSERT INTO `homevideoset` (`id`, `name`, `created_at`, `updated_at`) VALUES
+(1, 'set test 1', '2026-10-06 14:17:22', '2026-10-06 14:17:22'),
+(2, 'set test 2', '2026-10-06 14:17:22', '2026-10-06 14:17:22'),
+(3, 'set test 3', '2026-10-06 14:17:22', '2026-10-06 14:17:22');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `homevideo_nhomevideoset`
+--
+
+CREATE TABLE `homevideo_nhomevideoset` (
+  `id` int(11) NOT NULL,
+  `homevideo_id` int(11) DEFAULT NULL,
+  `homevideoset_id` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `homevideo_nhomevideoset`
+--
+
+INSERT INTO `homevideo_nhomevideoset` (`id`, `homevideo_id`, `homevideoset_id`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, '2026-10-06 14:17:31', '2026-10-06 14:17:31'),
+(2, 2, 1, '2026-10-06 14:17:31', '2026-10-06 14:17:31'),
+(3, 3, 1, '2026-10-06 14:17:31', '2026-10-06 14:17:31'),
+(4, 4, 1, '2026-10-06 14:17:31', '2026-10-06 14:17:31'),
+(5, 5, 1, '2026-10-06 14:17:31', '2026-10-06 14:17:31'),
+(6, 6, 1, '2026-10-06 14:17:31', '2026-10-06 14:17:31'),
+(7, 7, 1, '2026-10-06 14:17:31', '2026-10-06 14:17:31'),
+(8, 8, 1, '2026-10-06 14:17:31', '2026-10-06 14:17:31'),
+(9, 9, 1, '2026-10-06 14:17:31', '2026-10-06 14:17:31'),
+(10, 10, 2, '2026-10-06 14:17:40', '2026-10-06 14:17:40'),
+(11, 11, 2, '2026-10-06 14:17:40', '2026-10-06 14:17:40'),
+(12, 12, 2, '2026-10-06 14:17:40', '2026-10-06 14:17:40'),
+(13, 13, 2, '2026-10-06 14:17:40', '2026-10-06 14:17:40'),
+(14, 14, 2, '2026-10-06 14:17:40', '2026-10-06 14:17:40'),
+(15, 15, 2, '2026-10-06 14:17:40', '2026-10-06 14:17:40'),
+(16, 16, 2, '2026-10-06 14:17:40', '2026-10-06 14:17:40'),
+(17, 17, 2, '2026-10-06 14:17:40', '2026-10-06 14:17:40'),
+(18, 18, 2, '2026-10-06 14:17:40', '2026-10-06 14:17:40');
 
 -- --------------------------------------------------------
 
@@ -493,7 +567,8 @@ CREATE TABLE `services` (
   `title` varchar(255) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
   `small_image` varchar(255) NOT NULL,
-  `big_image` varchar(255) NOT NULL,
+  `big_image` varchar(255) DEFAULT NULL,
+  `youtube_link` varchar(255) DEFAULT NULL,
   `status` varchar(255) DEFAULT '1' COMMENT '1 = active, 0 = inactive',
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
@@ -503,9 +578,10 @@ CREATE TABLE `services` (
 -- Dumping data for table `services`
 --
 
-INSERT INTO `services` (`id`, `service_category_id`, `service_sub_category_id`, `title`, `description`, `small_image`, `big_image`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, 2, '3D ELEVATION DESIGN', 'This is description of 3D elevation design', '1790935075936-service_small_image.jpg', '1790935075940-service_big_image.jpg', '1', '2026-10-02 09:57:55', '2026-10-02 09:57:55'),
-(2, 1, 2, 'AERIAL VIEW 2D', 'This is description of aerial view', '1790935075944-service_small_image-2.jpg', '1790935508005-kb-mart.webp', '1', '2026-10-02 09:57:55', '2026-10-02 10:05:08');
+INSERT INTO `services` (`id`, `service_category_id`, `service_sub_category_id`, `title`, `description`, `small_image`, `big_image`, `youtube_link`, `status`, `created_at`, `updated_at`) VALUES
+(1, 1, 2, '3D ELEVATION DESIGN', 'This is description of 3D elevation design', '1791284862724-service_small_image.jpg', '1791284862728-service_big_image.jpg', NULL, '1', '2026-10-06 11:07:42', '2026-10-06 11:07:42'),
+(2, 1, 2, 'AERIAL VIEW 2D', 'This is description of aerial view', '1791284862732-service_small_image-2.jpg', '1791285576014-Raymond_026-10-05 165831.jpg', 'youtube.com', '1', '2026-10-06 11:07:42', '2026-10-06 11:19:36'),
+(3, 1, 2, '3D ELEVATION DESIGN', 'This is description of 3D elevation design', '1791284933189-service_small_image.jpg', NULL, 'youtube.com', '1', '2026-10-06 11:08:53', '2026-10-06 11:08:53');
 
 -- --------------------------------------------------------
 
@@ -676,6 +752,20 @@ ALTER TABLE `homevideo`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `homevideoset`
+--
+ALTER TABLE `homevideoset`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `homevideo_nhomevideoset`
+--
+ALTER TABLE `homevideo_nhomevideoset`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `homevideo_nhomevideoSet_homevideo_id_homevideoset_id_unique` (`homevideo_id`,`homevideoset_id`),
+  ADD KEY `homevideoset_id` (`homevideoset_id`);
+
+--
 -- Indexes for table `jobtype`
 --
 ALTER TABLE `jobtype`
@@ -765,7 +855,7 @@ ALTER TABLE `applycandidate`
 -- AUTO_INCREMENT for table `awards`
 --
 ALTER TABLE `awards`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `blog`
@@ -825,7 +915,19 @@ ALTER TABLE `homeimagegallery`
 -- AUTO_INCREMENT for table `homevideo`
 --
 ALTER TABLE `homevideo`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT for table `homevideoset`
+--
+ALTER TABLE `homevideoset`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `homevideo_nhomevideoset`
+--
+ALTER TABLE `homevideo_nhomevideoset`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `jobtype`
@@ -867,7 +969,7 @@ ALTER TABLE `servicecategory`
 -- AUTO_INCREMENT for table `services`
 --
 ALTER TABLE `services`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `servicesubcategory`
@@ -917,6 +1019,13 @@ ALTER TABLE `designation`
 ALTER TABLE `homeimagegallery`
   ADD CONSTRAINT `homeimagegallery_ibfk_1` FOREIGN KEY (`service_category_id`) REFERENCES `servicecategory` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `homeimagegallery_ibfk_2` FOREIGN KEY (`service_sub_category_id`) REFERENCES `servicesubcategory` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `homevideo_nhomevideoset`
+--
+ALTER TABLE `homevideo_nhomevideoset`
+  ADD CONSTRAINT `homevideo_nhomevideoset_ibfk_1` FOREIGN KEY (`homevideo_id`) REFERENCES `homevideo` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `homevideo_nhomevideoset_ibfk_2` FOREIGN KEY (`homevideoset_id`) REFERENCES `homevideoset` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `jobvacancy`
