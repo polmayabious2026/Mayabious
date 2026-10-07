@@ -20,7 +20,6 @@ const deleteImage = (filename) => {
 
 const createServices = async (req, res) => {
   const transaction = await sequelize.transaction();
-
   try {
     const {
       service_category_id,
@@ -30,10 +29,6 @@ const createServices = async (req, res) => {
       youtube_link,
       status,
     } = req.body;
-
-    // --------------------------------------------------
-    // BASIC VALIDATION
-    // --------------------------------------------------
 
     if (!service_category_id) {
       await transaction.rollback();
@@ -53,10 +48,6 @@ const createServices = async (req, res) => {
       });
     }
 
-    // --------------------------------------------------
-    // NORMALIZE TITLE
-    // --------------------------------------------------
-
     let titles = title;
 
     if (!Array.isArray(titles)) {
@@ -72,7 +63,6 @@ const createServices = async (req, res) => {
       });
     }
 
-    // Validate every title
     for (let i = 0; i < titles.length; i++) {
       if (!titles[i] || !String(titles[i]).trim()) {
         await transaction.rollback();
@@ -83,10 +73,6 @@ const createServices = async (req, res) => {
         });
       }
     }
-
-    // --------------------------------------------------
-    // NORMALIZE DESCRIPTION
-    // --------------------------------------------------
 
     let descriptions = description;
 
@@ -113,59 +99,9 @@ const createServices = async (req, res) => {
       });
     }
 
-    // --------------------------------------------------
-    // NORMALIZE YOUTUBE LINKS
-    // --------------------------------------------------
-
-    let youtubeLinks = youtube_link;
-
-    if (!Array.isArray(youtubeLinks)) {
-      youtubeLinks =
-        youtubeLinks !== undefined &&
-        youtubeLinks !== null &&
-        String(youtubeLinks).trim() !== ""
-          ? [youtubeLinks]
-          : [];
-    }
-
-    // Make sure array has same number of positions as titles.
-    // Missing positions become null.
-    const normalizedYoutubeLinks = Array.from(
-      { length: titles.length },
-      (_, index) => {
-        const link = youtubeLinks[index];
-
-        if (link === undefined || link === null || !String(link).trim()) {
-          return null;
-        }
-
-        return String(link).trim();
-      }
-    );
-
-    // --------------------------------------------------
-    // STATUS
-    // --------------------------------------------------
-
-    const serviceStatus = status ?? "1";
-
-    if (!["0", "1", 0, 1].includes(serviceStatus)) {
-      await transaction.rollback();
-
-      return res.status(400).json({
-        status: false,
-        message: "Status must be 0 or 1",
-      });
-    }
-
-    // --------------------------------------------------
-    // FILE VALIDATION
-    // --------------------------------------------------
-
     const smallImages = req.files?.small_image || [];
     const bigImages = req.files?.big_image || [];
 
-    // Small image is required for every title
     if (!smallImages.length) {
       await transaction.rollback();
 
@@ -186,24 +122,6 @@ const createServices = async (req, res) => {
       });
     }
 
-    // --------------------------------------------------
-    // BIG IMAGE / YOUTUBE VALIDATION
-    // --------------------------------------------------
-    //
-    // Every title MUST have:
-    //      either big_image
-    //      OR youtube_link
-    //
-    // But NOT both.
-    //
-    // Example:
-    //
-    // title[0] -> big_image[0]
-    // title[1] -> youtube_link[1]
-    // title[2] -> big_image[2]
-    //
-    // --------------------------------------------------
-
     if (bigImages.length > titles.length) {
       await transaction.rollback();
 
@@ -215,11 +133,89 @@ const createServices = async (req, res) => {
       });
     }
 
+    const normalizedYoutubeLinks = Array(titles.length).fill(null);
+
+    let hasIndexedYoutube = false;
+
+    Object.keys(req.body).forEach((key) => {
+      const match = key.match(/^youtube_link\[(\d+)\]$/);
+
+      if (match) {
+        hasIndexedYoutube = true;
+
+        const index = Number(match[1]);
+
+        if (index >= 0 && index < titles.length) {
+          const value = req.body[key];
+
+          if (
+            value !== undefined &&
+            value !== null &&
+            String(value).trim() !== ""
+          ) {
+            normalizedYoutubeLinks[index] = String(value).trim();
+          }
+        }
+      }
+    });
+
+    if (Array.isArray(youtube_link)) {
+      youtube_link.forEach((link, index) => {
+        if (
+          index < titles.length &&
+          link !== undefined &&
+          link !== null &&
+          String(link).trim() !== ""
+        ) {
+          normalizedYoutubeLinks[index] = String(link).trim();
+        }
+      });
+    }
+
+    if (
+      !hasIndexedYoutube &&
+      !Array.isArray(youtube_link) &&
+      youtube_link !== undefined &&
+      youtube_link !== null &&
+      String(youtube_link).trim() !== ""
+    ) {
+      const youtubeValue = String(youtube_link).trim();
+
+      let assigned = false;
+
+      for (let i = 0; i < titles.length; i++) {
+        const hasBigImage = !!bigImages[i];
+
+        if (!hasBigImage && !normalizedYoutubeLinks[i]) {
+          normalizedYoutubeLinks[i] = youtubeValue;
+          assigned = true;
+          break;
+        }
+      }
+
+      // If every service already has a big image,
+      // assign it to index 0 as fallback.
+      if (!assigned) {
+        normalizedYoutubeLinks[0] = youtubeValue;
+      }
+    }
+
+    const serviceStatus = status ?? "1";
+
+    if (!["0", "1", 0, 1].includes(serviceStatus)) {
+      await transaction.rollback();
+
+      return res.status(400).json({
+        status: false,
+        message: "Status must be 0 or 1",
+      });
+    }
+
     for (let i = 0; i < titles.length; i++) {
       const hasBigImage = !!bigImages[i];
       const hasYoutubeLink = !!normalizedYoutubeLinks[i];
 
-      // Neither image nor youtube
+      // Neither provided
       if (!hasBigImage && !hasYoutubeLink) {
         await transaction.rollback();
 
@@ -230,30 +226,11 @@ const createServices = async (req, res) => {
           index: i,
         });
       }
-
-      // Both image and youtube provided
-      if (hasBigImage && hasYoutubeLink) {
-        await transaction.rollback();
-
-        return res.status(400).json({
-          status: false,
-          message: `Provide either big image or youtube link, not both, for title at index ${i}`,
-          title: String(titles[i]).trim(),
-          index: i,
-        });
-      }
     }
 
-    // --------------------------------------------------
-    // CHECK CATEGORY
-    // --------------------------------------------------
-
-    const checkcategory = await servicecategory.findByPk(
-      service_category_id,
-      {
-        transaction,
-      }
-    );
+    const checkcategory = await servicecategory.findByPk(service_category_id, {
+      transaction,
+    });
 
     if (!checkcategory) {
       await transaction.rollback();
@@ -264,14 +241,10 @@ const createServices = async (req, res) => {
       });
     }
 
-    // --------------------------------------------------
-    // CHECK SUB CATEGORY
-    // --------------------------------------------------
-
     const checkSubCategory = await serviceSubCategory.findOne({
       where: {
         id: service_sub_category_id,
-        service_category_id: service_category_id,
+        service_category_id,
       },
       transaction,
     });
@@ -284,10 +257,6 @@ const createServices = async (req, res) => {
         message: "Sub_category is not present in this category",
       });
     }
-
-    // --------------------------------------------------
-    // CREATE SERVICE DATA
-    // --------------------------------------------------
 
     const serviceData = titles.map((item, index) => {
       let serviceDescription = null;
@@ -308,51 +277,64 @@ const createServices = async (req, res) => {
         title: String(item).trim().toUpperCase(),
 
         description:
-          serviceDescription !== undefined &&
-          serviceDescription !== null
+          serviceDescription !== undefined && serviceDescription !== null
             ? String(serviceDescription).trim()
             : null,
 
-        small_image: smallImages[index].filename,
+        small_image: smallImages[index] ? smallImages[index].filename : null,
 
-        big_image: hasBigImage
-          ? bigImages[index].filename
-          : null,
+        big_image: hasBigImage ? bigImages[index].filename : null,
 
-        youtube_link: hasYoutubeLink
-          ? normalizedYoutubeLinks[index]
-          : null,
+        youtube_link: hasYoutubeLink ? normalizedYoutubeLinks[index] : null,
 
         status: String(serviceStatus),
       };
     });
 
-    console.log("SERVICE DATA:", serviceData);
+    // console.log("========================================");
+    // console.log("REQ.BODY:", req.body);
 
-    // --------------------------------------------------
-    // BULK CREATE
-    // --------------------------------------------------
+    // console.log("TITLES:", titles);
+
+    // console.log(
+    //   "YOUTUBE LINKS:",
+    //   normalizedYoutubeLinks
+    // );
+
+    // console.log(
+    //   "SMALL IMAGES:",
+    //   smallImages.map((file) => file.filename)
+    // );
+
+    // console.log(
+    //   "BIG IMAGES:",
+    //   bigImages.map((file) => file.filename)
+    // );
+
+    // console.log(
+    //   "SERVICE DATA:",
+    //   serviceData
+    // );
+
+    // console.log("========================================");
 
     const data = await services.bulkCreate(serviceData, {
       transaction,
     });
 
-    // --------------------------------------------------
-    // COMMIT
-    // --------------------------------------------------
-
     await transaction.commit();
 
     return res.status(201).json({
       status: true,
+
       message:
         data.length === 1
           ? "Service created successfully"
           : "Services created successfully",
+
       data,
     });
   } catch (error) {
-    // Don't rollback an already committed/rolled-back transaction
     if (transaction && !transaction.finished) {
       await transaction.rollback();
     }
@@ -383,7 +365,7 @@ const getallServices = async (req, res) => {
           attributes: ["id", "name"],
         },
       ],
-      order: [["id", "DESC"]],
+      // order: [["id", "DESC"]],
     });
 
     return res.status(200).json({
@@ -443,6 +425,8 @@ const getSingleServices = async (req, res) => {
     });
   }
 };
+
+
 const updateServices = async (req, res) => {
   const transaction = await sequelize.transaction();
 
@@ -474,6 +458,10 @@ const updateServices = async (req, res) => {
         message: "Service not found",
       });
     }
+
+    // --------------------------------------------------
+    // OLD IMAGES
+    // --------------------------------------------------
 
     const oldSmallImage = service.small_image;
     const oldBigImage = service.big_image;
@@ -547,11 +535,22 @@ const updateServices = async (req, res) => {
     // --------------------------------------------------
 
     if (youtube_link !== undefined) {
-      updateData.youtube_link =
+      const cleanYoutubeLink =
         youtube_link !== null &&
         String(youtube_link).trim() !== ""
           ? String(youtube_link).trim()
           : null;
+
+      updateData.youtube_link = cleanYoutubeLink;
+
+      // --------------------------------------------------
+      // IF YOUTUBE LINK IS PROVIDED
+      // REMOVE BIG IMAGE FROM DATABASE
+      // --------------------------------------------------
+
+      if (cleanYoutubeLink) {
+        updateData.big_image = null;
+      }
     }
 
     // --------------------------------------------------
@@ -589,6 +588,10 @@ const updateServices = async (req, res) => {
       service_category_id !== undefined ||
       service_sub_category_id !== undefined
     ) {
+      // --------------------------------------------------
+      // CHECK CATEGORY
+      // --------------------------------------------------
+
       const checkcategory = await servicecategory.findByPk(
         finalCategoryId,
         {
@@ -605,13 +608,18 @@ const updateServices = async (req, res) => {
         });
       }
 
-      const checkSubCategory = await serviceSubCategory.findOne({
-        where: {
-          id: finalSubCategoryId,
-          service_category_id: finalCategoryId,
-        },
-        transaction,
-      });
+      // --------------------------------------------------
+      // CHECK SUB CATEGORY
+      // --------------------------------------------------
+
+      const checkSubCategory =
+        await serviceSubCategory.findOne({
+          where: {
+            id: finalSubCategoryId,
+            service_category_id: finalCategoryId,
+          },
+          transaction,
+        });
 
       if (!checkSubCategory) {
         await transaction.rollback();
@@ -643,8 +651,17 @@ const updateServices = async (req, res) => {
       req.files?.big_image &&
       req.files.big_image.length > 0
     ) {
-      updateData.big_image =
+      const newBigImage =
         req.files.big_image[0].filename;
+
+      updateData.big_image = newBigImage;
+
+      // --------------------------------------------------
+      // IF BIG IMAGE IS PROVIDED
+      // REMOVE YOUTUBE LINK FROM DATABASE
+      // --------------------------------------------------
+
+      updateData.youtube_link = null;
     }
 
     // --------------------------------------------------
@@ -690,9 +707,16 @@ const updateServices = async (req, res) => {
     // DELETE OLD BIG IMAGE
     // --------------------------------------------------
 
+    /*
+      This handles both cases:
+
+      1. Old image replaced with new image
+      2. Old image removed because YouTube URL was added
+    */
+
     if (
-      updateData.big_image &&
       oldBigImage &&
+      updateData.big_image !== undefined &&
       oldBigImage !== updateData.big_image
     ) {
       deleteImage(oldBigImage);
@@ -704,12 +728,20 @@ const updateServices = async (req, res) => {
 
     const updatedService = await services.findByPk(id);
 
+    // --------------------------------------------------
+    // RESPONSE
+    // --------------------------------------------------
+
     return res.status(200).json({
       status: true,
       message: "Service updated successfully",
       data: updatedService,
     });
   } catch (error) {
+    // --------------------------------------------------
+    // ROLLBACK ON ERROR
+    // --------------------------------------------------
+
     if (transaction && !transaction.finished) {
       await transaction.rollback();
     }
@@ -723,6 +755,7 @@ const updateServices = async (req, res) => {
     });
   }
 };
+
 const deleteServices = async (req, res) => {
   try {
     const { id } = req.params;

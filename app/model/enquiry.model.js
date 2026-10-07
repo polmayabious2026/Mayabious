@@ -1,8 +1,8 @@
 const sequelize = require("../config/db");
 const { DataTypes } = require("sequelize");
 
-const servicecategory = sequelize.define(
-  "servicecategory",
+const enquiryModel = sequelize.define(
+  "enquiry",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -13,18 +13,17 @@ const servicecategory = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    description: {
+    email: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    icon:{
+    phone: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    status: {
+    message: {
       type: DataTypes.STRING,
-      comment: "1 = active, 0 = inactive",
-      defaultValue: "1",
+    //   allowNull: false,
     },
     created_at: {
       type: DataTypes.DATE,
@@ -34,11 +33,10 @@ const servicecategory = sequelize.define(
     },
   },
   {
-    tableName: "servicecategory",
+    tableName: "enquiry",
     timestamps: true,
     createdAt: "created_at",
     updatedAt: "updated_at",
   },
 );
-
-module.exports = servicecategory;
+module.exports = enquiryModel;

@@ -9,7 +9,7 @@ const servicecategory = require("../model/service.categoty.model")
 // service_subcategory
 const serviceSubCategory = require("../model/service.subcategory.model")
 // home_iamge_gallery
-const homeImageGallery = require("../model/home.image.galary.model")
+const {homeImageGallery,homeGalleryBigImg } = require("../model/home.image.galary.model")
 // services
 const services = require("../model/services.model")
 // awards
@@ -37,7 +37,8 @@ const {
   jobvacancyjobtype,
   applycandidate,
 } = require("../model/career.model");
-
+// enquiry
+const enquiry = require("../model/enquiry.model")
 
 
 // category-subcategory
@@ -207,6 +208,16 @@ homeVideo.belongsToMany(homeVideoSet, {
   foreignKey: "homevideo_id",
   otherKey: "homevideoset_id",
   as: "homevideosets",
+});
+// homeImageGallery-homeGalleryBigImg
+homeImageGallery.hasMany(homeGalleryBigImg, {
+  foreignKey: "homeimagegallery_id",
+  as: "big_images",
+});
+
+homeGalleryBigImg.belongsTo(homeImageGallery, {
+  foreignKey: "homeimagegallery_id",
+  as: "gallery",
 });
 
 

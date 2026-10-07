@@ -29,6 +29,8 @@ router.use("/admin",require("../router/blog.router"))
 router.use("/admin",require("../router/career.router"))
 // contact
 router.use("/admin",require("../router/contact.router"))
+// enquiry
+router.use("/admin",require("../router/enquiry.router"))
 
 
 

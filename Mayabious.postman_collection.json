@@ -482,6 +482,16 @@
             {
               "name": "GET SINGLE HOME IMAGE GALLERY",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{json_web_token_124l}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
@@ -3484,6 +3494,57 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "CREATE ENQUIRY",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\":\"Arnab Das\",\r\n    \"email\":\"arnab123@gmail.com\",\r\n    \"phone\":\"7908538916\",\r\n    \"message\":\"I am interested for the 3D design\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:4001/api/admin/create-enquiry",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "create-enquiry"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CRAETE APPLY CANDIDATE",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4001/api/admin/apply-candidate",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "4001",
+              "path": [
+                "api",
+                "admin",
+                "apply-candidate"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -3523,6 +3584,18 @@
     },
     {
       "key": "json_web_token_0hj7",
+      "secret": true
+    },
+    {
+      "key": "json_web_token_0qig",
+      "secret": true
+    },
+    {
+      "key": "json_web_token_073e",
+      "secret": true
+    },
+    {
+      "key": "json_web_token_124l",
       "secret": true
     }
   ]

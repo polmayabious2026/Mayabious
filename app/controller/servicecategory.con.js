@@ -1,6 +1,8 @@
 const servicecategory = require("../model/service.categoty.model");
 const serviceSubCategory = require("../model/service.subcategory.model")
 
+const sequelize = require("../config/db")
+
 const addServiceCategory = async (req, res) => {
   try {
     console.log("BODY:",req.body)
@@ -19,11 +21,18 @@ const addServiceCategory = async (req, res) => {
         message: "Please provide description",
       });
     }
+      if (!req.file) {
+      return res.status(400).json({
+        status: false,
+        message: "Please provide icon",
+      });
+    }
     const upperChaseName = name.toUpperCase()
 
     const data = await servicecategory.create({
       name:upperChaseName,
       description:description,
+      icon:req.file.filename,
       status: status || "1",
     });
 
@@ -46,7 +55,7 @@ const addServiceCategory = async (req, res) => {
 const getServiceCategories = async (req, res) => {
   try {
     const data = await servicecategory.findAll({
-      attributes:["id","name","description"],
+      attributes:["id","name","description","icon"],
       include:{
         model:serviceSubCategory,
         as:"subcategory",
@@ -112,7 +121,6 @@ const updateServiceCategory = async (req, res) => {
   try {
     const { id } = req.params;
     const { name, description, status } = req.body;
-
     const data = await servicecategory.findByPk(id);
 
     if (!data) {
@@ -121,12 +129,56 @@ const updateServiceCategory = async (req, res) => {
         message: "Service category not found",
       });
     }
-    const upperChaseName = name !== undefined ? name.toUpperCase() : data.name;
-    await data.update({
-      name: upperChaseName !== undefined ? upperChaseName : data.name,
-      description: description !== undefined ? description : data.description,
-      status: status !== undefined ? status : data.status,
-    });
+
+    if (name !== undefined && !String(name).trim()) {
+      return res.status(400).json({
+        status: false,
+        message: "Name cannot be empty",
+      });
+    }
+
+    if (description !== undefined && !String(description).trim()) {
+      return res.status(400).json({
+        status: false,
+        message: "Description cannot be empty",
+      });
+    }
+
+    if (
+      status !== undefined &&
+      !["0", "1", 0, 1].includes(status)
+    ) {
+      return res.status(400).json({
+        status: false,
+        message: "Status must be either 0 or 1",
+      });
+    }
+
+
+    const updateData = {
+      name:
+        name !== undefined
+          ? String(name).trim().toUpperCase()
+          : data.name,
+
+      description:
+        description !== undefined
+          ? String(description).trim()
+          : data.description,
+
+      status:
+        status !== undefined
+          ? String(status)
+          : data.status,
+    };
+
+
+    if (req.file) {
+      updateData.icon = req.file.filename;
+    }
+
+    await data.update(updateData);
+
 
     return res.status(200).json({
       status: true,
@@ -136,7 +188,7 @@ const updateServiceCategory = async (req, res) => {
   } catch (error) {
     console.log("updateServiceCategory Error:", error);
 
-    return res.status(400).json({
+    return res.status(500).json({
       status: false,
       message: "Something went wrong",
       error: error.message,
@@ -145,28 +197,41 @@ const updateServiceCategory = async (req, res) => {
 };
 
 const deleteServiceCategory = async (req, res) => {
+  const transaction = await sequelize.transaction();
+
   try {
     const { id } = req.params;
-
-    const data = await servicecategory.findByPk(id);
+    const data = await servicecategory.findByPk(id, {
+      transaction,
+    });
 
     if (!data) {
+      await transaction.rollback();
+
       return res.status(404).json({
         status: false,
         message: "Service category not found",
       });
     }
+    await data.destroy({
+      transaction,
+    });
 
-    await data.destroy();
+    await transaction.commit();
 
     return res.status(200).json({
       status: true,
       message: "Service category deleted successfully",
     });
   } catch (error) {
+
+    if (transaction && !transaction.finished) {
+      await transaction.rollback();
+    }
+
     console.log("deleteServiceCategory Error:", error);
 
-    return res.status(400).json({
+    return res.status(500).json({
       status: false,
       message: "Something went wrong",
       error: error.message,

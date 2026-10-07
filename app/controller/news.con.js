@@ -76,7 +76,25 @@ const addNews = async (req, res) => {
 
 const getAllNews = async (req, res) => {
   try {
-    const allNews = await news.findAll();
+    const { type } = req.query;
+
+    if (type !== undefined && !["0", "1"].includes(String(type))) {
+      return res.status(400).json({
+        status: false,
+        message: "Type must be 0 (Print Media) or 1 (Digital Media)",
+      });
+    }
+
+    const whereCondition = {};
+
+    if (type !== undefined) {
+      whereCondition.type = String(type);
+    }
+
+    const allNews = await news.findAll({
+      where: whereCondition,
+      // order: [["id", "DESC"]],
+    });
 
     return res.status(200).json({
       status: true,
@@ -86,7 +104,7 @@ const getAllNews = async (req, res) => {
   } catch (error) {
     console.log("getAllNews Error:", error);
 
-    return res.status(400).json({
+    return res.status(500).json({
       status: false,
       message: "Something went wrong",
       error: error.message,
