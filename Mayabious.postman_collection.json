@@ -1454,7 +1454,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:4001/api/admin/all_news",
+              "raw": "http://localhost:4001/api/admin/all_news?type=0",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -1464,6 +1464,12 @@
                 "api",
                 "admin",
                 "all_news"
+              ],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "0"
+                }
               ]
             }
           },
@@ -3345,6 +3351,28 @@
                 }
               },
               "response": []
+            },
+            {
+              "name": "GET SINGLE HOME IMAGE GALLERY",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4001/api/admin/getsingle-home-image-gallery/2",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4001",
+                  "path": [
+                    "api",
+                    "admin",
+                    "getsingle-home-image-gallery",
+                    "2"
+                  ]
+                }
+              },
+              "response": []
             }
           ]
         },
@@ -3438,7 +3466,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:4001/api/admin/all_news",
+              "raw": "http://localhost:4001/api/admin/all_news?type=1",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -3448,6 +3476,12 @@
                 "api",
                 "admin",
                 "all_news"
+              ],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "1"
+                }
               ]
             }
           },

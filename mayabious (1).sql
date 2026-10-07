@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 06, 2026 at 05:53 PM
+-- Generation Time: Oct 07, 2026 at 05:31 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -67,7 +67,8 @@ CREATE TABLE `applycandidate` (
 
 INSERT INTO `applycandidate` (`id`, `department_id`, `designation_id`, `user_name`, `phone`, `email`, `resume`, `created_at`, `updated_at`) VALUES
 (1, 3, 1, 'Pol Sarkar', '9876543210', 'johnpol@gmail.com', '1790610265062-discussion_1781698237507.pdf', '2026-09-28 15:44:25', '2026-09-28 15:44:25'),
-(2, 3, 1, 'Pol Sarkar', '9876543210', 'johnpol@gmail.com', '1790610270133-discussion_1781698237507.pdf', '2026-09-28 15:44:30', '2026-09-28 15:44:30');
+(2, 3, 1, 'Pol Sarkar', '9876543210', 'johnpol@gmail.com', '1790610270133-discussion_1781698237507.pdf', '2026-09-28 15:44:30', '2026-09-28 15:44:30'),
+(3, 3, 1, 'Pol sarkar', '7908538916', 'sarkar123@gmail.com', '1791376666191-DocScanner 24-Aug-2026 9-16 am.pdf', '2026-10-07 12:37:46', '2026-10-07 12:37:46');
 
 -- --------------------------------------------------------
 
@@ -289,6 +290,56 @@ INSERT INTO `designation` (`id`, `department_id`, `name`, `status`, `created_at`
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `enquiry`
+--
+
+CREATE TABLE `enquiry` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `phone` varchar(255) NOT NULL,
+  `message` varchar(255) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `enquiry`
+--
+
+INSERT INTO `enquiry` (`id`, `name`, `email`, `phone`, `message`, `created_at`, `updated_at`) VALUES
+(1, 'Arnab Das', 'arnab123@gmail.com', '7908538916', 'I am interested for the 3D design', '2026-10-07 12:28:56', '2026-10-07 12:28:56');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `homegallerybigimg`
+--
+
+CREATE TABLE `homegallerybigimg` (
+  `id` int(11) NOT NULL,
+  `homeimagegallery_id` int(11) NOT NULL,
+  `big_image` varchar(255) NOT NULL,
+  `status` varchar(255) DEFAULT '1' COMMENT '1 = active, 0 = inactive',
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `homegallerybigimg`
+--
+
+INSERT INTO `homegallerybigimg` (`id`, `homeimagegallery_id`, `big_image`, `status`, `created_at`, `updated_at`) VALUES
+(1, 1, '1791371063411-home-gal-big-img-one07 161459.jpg', '1', '2026-10-07 11:04:23', '2026-10-07 11:04:23'),
+(2, 1, '1791371063414-home-gal-big-img-2-Screenshot 2026-10-07 161535.jpg', '1', '2026-10-07 11:04:23', '2026-10-07 11:04:23'),
+(3, 1, '1791371063415-home-gal-big-img-2-Screenshot 2026-10-07 161535.jpg', '1', '2026-10-07 11:04:23', '2026-10-07 11:04:23'),
+(4, 2, '1791372579794-home-gal-big-img-one07 161459.jpg', '1', '2026-10-07 11:29:39', '2026-10-07 11:29:39'),
+(5, 2, '1791372579799-home-gal-big-img-2-Screenshot 2026-10-07 161535.jpg', '1', '2026-10-07 11:29:39', '2026-10-07 11:29:39'),
+(6, 2, '1791372579800-home-gal-big-img-2-Screenshot 2026-10-07 161535.jpg', '1', '2026-10-07 11:29:39', '2026-10-07 11:29:39');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `homeimagegallery`
 --
 
@@ -297,7 +348,9 @@ CREATE TABLE `homeimagegallery` (
   `service_category_id` int(11) NOT NULL,
   `service_sub_category_id` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
-  `image` varchar(255) NOT NULL,
+  `small_image` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `stack` varchar(255) NOT NULL,
   `status` varchar(255) DEFAULT '1' COMMENT '1 = active, 0 = inactive',
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
@@ -307,9 +360,9 @@ CREATE TABLE `homeimagegallery` (
 -- Dumping data for table `homeimagegallery`
 --
 
-INSERT INTO `homeimagegallery` (`id`, `service_category_id`, `service_sub_category_id`, `title`, `image`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, 2, 'INNOVATIVE VIRTUAL SHOWCASING', '1790693160053-Events.webp', '1', '2026-09-29 14:46:00', '2026-09-29 14:46:00'),
-(2, 1, 1, 'ADVANCED PRODUCT ENGAGEMENT UP', '1790693550374-image_gallery_Screenshot 2026-09-29 202158.jpg', '1', '2026-09-29 14:52:30', '2026-09-29 14:55:12');
+INSERT INTO `homeimagegallery` (`id`, `service_category_id`, `service_sub_category_id`, `title`, `small_image`, `description`, `stack`, `status`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 'VIRTUAL REALITY(VR)', '1791371063405-home-gallery-small-image-Screenshot 2026-10-07 161427.jpg', 'Virtual Reality is one of the most cutting edge and innovative practices in the realm of product showcasing. A wide spectrum of application coupled with an exciting experience for the users ensure the rapid propagation of Virtual Reality', 'xml, JavaScript, KRPANO and Unitity Engine', '1', '2026-10-07 11:04:23', '2026-10-07 11:04:23'),
+(2, 1, 1, 'INTERNET OF THINGS', '1791372579787-home-small-img-2Screenshot 2026-10-07 165835.jpg', 'Mayabious pioneers smart so…', 'Flutter, Python, Flask and Dart', '1', '2026-10-07 11:29:39', '2026-10-07 11:31:15');
 
 -- --------------------------------------------------------
 
@@ -504,7 +557,8 @@ CREATE TABLE `news` (
 
 INSERT INTO `news` (`id`, `channel_name`, `description`, `image`, `date`, `status`, `type`, `url`, `created_at`, `updated_at`) VALUES
 (1, 'ANI NEWS', 'MAYABIOUS GROUP WIN FOUR METALS AT THE ECONOMIC TIMES FOR DESIGN  AND CREATIVITY', '1791211795065-Screenshot 2026-09-26 180355.jpg', 'April 9,2026', '1', '1', 'https://aninews.in/news/business/mayabious-group-wins-four-metals-at-the-economic-times-award-for-design-and-creativity20260409174349/', '2026-10-05 14:49:55', '2026-10-05 14:49:55'),
-(2, 'HINDUSTHAN SAMACHAR', 'MAYABIOUS GROUP RECIEVES NATIONAL RECOGNITION FOR', '1791211953414-Screenshot 2026-09-26 180355.jpg', 'April 8,2026', '1', '0', 'https://bengali.hindusthansamachar.in/Encyc/2026/4/8/Mayabious-Group-won-Awards.php', '2026-10-05 14:52:33', '2026-10-05 14:52:33');
+(2, 'HINDUSTHAN SAMACHAR', 'MAYABIOUS GROUP RECIEVES NATIONAL RECOGNITION FOR', '1791211953414-Screenshot 2026-09-26 180355.jpg', 'April 8,2026', '1', '0', 'https://bengali.hindusthansamachar.in/Encyc/2026/4/8/Mayabious-Group-won-Awards.php', '2026-10-05 14:52:33', '2026-10-05 14:52:33'),
+(3, 'ANI NEWS', 'MAYABIOUS GROUP WIN FOUR METALS AT THE ECONOMIC TIMES', '1791366015739-Screenshot 2026-09-26 180355.jpg', 'July 10 ,2026', '1', '1', 'https://aninews.in/news/business/mayabious-group-wins-four-metals-at-the-economic-times-award-for-design-and-creativity20260409174349/', '2026-10-07 09:40:15', '2026-10-07 09:40:15');
 
 -- --------------------------------------------------------
 
@@ -541,6 +595,7 @@ CREATE TABLE `servicecategory` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `description` varchar(255) NOT NULL,
+  `icon` varchar(255) NOT NULL,
   `status` varchar(255) DEFAULT '1' COMMENT '1 = active, 0 = inactive',
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
@@ -550,9 +605,9 @@ CREATE TABLE `servicecategory` (
 -- Dumping data for table `servicecategory`
 --
 
-INSERT INTO `servicecategory` (`id`, `name`, `description`, `status`, `created_at`, `updated_at`) VALUES
-(1, '3D VISUALIZATION', 'Our expertise in visualization of architect\'s idea acts as an efficient marketing tool for our clients', '1', '2026-09-22 15:06:41', '2026-09-22 15:06:41'),
-(2, 'AUGMENTED REALITY AND VIRTUAL REALITY', 'Augmented Reality and Virtual Reality are two of the most cutting edge and innovative practices in the realm of product showcasing', '1', '2026-09-22 15:08:42', '2026-09-22 15:08:42');
+INSERT INTO `servicecategory` (`id`, `name`, `description`, `icon`, `status`, `created_at`, `updated_at`) VALUES
+(1, '3D VISUALIZATION', 'Our expertise in visualization of architect\'s idea acts as an efficient marketing tool for our clients', '', '1', '2026-09-22 15:06:41', '2026-09-22 15:06:41'),
+(2, 'AUGMENTED REALITY AND VIRTUAL REALITY', 'Augmented Reality and Virtual Reality are two of the most cutting edge and innovative practices in the realm of product showcasing', '1791386244713-icon-2026-10-07 204534.jpg', '1', '2026-09-22 15:08:42', '2026-10-07 15:17:24');
 
 -- --------------------------------------------------------
 
@@ -581,7 +636,11 @@ CREATE TABLE `services` (
 INSERT INTO `services` (`id`, `service_category_id`, `service_sub_category_id`, `title`, `description`, `small_image`, `big_image`, `youtube_link`, `status`, `created_at`, `updated_at`) VALUES
 (1, 1, 2, '3D ELEVATION DESIGN', 'This is description of 3D elevation design', '1791284862724-service_small_image.jpg', '1791284862728-service_big_image.jpg', NULL, '1', '2026-10-06 11:07:42', '2026-10-06 11:07:42'),
 (2, 1, 2, 'AERIAL VIEW 2D', 'This is description of aerial view', '1791284862732-service_small_image-2.jpg', '1791285576014-Raymond_026-10-05 165831.jpg', 'youtube.com', '1', '2026-10-06 11:07:42', '2026-10-06 11:19:36'),
-(3, 1, 2, '3D ELEVATION DESIGN', 'This is description of 3D elevation design', '1791284933189-service_small_image.jpg', NULL, 'youtube.com', '1', '2026-10-06 11:08:53', '2026-10-06 11:08:53');
+(3, 1, 2, '3D ELEVATION DESIGN', 'This is description of 3D elevation design', '1791284933189-service_small_image.jpg', NULL, 'youtube.com', '1', '2026-10-06 11:08:53', '2026-10-06 11:08:53'),
+(5, 1, 2, '3D ELEVATION DESIGN', 'This is description of 3D elevation design', '1791367777944-service_small_image.jpg', '1791367777950-service_big_image.jpg', 'https://youtube.com', '1', '2026-10-07 10:09:37', '2026-10-07 10:09:37'),
+(8, 1, 2, 'AERIAL VIEW', 'This is description of aerial view', '1791368272388-service_small_image-2.jpg', NULL, 'https://youtube.com', '1', '2026-10-07 10:17:52', '2026-10-07 10:17:52'),
+(9, 1, 2, '3D ELEVATION DESIGN', 'This is description of 3D elevation design', '1791368518506-service_small_image.jpg', '1791368518510-service_big_image.jpg', NULL, '1', '2026-10-07 10:21:58', '2026-10-07 10:21:58'),
+(10, 1, 2, 'AERIAL VIEW', 'This is description of aerial view', '1791368518514-service_small_image-2.jpg', NULL, 'https://youtube.com', '1', '2026-10-07 10:21:58', '2026-10-07 10:21:58');
 
 -- --------------------------------------------------------
 
@@ -738,6 +797,18 @@ ALTER TABLE `designation`
   ADD KEY `department_id` (`department_id`);
 
 --
+-- Indexes for table `enquiry`
+--
+ALTER TABLE `enquiry`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `homegallerybigimg`
+--
+ALTER TABLE `homegallerybigimg`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `homeimagegallery`
 --
 ALTER TABLE `homeimagegallery`
@@ -849,7 +920,7 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `applycandidate`
 --
 ALTER TABLE `applycandidate`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `awards`
@@ -906,6 +977,18 @@ ALTER TABLE `designation`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT for table `enquiry`
+--
+ALTER TABLE `enquiry`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `homegallerybigimg`
+--
+ALTER TABLE `homegallerybigimg`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
 -- AUTO_INCREMENT for table `homeimagegallery`
 --
 ALTER TABLE `homeimagegallery`
@@ -951,7 +1034,7 @@ ALTER TABLE `jobvacancyjobtype`
 -- AUTO_INCREMENT for table `news`
 --
 ALTER TABLE `news`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `perksandbenifit`
@@ -969,7 +1052,7 @@ ALTER TABLE `servicecategory`
 -- AUTO_INCREMENT for table `services`
 --
 ALTER TABLE `services`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `servicesubcategory`
