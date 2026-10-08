@@ -11,7 +11,7 @@ const addClients = async (req, res) => {
       : req.body.name
         ? [req.body.name]
         : [];
-
+    const {position}=req.body;
     const logos = req.files?.logo || [];
 
     if (logos.length === 0) {
@@ -30,6 +30,7 @@ const addClients = async (req, res) => {
     const data = logos.map((file, index) => ({
       name: names[index] ? names[index].toUpperCase() : null,
       logo: file.filename,
+      position:position ?? null,
       status: "1",
     }));
 
@@ -52,7 +53,9 @@ const addClients = async (req, res) => {
 };
 const getallclients = async (req, res) => {
   try {
-    const alClients = await clients.findAll();
+    const alClients = await clients.findAll({
+      order:[["position","ASC"]]
+    });
     return res.status(200).json({
       status: true,
       message: "Clients fatched successfully",
@@ -93,7 +96,7 @@ const updateClients = async (req, res) => {
 
   try {
     const { id } = req.params;
-    const { name, status } = req.body;
+    const { name, status,position } = req.body;
 
     const data = await clients.findByPk(id);
 
@@ -106,23 +109,17 @@ const updateClients = async (req, res) => {
       });
     }
 
-    if (!name) {
-      await transaction.rollback();
-
-      return res.status(400).json({
-        status: false,
-        message: "Please provide name",
-      });
-    }
     const oldlogo = data.logo;
 
     const logoName = req.file ? req.file.filename : oldlogo;
-
+    
+    const convertName = name ? name.toUpperCase() : data.name;
     await data.update(
       {
-        name: name.toUpperCase(),
+        name: convertName ,
         logo: logoName,
         status: status || data.status,
+        position:position || data.position,
       },
       {
         transaction,

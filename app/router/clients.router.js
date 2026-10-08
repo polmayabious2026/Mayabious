@@ -24,7 +24,7 @@ router.post(
   addClients,
 );
 
-router.get("/get-clients", getallclients);
+
 router.get("/get-singleclients/:id", adminCheck, getSingleclients);
 router.put(
   "/update-clients/:id",
@@ -33,5 +33,8 @@ router.put(
   updateClients,
 );
 router.delete("/delete-clients/:id", adminCheck, deleteClients);
+
+// frontend
+router.get("/get-clients", getallclients);
 
 module.exports = router;

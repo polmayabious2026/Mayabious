@@ -443,23 +443,31 @@ const addhomeVideoSet = async (req, res) => {
     });
   }
 };
-const gethomeVideoSet = async(req,res)=>{
-  try{
-  const allData = await homeVideoSet.findAll({
-    include:{
-      model:homeVideo,
-      as:"homevideos",
-      through:{
-        attributes:[]
-      }
+const gethomeVideoSet = async (req, res) => {
+  try {
+    const allData = await homeVideoSet.findOne({
+      order: sequelize.literal("RAND()"),
+
+      include: {
+        model: homeVideo,
+        as: "homevideos",
+        through: {
+          attributes: [],
+        },
+      },
+    });
+
+    // Sort videos by position after getting the random set
+    if (allData?.homevideos) {
+      allData.homevideos.sort((a, b) => a.position - b.position);
     }
-  })
-  return res.status(200).json({
-    status:true,
-    message:"Home video set fetched successfully",
-    data:allData,
-  })
-  }catch (error) {
+
+    return res.status(200).json({
+      status: true,
+      message: "Home video set fetched successfully",
+      data: allData,
+    });
+  } catch (error) {
     console.log("gethomeVideoSet Error:", error);
 
     return res.status(400).json({
@@ -468,7 +476,7 @@ const gethomeVideoSet = async(req,res)=>{
       error: error.message,
     });
   }
-}
+};
 const getSingleHomeVideoSet = async(req,res)=>{
   try{
     const {id}= req.params;

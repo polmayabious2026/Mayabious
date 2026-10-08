@@ -15,10 +15,13 @@ const uploadImage = require("../middleware/fileupload_image");
 
 router.post(
   "/home-image-gallery",
-
   uploadImage.fields([
     {
       name: "small_image",
+      maxCount: 1,
+    },
+    {
+      name: "content_image",
       maxCount: 1,
     },
     {
@@ -26,36 +29,32 @@ router.post(
       maxCount: 20,
     },
   ]),
-
-  adminCheck,
-
+  // adminCheck,
   createHomeImageGallery,
 );
 
-router.get("/get-home-image-gallery", getHomeImageGallery);
+// router.get("/get-home-image-gallery", getHomeImageGallery);
 
 router.get(
   "/getsingle-home-image-gallery/:id",
-  adminCheck,
+  // adminCheck,
   getSingleHomeImageGallery,
 );
 
-router.put(
-  "/update-home-image-gallery/:id",
-
-  uploadImage.fields([
-    {
+router.put("/update-home-image-gallery/:id",uploadImage.fields([{
       name: "small_image",
       maxCount: 1,
     },
+    {
+      name: "content_image",
+      maxCount: 1,
+    },,
     {
       name: "big_image",
       maxCount: 20,
     },
   ]),
-
   adminCheck,
-
   updateHomeImageGallery,
 );
 
@@ -64,5 +63,8 @@ router.delete(
   adminCheck,
   deleteHomeImageGallery,
 );
+
+// frontend
+router.get("/get-home-image-gallery", getHomeImageGallery);
 
 module.exports = router;

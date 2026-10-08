@@ -12,11 +12,12 @@ const createHomeImageGallery = async (req, res) => {
 
   try {
     const {
-      service_category_id,
-      service_sub_category_id,
+      // service_category_id,
+      // service_sub_category_id,
       title,
       description,
       stack,
+      position,
       status,
     } = req.body;
 
@@ -24,23 +25,23 @@ const createHomeImageGallery = async (req, res) => {
     // BASIC VALIDATION
     // =========================================================
 
-    if (!service_category_id) {
-      await transaction.rollback();
+    // if (!service_category_id) {
+    //   await transaction.rollback();
 
-      return res.status(400).json({
-        status: false,
-        message: "service_category_id is required",
-      });
-    }
+    //   return res.status(400).json({
+    //     status: false,
+    //     message: "service_category_id is required",
+    //   });
+    // }
 
-    if (!service_sub_category_id) {
-      await transaction.rollback();
+    // if (!service_sub_category_id) {
+    //   await transaction.rollback();
 
-      return res.status(400).json({
-        status: false,
-        message: "service_sub_category_id is required",
-      });
-    }
+    //   return res.status(400).json({
+    //     status: false,
+    //     message: "service_sub_category_id is required",
+    //   });
+    // }
 
     if (!title || !String(title).trim()) {
       await transaction.rollback();
@@ -51,35 +52,45 @@ const createHomeImageGallery = async (req, res) => {
       });
     }
 
-    if (!description || !String(description).trim()) {
-      await transaction.rollback();
+    // if (!description || !String(description).trim()) {
+    //   await transaction.rollback();
 
-      return res.status(400).json({
-        status: false,
-        message: "description is required",
-      });
-    }
+    //   return res.status(400).json({
+    //     status: false,
+    //     message: "description is required",
+    //   });
+    // }
 
-    if (!stack || !String(stack).trim()) {
-      await transaction.rollback();
+    // if (!stack || !String(stack).trim()) {
+    //   await transaction.rollback();
 
-      return res.status(400).json({
-        status: false,
-        message: "stack is required",
-      });
-    }
+    //   return res.status(400).json({
+    //     status: false,
+    //     message: "stack is required",
+    //   });
+    // }
 
-    const smallImage = req.files?.small_image?.[0];
+    const small_image = req.files?.small_image?.[0];
+    const content_image = req.files?.content_image?.[0];
 
     // Multiple big images
     const bigImages = req.files?.big_image || [];
 
-    if (!smallImage) {
+    if (!small_image) {
       await transaction.rollback();
 
       return res.status(400).json({
         status: false,
         message: "small_image is required",
+      });
+    }
+
+    if (!content_image) {
+      await transaction.rollback();
+
+      return res.status(400).json({
+        status: false,
+        message: "content_image is required",
       });
     }
 
@@ -92,35 +103,35 @@ const createHomeImageGallery = async (req, res) => {
       });
     }
 
-    const checkCategory = await servicecategory.findByPk(service_category_id, {
-      transaction,
-    });
+    // const checkCategory = await servicecategory.findByPk(service_category_id, {
+    //   transaction,
+    // });
 
-    if (!checkCategory) {
-      await transaction.rollback();
+    // if (!checkCategory) {
+    //   await transaction.rollback();
 
-      return res.status(400).json({
-        status: false,
-        message: "Category not found",
-      });
-    }
+    //   return res.status(400).json({
+    //     status: false,
+    //     message: "Category not found",
+    //   });
+    // }
 
-    const checkSubCategory = await serviceSubCategory.findOne({
-      where: {
-        id: service_sub_category_id,
-        service_category_id: service_category_id,
-      },
-      transaction,
-    });
+    // const checkSubCategory = await serviceSubCategory.findOne({
+    //   where: {
+    //     id: service_sub_category_id,
+    //     service_category_id: service_category_id,
+    //   },
+    //   transaction,
+    // });
 
-    if (!checkSubCategory) {
-      await transaction.rollback();
+    // if (!checkSubCategory) {
+    //   await transaction.rollback();
 
-      return res.status(400).json({
-        status: false,
-        message: "Sub_category is not present in this category",
-      });
-    }
+    //   return res.status(400).json({
+    //     status: false,
+    //     message: "Sub_category is not present in this category",
+    //   });
+    // }
 
     const galleryStatus = status ?? "1";
 
@@ -135,16 +146,19 @@ const createHomeImageGallery = async (req, res) => {
 
     const galleryData = await homeImageGallery.create(
       {
-        service_category_id,
-        service_sub_category_id,
+        // service_category_id:service_category_id ?? null,
+        // service_sub_category_id :service_sub_category_id ?? null,
 
         title: String(title).trim().toUpperCase(),
 
-        description: String(description).trim(),
+        description: String(description).trim() ?? null,
 
-        stack: String(stack).trim(),
+        stack: String(stack).trim()?? null,
 
-        small_image: smallImage.filename,
+        position:position ?? null,
+
+        small_image: small_image.filename,
+        content_image: content_image.filename,
 
         status: String(galleryStatus),
       },
@@ -198,24 +212,28 @@ const getHomeImageGallery = async (req, res) => {
     const data = await homeImageGallery.findAll({
       attributes: [
         "id",
-        "service_category_id",
-        "service_sub_category_id",
+        // "service_category_id",
+        // "service_sub_category_id",
         "title",
         "small_image",
+        "content_image",
+        "position",
+        "stack"
       ],
+      order: [["position", "ASC"]],
 
-      include: [
-        {
-          model: servicecategory,
-          as: "category",
-          attributes: ["id", "name"],
-        },
+      // include: [
+      //   {
+      //     model: servicecategory,
+      //     as: "category",
+      //     attributes: ["id", "name"],
+      //   },
 
-        {
-          model: serviceSubCategory,
-          as: "subcategory",
-          attributes: ["id", "name"],
-        },
+      //   {
+      //     model: serviceSubCategory,
+      //     as: "subcategory",
+      //     attributes: ["id", "name"],
+      //   },
 
         // {
         //   model: homeGalleryBigImg,
@@ -229,9 +247,7 @@ const getHomeImageGallery = async (req, res) => {
         //     "updated_at",
         //   ],
         // },
-      ],
-
-      // order: [["id", "DESC"]],
+      // ],
     });
 
     return res.status(200).json({
@@ -264,24 +280,24 @@ const getSingleHomeImageGallery = async (req, res) => {
         // "service_category_id",
         // "service_sub_category_id",
         "title",
-        "small_image",
+        "content_image",
         "description",
         "stack",
         "status",
       ],
 
       include: [
-        {
-          model: servicecategory,
-          as: "category",
-          attributes: ["id", "name"],
-        },
+        // {
+        //   model: servicecategory,
+        //   as: "category",
+        //   attributes: ["id", "name"],
+        // },
 
-        {
-          model: serviceSubCategory,
-          as: "subcategory",
-          attributes: ["id", "name"],
-        },
+        // {
+        //   model: serviceSubCategory,
+        //   as: "subcategory",
+        //   attributes: ["id", "name"],
+        // },
 
         {
           model: homeGalleryBigImg,
@@ -324,11 +340,12 @@ const updateHomeImageGallery = async (req, res) => {
     const { id } = req.params;
 
     const {
-      service_category_id,
-      service_sub_category_id,
+      // service_category_id,
+      // service_sub_category_id,
       title,
       description,
       stack,
+      position,
       status,
     } = req.body;
 
@@ -348,49 +365,49 @@ const updateHomeImageGallery = async (req, res) => {
       });
     }
 
-    const categoryId =
-      service_category_id !== undefined
-        ? service_category_id
-        : data.service_category_id;
+    // const categoryId =
+    //   service_category_id !== undefined
+    //     ? service_category_id
+    //     : data.service_category_id;
 
-    const subCategoryId =
-      service_sub_category_id !== undefined
-        ? service_sub_category_id
-        : data.service_sub_category_id;
+    // const subCategoryId =
+    //   service_sub_category_id !== undefined
+    //     ? service_sub_category_id
+    //     : data.service_sub_category_id;
 
-    const checkCategory = await servicecategory.findByPk(categoryId, {
-      transaction,
-    });
+    // const checkCategory = await servicecategory.findByPk(categoryId, {
+    //   transaction,
+    // });
 
-    if (!checkCategory) {
-      await transaction.rollback();
+    // if (!checkCategory) {
+    //   await transaction.rollback();
 
-      return res.status(400).json({
-        status: false,
-        message: "Category not found",
-      });
-    }
+    //   return res.status(400).json({
+    //     status: false,
+    //     message: "Category not found",
+    //   });
+    // }
 
-    const checkSubCategory = await serviceSubCategory.findOne({
-      where: {
-        id: subCategoryId,
-        service_category_id: categoryId,
-      },
-      transaction,
-    });
+    // const checkSubCategory = await serviceSubCategory.findOne({
+    //   where: {
+    //     id: subCategoryId,
+    //     service_category_id: categoryId,
+    //   },
+    //   transaction,
+    // });
 
-    if (!checkSubCategory) {
-      await transaction.rollback();
+    // if (!checkSubCategory) {
+    //   await transaction.rollback();
 
-      return res.status(400).json({
-        status: false,
-        message: "Sub-category is not present in this category",
-      });
-    }
+    //   return res.status(400).json({
+    //     status: false,
+    //     message: "Sub-category is not present in this category",
+    //   });
+    // }
 
     const updateData = {
-      service_category_id: categoryId,
-      service_sub_category_id: subCategoryId,
+      // service_category_id: categoryId,
+      // service_sub_category_id: subCategoryId,
     };
 
     if (title !== undefined) {
@@ -407,29 +424,14 @@ const updateHomeImageGallery = async (req, res) => {
     }
 
     if (description !== undefined) {
-      if (!String(description).trim()) {
-        await transaction.rollback();
-
-        return res.status(400).json({
-          status: false,
-          message: "Description cannot be empty",
-        });
-      }
-
       updateData.description = String(description).trim();
     }
 
     if (stack !== undefined) {
-      if (!String(stack).trim()) {
-        await transaction.rollback();
-
-        return res.status(400).json({
-          status: false,
-          message: "Stack cannot be empty",
-        });
-      }
-
       updateData.stack = String(stack).trim();
+    }
+    if ( position !== undefined) {
+      updateData.position =position;
     }
 
     if (status !== undefined) {
@@ -445,12 +447,16 @@ const updateHomeImageGallery = async (req, res) => {
       updateData.status = String(status);
     }
 
-    const smallImage = req.files?.small_image?.[0];
+    const small_image = req.files?.small_image?.[0];
+    const content_image = req.files?.content_image?.[0];
 
     const bigImages = req.files?.big_image || [];
 
-    if (smallImage) {
-      updateData.small_image = smallImage.filename;
+    if (small_image) {
+      updateData.small_image = small_image.filename;
+    }
+    if (content_image) {
+      updateData.content_image = content_image.filename;
     }
 
     await data.update(updateData, {

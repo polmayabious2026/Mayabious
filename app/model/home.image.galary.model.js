@@ -10,14 +10,14 @@ const homeImageGallery = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
-    service_category_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    service_sub_category_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
+    // service_category_id: {
+    //   type: DataTypes.INTEGER,
+    //   // allowNull: false,
+    // },
+    // service_sub_category_id: {
+    //   type: DataTypes.INTEGER,
+    //   // allowNull: false,
+    // },
     title: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -26,13 +26,20 @@ const homeImageGallery = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    description: {
+    content_image: {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    description: {
+      type: DataTypes.TEXT,
+      // allowNull: false,
+    },
     stack: {
       type: DataTypes.STRING,
-      allowNull: false,
+      // allowNull: false,
+    },
+    position:{
+      type: DataTypes.INTEGER,
     },
     status: {
       type: DataTypes.STRING,

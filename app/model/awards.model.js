@@ -14,7 +14,7 @@ const awards = sequelize.define(
       allowNull: false,
     },
     description: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
     },
     image: {
@@ -24,6 +24,9 @@ const awards = sequelize.define(
     date: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    position: {
+      type: DataTypes.INTEGER,
     },
     status: {
       type: DataTypes.STRING,

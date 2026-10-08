@@ -22,6 +22,7 @@ const {
 
 const uploadImage = require("../middleware/fileupload_image");
 
+// blog
 router.post(
   "/add-blogs",
   uploadImage.fields([
@@ -31,7 +32,7 @@ router.post(
   adminCheck,
   createBlog,
 );
-router.get("/get-blogs", getallBlog);
+// router.get("/get-blogs", getallBlog);
 
 router.get("/get-singleblogs/:id",adminCheck, getsingleBlog);
 
@@ -58,5 +59,7 @@ router.put("/blogcategory/:id",adminCheck, updateBlogCategory);
 
 router.delete("/blogcategory/:id",adminCheck, deleteBlogCategory);
 
+// frontend
+router.get("/get-blogs", getallBlog);
 
 module.exports = router;

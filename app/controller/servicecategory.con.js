@@ -5,8 +5,8 @@ const sequelize = require("../config/db")
 
 const addServiceCategory = async (req, res) => {
   try {
-    console.log("BODY:",req.body)
-    const { name, description, status } = req.body;
+    // console.log("BODY:",req.body)
+    const { name, description, status,position } = req.body;
 
     if (!name) {
       return res.status(400).json({
@@ -33,6 +33,7 @@ const addServiceCategory = async (req, res) => {
       name:upperChaseName,
       description:description,
       icon:req.file.filename,
+      position:position,
       status: status || "1",
     });
 
@@ -55,7 +56,8 @@ const addServiceCategory = async (req, res) => {
 const getServiceCategories = async (req, res) => {
   try {
     const data = await servicecategory.findAll({
-      attributes:["id","name","description","icon"],
+      attributes:["id","name","description","icon","position"],
+      order:[["position","ASC"]],
       include:{
         model:serviceSubCategory,
         as:"subcategory",
@@ -120,7 +122,8 @@ const getServiceCategoryById = async (req, res) => {
 const updateServiceCategory = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, description, status } = req.body;
+    const { name, description, status ,position} = req.body;
+
     const data = await servicecategory.findByPk(id);
 
     if (!data) {
@@ -170,6 +173,8 @@ const updateServiceCategory = async (req, res) => {
         status !== undefined
           ? String(status)
           : data.status,
+      position:position ?? data.position,
+
     };
 
 

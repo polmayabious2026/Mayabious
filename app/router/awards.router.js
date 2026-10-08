@@ -14,9 +14,12 @@ const {
 const uploadImage = require("../middleware/fileupload_image");
 
 router.post("/add-awards",adminCheck, uploadImage.single("image"), addAwards);
-router.get("/get-awards", getAwards);
+
 router.get("/get-singleawards/:id",adminCheck, getSingleAwards);
 router.put("/update-awards/:id",adminCheck,uploadImage.single("image"),updateAwards);
 router.delete("/delete-awards/:id",adminCheck, deleteAwards);
+
+// frontend
+router.get("/get-awards", getAwards);
 
 module.exports = router;

@@ -8,7 +8,7 @@ const fs = require("fs")
 const addAwards = async (req, res) => {
   const transaction = await sequelize.transaction();
   try {
-    const { title, description, date, status } = req.body;
+    const { title, description, date,position, status } = req.body;
 
     // let title = req.body.title;
 
@@ -69,6 +69,7 @@ const addAwards = async (req, res) => {
       description: description,
       image: req.file.filename,
       date: date,
+      position:position ?? null,
       status: status || "1",
     });
     await transaction.commit();
@@ -93,7 +94,7 @@ const addAwards = async (req, res) => {
 const getAwards = async (req, res) => {
   try {
     const data = await awards.findAll({
-      //   order: [["id", "DESC"]],
+        order: [["position", "ASC"]],
     });
 
     return res.status(200).json({
@@ -136,7 +137,7 @@ const updateAwards = async (req, res) => {
 
   try {
     const { id } = req.params;
-    const { title, description, date, status } = req.body;
+    const { title, description, date,position, status } = req.body;
 
     const data = await awards.findByPk(id);
 
@@ -179,6 +180,7 @@ const updateAwards = async (req, res) => {
         image: imageName,
         status: status || data.status,
         date: date || data.date,
+        position:position || data.position
       },
       {
         transaction,

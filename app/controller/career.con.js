@@ -412,6 +412,7 @@ const getAllJobVacancy = async (req, res) => {
         {
           model: jobtype,
           as: "jobtypes",
+          attributes: ["id", "title"],
           through: {
             attributes: [],
           },
@@ -459,6 +460,7 @@ const getSingleJobVacancy = async (req, res) => {
         {
           model: jobtype,
           as: "jobtypes",
+          attributes: ["id", "title"],
           through: {
             attributes: [],
           },

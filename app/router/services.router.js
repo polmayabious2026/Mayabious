@@ -21,8 +21,6 @@ router.post(
   createServices,
 );
 
-router.get("/getall-services", getallServices);
-
 router.get("/getsingle-services/:id", adminCheck, getSingleServices);
 
 router.put(
@@ -36,5 +34,8 @@ router.put(
 );
 
 router.delete("/delete-services/:id", adminCheck, deleteServices);
+
+// frontend
+router.get("/getall-services", getallServices);
 
 module.exports = router;

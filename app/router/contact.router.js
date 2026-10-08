@@ -12,10 +12,13 @@ const {
 
 router.post("/createcontact", adminCheck,createContact);
 
-router.get("/getcontact", getAllContacts);
+
 
 router.put("/updatecontact/:id", adminCheck,updateContact);
 
 router.delete("/deletecontact/:id", adminCheck,deleteContact);
+
+// frontend
+router.get("/getcontact", getAllContacts);
 
 module.exports = router;

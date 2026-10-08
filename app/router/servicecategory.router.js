@@ -20,8 +20,6 @@ router.post(
   addServiceCategory,
 );
 
-router.get("/getall-category", getServiceCategories);
-
 router.get("/get-singlecategory/:id", adminCheck, getServiceCategoryById);
 
 router.put(
@@ -32,5 +30,8 @@ router.put(
 );
 
 router.delete("/delete-category/:id", adminCheck, deleteServiceCategory);
+
+// frontend
+router.get("/getall-category", getServiceCategories);
 
 module.exports = router;

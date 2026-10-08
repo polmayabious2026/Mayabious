@@ -14,12 +14,15 @@ const servicecategory = sequelize.define(
       allowNull: false,
     },
     description: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
     },
     icon:{
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    position:{
+      type: DataTypes.INTEGER,
     },
     status: {
       type: DataTypes.STRING,

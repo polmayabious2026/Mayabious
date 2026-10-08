@@ -16,6 +16,9 @@ const clients = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    position:{
+      type: DataTypes.INTEGER,
+    },
     status: {
       type: DataTypes.STRING,
       comment: "1 = active, 0 = inactive",
