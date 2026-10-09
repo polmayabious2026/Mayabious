@@ -14,7 +14,7 @@ const homeVideo = sequelize.define(
       allowNull: false,
     },
     position: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     status: {

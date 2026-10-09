@@ -1,4 +1,5 @@
 const sequelize = require("../config/db");
+const { Op } = require("sequelize");
 // models
 const services = require("../model/services.model");
 const servicecategory = require("../model/service.categoty.model");
@@ -365,7 +366,7 @@ const getallServices = async (req, res) => {
           attributes: ["id", "name"],
         },
       ],
-      // order: [["id", "DESC"]],
+    //   order: [["id", "DESC"]],
     });
 
     return res.status(200).json({
@@ -402,7 +403,7 @@ const getSingleServices = async (req, res) => {
           attributes: ["id", "name"],
         },
       ],
-      order: [["id", "DESC"]],
+    //   order: [["id", "DESC"]],
     });
 
     if (!data) {
@@ -728,19 +729,17 @@ const updateServices = async (req, res) => {
 
     const updatedService = await services.findByPk(id);
 
-    // --------------------------------------------------
     // RESPONSE
-    // --------------------------------------------------
-
+   
     return res.status(200).json({
       status: true,
       message: "Service updated successfully",
       data: updatedService,
     });
   } catch (error) {
-    // --------------------------------------------------
+      
     // ROLLBACK ON ERROR
-    // --------------------------------------------------
+    
 
     if (transaction && !transaction.finished) {
       await transaction.rollback();
@@ -786,10 +785,96 @@ const deleteServices = async (req, res) => {
   }
 };
 
+
+
+const getAllServicesForFilter = async (req, res) => {
+  try {
+    const page = Math.max(
+      1,
+      parseInt(req.query.page, 30) || 1
+    );
+
+    const limit = Math.min(
+      100,
+      Math.max(1, parseInt(req.query.limit, 30) || 30)
+    );
+
+    const offset = (page - 1) * limit;
+
+    const {
+      search = "",
+      category_id,
+      subcategory_id,
+    } = req.query;
+
+    const where = {};
+
+    if (search.trim()) {
+      where[Op.or] = [
+        { title: { [Op.like]: `%${search.trim()}%` } },
+        {
+          description: {
+            [Op.like]: `%${search.trim()}%`,
+          },
+        },
+      ];
+    }
+
+    const include = [
+      {
+        model: servicecategory,
+        as: "category",
+        attributes: ["id", "name"],
+        required: Boolean(category_id),
+        ...(category_id
+          ? { where: { id: category_id } }
+          : {}),
+      },
+      {
+        model: serviceSubCategory,
+        as: "subcategory",
+        attributes: ["id", "name"],
+        required: Boolean(subcategory_id),
+        ...(subcategory_id
+          ? { where: { id: subcategory_id } }
+          : {}),
+      },
+    ];
+
+    const result = await services.findAndCountAll({
+      where,
+      include,
+      limit,
+      offset,
+      order: [["id", "DESC"]],
+      distinct: true,
+    });
+
+    return res.status(200).json({
+      status: true,
+      data: result.rows,
+      pagination: {
+        totalItems: result.count,
+        totalPages: Math.ceil(result.count / limit),
+        currentPage: page,
+        limit,
+      },
+    });
+  } catch (error) {
+    console.error("Get All Services Error:", error);
+
+    return res.status(500).json({
+      status: false,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   createServices,
   getallServices,
   getSingleServices,
   updateServices,
   deleteServices,
+  getAllServicesForFilter,
 };

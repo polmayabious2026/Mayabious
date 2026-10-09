@@ -26,7 +26,7 @@ const awards = sequelize.define(
       allowNull: false,
     },
     position: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
     },
     status: {
       type: DataTypes.STRING,

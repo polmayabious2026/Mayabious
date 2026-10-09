@@ -15,13 +15,8 @@ const addServiceCategory = async (req, res) => {
       });
     }
 
-    if (!description) {
-      return res.status(400).json({
-        status: false,
-        message: "Please provide description",
-      });
-    }
-      if (!req.file) {
+    
+    if (!req.file) {
       return res.status(400).json({
         status: false,
         message: "Please provide icon",
@@ -137,13 +132,6 @@ const updateServiceCategory = async (req, res) => {
       return res.status(400).json({
         status: false,
         message: "Name cannot be empty",
-      });
-    }
-
-    if (description !== undefined && !String(description).trim()) {
-      return res.status(400).json({
-        status: false,
-        message: "Description cannot be empty",
       });
     }
 

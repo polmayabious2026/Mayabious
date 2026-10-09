@@ -581,6 +581,39 @@ const deletehomeVideoSet = async (req, res) => {
 };
 
 
+const getAllhomevideoset = async (req, res) => {
+  try {
+    const allData = await homeVideoSet.findAll({
+      include: {
+        model: homeVideo,
+        as: "homevideos",
+        through: {
+          attributes: [],
+        },
+      },
+      order: [
+        ["id", "ASC"],
+        [{ model: homeVideo, as: "homevideos" }, "position", "ASC"],
+      ],
+    });
+
+    return res.status(200).json({
+      status: true,
+      message: "All home video sets fetched successfully",
+      data: allData,
+    });
+  } catch (error) {
+    console.log("getAllhomevideoset Error:", error);
+
+    return res.status(400).json({
+      status: false,
+      message: "Something went wrong",
+      error: error.message,
+    });
+  }
+};
+
+
 module.exports = {
   addVideo,
   getallVideo,
@@ -594,4 +627,5 @@ module.exports = {
   getSingleHomeVideoSet,
   updatehomeVideoSet,
   deletehomeVideoSet ,
+  getAllhomevideoset,
 };

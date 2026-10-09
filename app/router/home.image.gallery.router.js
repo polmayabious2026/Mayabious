@@ -9,6 +9,7 @@ const {
   getSingleHomeImageGallery,
   updateHomeImageGallery,
   deleteHomeImageGallery,
+  deleteHomeImageGalleryBigImage,
 } = require("../controller/home.image.gallery.con");
 
 const uploadImage = require("../middleware/fileupload_image");
@@ -63,6 +64,14 @@ router.delete(
   adminCheck,
   deleteHomeImageGallery,
 );
+
+
+router.delete(
+  "/delete-home-image-gallery-big-image/:id",
+  adminCheck,
+  deleteHomeImageGalleryBigImage
+);
+
 
 // frontend
 router.get("/get-home-image-gallery", getHomeImageGallery);

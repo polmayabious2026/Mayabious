@@ -15,6 +15,7 @@ const createHomeImageGallery = async (req, res) => {
       // service_category_id,
       // service_sub_category_id,
       title,
+      title_second,
       description,
       stack,
       position,
@@ -155,6 +156,8 @@ const createHomeImageGallery = async (req, res) => {
 
         stack: String(stack).trim()?? null,
 
+        title_second:title_second.trim().toUpperCase() ?? null,
+
         position:position ?? null,
 
         small_image: small_image.filename,
@@ -215,6 +218,7 @@ const getHomeImageGallery = async (req, res) => {
         // "service_category_id",
         // "service_sub_category_id",
         "title",
+        "title_second",
         "small_image",
         "content_image",
         "position",
@@ -280,10 +284,13 @@ const getSingleHomeImageGallery = async (req, res) => {
         // "service_category_id",
         // "service_sub_category_id",
         "title",
+        "title_second",
         "content_image",
         "description",
+        "small_image",
         "stack",
         "status",
+        "position"
       ],
 
       include: [
@@ -343,11 +350,14 @@ const updateHomeImageGallery = async (req, res) => {
       // service_category_id,
       // service_sub_category_id,
       title,
+      title_second,
       description,
       stack,
       position,
       status,
     } = req.body;
+
+    console.log("BODY:",req.body)
 
     const data = await homeImageGallery.findOne({
       where: {
@@ -421,6 +431,10 @@ const updateHomeImageGallery = async (req, res) => {
       }
 
       updateData.title = String(title).trim().toUpperCase();
+      
+    }
+    if ( title_second !== undefined) {
+      updateData.title_second =title_second.toUpperCase();
     }
 
     if (description !== undefined) {
@@ -463,30 +477,46 @@ const updateHomeImageGallery = async (req, res) => {
       transaction,
     });
 
+    // if (bigImages.length > 0) {
+    //   // Delete old big images
+
+    //   await homeGalleryBigImg.destroy({
+    //     where: {
+    //       homeimagegallery_id: data.id,
+    //     },
+    //     transaction,
+    //   });
+
+    //   // Create new big images
+
+    //   const bigImageData = bigImages.map((file) => {
+    //     return {
+    //       homeimagegallery_id: data.id,
+    //       big_image: file.filename,
+    //       status: String(status ?? data.status ?? "1"),
+    //     };
+    //   });
+
+    //   await homeGalleryBigImg.bulkCreate(bigImageData, {
+    //     transaction,
+    //   });
+    // }
+    
+
     if (bigImages.length > 0) {
-      // Delete old big images
-
-      await homeGalleryBigImg.destroy({
-        where: {
-          homeimagegallery_id: data.id,
-        },
-        transaction,
-      });
-
-      // Create new big images
-
-      const bigImageData = bigImages.map((file) => {
-        return {
-          homeimagegallery_id: data.id,
-          big_image: file.filename,
-          status: String(status ?? data.status ?? "1"),
-        };
-      });
-
+      // Keep existing big images and add new ones
+      const bigImageData = bigImages.map((file) => ({
+        homeimagegallery_id: data.id,
+        big_image: file.filename,
+        status: String(status ?? data.status ?? "1"),
+      }));
+    
       await homeGalleryBigImg.bulkCreate(bigImageData, {
         transaction,
       });
     }
+
+
 
     const updatedBigImages = await homeGalleryBigImg.findAll({
       where: {
@@ -597,10 +627,62 @@ const deleteHomeImageGallery = async (req, res) => {
   }
 };
 
+
+const deleteHomeImageGalleryBigImage = async (req, res) => {
+  const transaction = await sequelize.transaction();
+
+  try {
+    const { id } = req.params;
+
+    // Find only the selected big image
+    const image = await homeGalleryBigImg.findByPk(id, {
+      transaction,
+    });
+
+    if (!image) {
+      await transaction.rollback();
+
+      return res.status(404).json({
+        status: false,
+        message: "Big image not found",
+      });
+    }
+
+    // Delete only this image record
+    await image.destroy({ transaction });
+
+    await transaction.commit();
+
+    return res.status(200).json({
+      status: true,
+      message: "Big image deleted successfully",
+      data: {
+        id: image.id,
+        homeimagegallery_id: image.homeimagegallery_id,
+        big_image: image.big_image,
+      },
+    });
+  } catch (error) {
+    if (transaction && !transaction.finished) {
+      await transaction.rollback();
+    }
+
+    console.error("Delete single big image error:", error);
+
+    return res.status(500).json({
+      status: false,
+      message: "Something went wrong",
+      error: error.message,
+    });
+  }
+};
+
+
 module.exports = {
   createHomeImageGallery,
   getHomeImageGallery,
   getSingleHomeImageGallery,
   updateHomeImageGallery,
   deleteHomeImageGallery,
+  deleteHomeImageGalleryBigImage,
 };

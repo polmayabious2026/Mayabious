@@ -22,6 +22,10 @@ const homeImageGallery = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    title_second: {
+      type: DataTypes.STRING,
+      
+    },
     small_image: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -39,7 +43,7 @@ const homeImageGallery = sequelize.define(
       // allowNull: false,
     },
     position:{
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
     },
     status: {
       type: DataTypes.STRING,
