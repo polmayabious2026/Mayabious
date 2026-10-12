@@ -224,7 +224,9 @@ const getHomeImageGallery = async (req, res) => {
         "position",
         "stack"
       ],
-      order: [["position", "ASC"]],
+      order: [
+        [sequelize.literal("CAST(position AS UNSIGNED)"), "ASC"]
+      ],
 
       // include: [
       //   {

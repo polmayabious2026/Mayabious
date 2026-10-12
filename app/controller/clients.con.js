@@ -54,7 +54,9 @@ const addClients = async (req, res) => {
 const getallclients = async (req, res) => {
   try {
     const alClients = await clients.findAll({
-      order:[["position","ASC"]]
+       order: [
+        [sequelize.literal("CAST(position AS UNSIGNED)"), "ASC"]
+      ],
     });
     return res.status(200).json({
       status: true,

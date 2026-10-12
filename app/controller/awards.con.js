@@ -94,7 +94,9 @@ const addAwards = async (req, res) => {
 const getAwards = async (req, res) => {
   try {
     const data = await awards.findAll({
-        order: [["position", "ASC"]],
+         order: [
+        [sequelize.literal("CAST(position AS UNSIGNED)"), "ASC"]
+      ],
     });
 
     return res.status(200).json({
