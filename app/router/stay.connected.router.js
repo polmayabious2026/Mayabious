@@ -13,7 +13,7 @@ const {
 // admin
 router.get("/getall_stay_connected",adminCheck,allStayConnected);
 router.get("/gets_stay_connected/:id",adminCheck,getSingleStayConnected);
-router.delete("/delete_tay_connected/:id",adminCheck,deleteStayConnected);
+router.delete("/delete_stay_connected/:id",adminCheck,deleteStayConnected);
 
 // frontend
 router.post("/stay_connected",createStayConnected);
