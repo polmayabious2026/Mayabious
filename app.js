@@ -2,6 +2,7 @@ require("dotenv").config();
 const cors = require("cors");
 const express = require("express");
 const app = express();
+const chalk = require("chalk");
 
 app.use(cors());
 app.use(express.json());
@@ -17,7 +18,7 @@ app.use("/api", router);
 const port = process.env.PORT;
 
 app.listen(port, () => {
-  console.log(`Server Running At ${port}`);
+  console.log(chalk.green(`🚀 Server Running At ${port}`));
 });
 
 

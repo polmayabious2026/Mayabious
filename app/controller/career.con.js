@@ -14,6 +14,8 @@ const {
 const path = require("path");
 const fs = require("fs");
 
+const nodemailer = require("nodemailer");
+
 //  CAREER*************************************
 
 const addCareer = async (req, res) => {
@@ -222,7 +224,6 @@ const addJobVacancy = async (req, res) => {
     const { department_id, designation_id } = req.params;
     let { jobtype_id, description, status } = req.body;
 
-    
     if (!department_id) {
       await t.rollback();
 
@@ -232,7 +233,6 @@ const addJobVacancy = async (req, res) => {
       });
     }
 
-  
     if (!designation_id) {
       await t.rollback();
 
@@ -242,7 +242,6 @@ const addJobVacancy = async (req, res) => {
       });
     }
 
-   
     if (jobtype_id === undefined || jobtype_id === null) {
       await t.rollback();
 
@@ -251,7 +250,6 @@ const addJobVacancy = async (req, res) => {
         message: "Please provide jobtype id",
       });
     }
-
 
     if (!Array.isArray(jobtype_id)) {
       jobtype_id = [jobtype_id];
@@ -266,9 +264,7 @@ const addJobVacancy = async (req, res) => {
       });
     }
 
-
     jobtype_id = [...new Set(jobtype_id)];
-
 
     if (!description || !description.trim()) {
       await t.rollback();
@@ -278,7 +274,6 @@ const addJobVacancy = async (req, res) => {
         message: "Please provide description",
       });
     }
-
 
     const departmentData = await department.findByPk(department_id, {
       transaction: t,
@@ -293,7 +288,6 @@ const addJobVacancy = async (req, res) => {
       });
     }
 
- 
     const designationData = await designation.findOne({
       where: {
         id: designation_id,
@@ -327,7 +321,6 @@ const addJobVacancy = async (req, res) => {
       });
     }
 
- 
     const jobData = await jobvacancy.create(
       {
         department_id,
@@ -337,10 +330,9 @@ const addJobVacancy = async (req, res) => {
       },
       {
         transaction: t,
-      }
+      },
     );
 
- 
     const jobTypeMappings = jobtype_id.map((jobTypeId) => ({
       jobvacancy_id: jobData.id,
       jobtype_id: jobTypeId,
@@ -352,9 +344,7 @@ const addJobVacancy = async (req, res) => {
 
     await t.commit();
 
-
     const result = await jobvacancy.findByPk(jobData.id, {
-
       include: [
         {
           model: department,
@@ -396,18 +386,18 @@ const getAllJobVacancy = async (req, res) => {
   try {
     const data = await jobvacancy.findAll({
       order: [["id", "DESC"]],
-      attributes:["id","description"],
+      attributes: ["id", "description"],
 
       include: [
         {
           model: department,
           as: "department",
-          attributes:["id","name"],
+          attributes: ["id", "name"],
         },
         {
           model: designation,
           as: "designation",
-          attributes:["id","name"],
+          attributes: ["id", "name"],
         },
         {
           model: jobtype,
@@ -497,15 +487,9 @@ const updateJobVacancy = async (req, res) => {
   try {
     const { id } = req.params;
 
-    let {
-      department_id,
-      designation_id,
-      jobtype_id,
-      description,
-      status,
-    } = req.body;
+    let { department_id, designation_id, jobtype_id, description, status } =
+      req.body;
 
-  
     if (!id) {
       await t.rollback();
 
@@ -528,7 +512,6 @@ const updateJobVacancy = async (req, res) => {
       });
     }
 
-
     if (department_id !== undefined) {
       const departmentData = await department.findByPk(department_id, {
         transaction: t,
@@ -544,12 +527,8 @@ const updateJobVacancy = async (req, res) => {
       }
     }
 
-
     const finalDepartmentId =
-      department_id !== undefined
-        ? department_id
-        : jobData.department_id;
-
+      department_id !== undefined ? department_id : jobData.department_id;
 
     if (designation_id !== undefined) {
       const designationData = await designation.findOne({
@@ -570,9 +549,7 @@ const updateJobVacancy = async (req, res) => {
       }
     }
 
-
     if (jobtype_id !== undefined) {
-   
       if (!Array.isArray(jobtype_id)) {
         jobtype_id = [jobtype_id];
       }
@@ -586,7 +563,6 @@ const updateJobVacancy = async (req, res) => {
         });
       }
 
-    
       jobtype_id = [...new Set(jobtype_id)];
 
       const jobTypeData = await jobtype.findAll({
@@ -606,11 +582,7 @@ const updateJobVacancy = async (req, res) => {
       }
     }
 
-
-    if (
-      description !== undefined &&
-      (!description || !description.trim())
-    ) {
+    if (description !== undefined && (!description || !description.trim())) {
       await t.rollback();
 
       return res.status(400).json({
@@ -618,7 +590,6 @@ const updateJobVacancy = async (req, res) => {
         message: "Description cannot be empty",
       });
     }
-
 
     const updateData = {};
 
@@ -644,9 +615,7 @@ const updateJobVacancy = async (req, res) => {
       });
     }
 
-
     if (jobtype_id !== undefined) {
-      
       await jobvacancyjobtype.destroy({
         where: {
           jobvacancy_id: id,
@@ -654,7 +623,6 @@ const updateJobVacancy = async (req, res) => {
         transaction: t,
       });
 
-      
       const mappings = jobtype_id.map((jobTypeId) => ({
         jobvacancy_id: id,
         jobtype_id: jobTypeId,
@@ -665,11 +633,7 @@ const updateJobVacancy = async (req, res) => {
       });
     }
 
-
-    if (
-      !Object.keys(updateData).length &&
-      jobtype_id === undefined
-    ) {
+    if (!Object.keys(updateData).length && jobtype_id === undefined) {
       await t.rollback();
 
       return res.status(400).json({
@@ -679,7 +643,6 @@ const updateJobVacancy = async (req, res) => {
     }
 
     await t.commit();
-
 
     const result = await jobvacancy.findByPk(id, {
       include: [
@@ -725,7 +688,6 @@ const deleteJobVacancy = async (req, res) => {
   try {
     const { id } = req.params;
 
-
     if (!id) {
       await t.rollback();
 
@@ -748,14 +710,12 @@ const deleteJobVacancy = async (req, res) => {
       });
     }
 
-
     await jobvacancyjobtype.destroy({
       where: {
         jobvacancy_id: id,
       },
       transaction: t,
     });
-
 
     await jobData.destroy({
       transaction: t,
@@ -779,7 +739,6 @@ const deleteJobVacancy = async (req, res) => {
     });
   }
 };
-
 
 //  VALUE******************************
 const addValue = async (req, res) => {
@@ -1188,27 +1147,22 @@ const updatePerksBenefit = async (req, res) => {
 
     const updateData = {};
 
-   
     if (career_id !== undefined) {
       updateData.career_id = career_id;
     }
 
-    
     if (option !== undefined) {
       updateData.option = option;
     }
 
-    
     if (req.file) {
       updateData.image = req.file.filename;
     }
 
-   
     if (status !== undefined) {
       updateData.status = status;
     }
 
-    
     if (!Object.keys(updateData).length) {
       await t.rollback();
 
@@ -1283,7 +1237,6 @@ const deletePerksBenefit = async (req, res) => {
     });
   }
 };
-
 
 //  DEPARTMENT******************
 
@@ -1710,7 +1663,7 @@ const addJobType = async (req, res) => {
       })),
       {
         transaction: t,
-      }
+      },
     );
 
     await t.commit();
@@ -1819,7 +1772,7 @@ const updateJobType = async (req, res) => {
       },
       {
         transaction: t,
-      }
+      },
     );
 
     await t.commit();
@@ -1957,6 +1910,10 @@ const addApplyCandidate = async (req, res) => {
       });
     }
 
+    // const designationName = designationData.name;
+
+    const resumePath = req.file?.path;
+
     const candidateData = await applycandidate.create({
       department_id,
       designation_id,
@@ -1966,9 +1923,156 @@ const addApplyCandidate = async (req, res) => {
       resume,
     });
 
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: "noreply.madhyadesign@gmail.com",
+        pass: "jjsz kwgw swxf wueq",
+      },
+    });
+
+    const candidateMailOptions = {
+      from: `"Mayabious Careers" <noreply.madhyadesign@gmail.com>`,
+      to: email.trim(),
+      subject: "Thank You for Applying to Mayabious",
+
+      html: `
+    <div style="font-family: Arial, Helvetica, sans-serif; max-width: 600px; margin: 30px auto; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; color: #374151; line-height: 1.8;">
+
+      <div style="background-color: #172554; padding: 28px; text-align: center;">
+        <h1 style="color: #ffffff; margin: 0;">Mayabious</h1>
+        <p style="color: #dbeafe; margin-bottom: 0;">Careers & Recruitment</p>
+      </div>
+
+      <div style="padding: 30px;">
+        <h2 style="color: #111827;">Thank You for Applying!</h2>
+
+        <p>Dear ${user_name},</p>
+
+        <p>
+          Thank you for your interest in joining Mayabious.
+          We are pleased to confirm that we have received your job application.
+        </p>
+
+        <p>
+          Our recruitment team will review your application.
+          If your profile matches our current requirements, we will
+          contact you regarding the next steps.
+        </p>
+
+        <p>
+          We appreciate your interest in becoming part of our team
+          and wish you the very best.
+        </p>
+
+        <p>
+          Best regards,<br/>
+          <strong>Talent Acquisition Team</strong><br/>
+          Mayabious
+        </p>
+      </div>
+
+      <div style="background-color: #f9fafb; border-top: 1px solid #e5e7eb; padding: 18px; text-align: center; font-size: 12px; color: #6b7280;">
+        This is an automated application acknowledgement.<br/>
+        &copy; ${new Date().getFullYear()} Mayabious. All rights reserved.
+      </div>
+
+    </div>
+  `,
+    };
+
+    // Email 2: Full application details to HR
+    const hrMailOptions = {
+      from: `"Mayabious Careers" <noreply.madhyadesign@gmail.com>`,
+      to: "web@mayabious.com",
+      replyTo: email.trim(),
+      subject: `New Job Application - ${user_name} - ${designationData.name}`,
+
+      html: `
+    <div style="font-family: Arial, Helvetica, sans-serif; max-width: 650px; margin: 20px auto; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; color: #374151; line-height: 1.7;">
+
+      <div style="background-color: #172554; padding: 24px; color: #ffffff;">
+        <h2 style="margin: 0;">New Candidate Application</h2>
+        <p style="margin: 8px 0 0; color: #dbeafe;">
+          Mayabious Careers Portal
+        </p>
+      </div>
+
+      <div style="padding: 28px;">
+        <p>Hello HR Team,</p>
+
+        <p>
+          A new candidate has submitted a job application through
+          the Mayabious website. Please find the application details below.
+        </p>
+
+        <h3 style="color: #111827; border-bottom: 1px solid #e5e7eb; padding-bottom: 10px;">
+          Candidate Information
+        </h3>
+
+        <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+          <tr>
+            <td style="padding: 10px; border-bottom: 1px solid #e5e7eb;"><strong>Candidate Name</strong></td>
+            <td style="padding: 10px; border-bottom: 1px solid #e5e7eb;">${user_name}</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border-bottom: 1px solid #e5e7eb;"><strong>Email</strong></td>
+            <td style="padding: 10px; border-bottom: 1px solid #e5e7eb;">${email}</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border-bottom: 1px solid #e5e7eb;"><strong>Phone</strong></td>
+            <td style="padding: 10px; border-bottom: 1px solid #e5e7eb;">${phone}</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border-bottom: 1px solid #e5e7eb;"><strong>Department</strong></td>
+            <td style="padding: 10px; border-bottom: 1px solid #e5e7eb;">${departmentData.name}</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border-bottom: 1px solid #e5e7eb;"><strong>Designation</strong></td>
+            <td style="padding: 10px; border-bottom: 1px solid #e5e7eb;">${designationData.name}</td>
+          </tr>
+        </table>
+
+        <p style="margin-top: 24px;">
+          <strong>Resume:</strong> The candidate's uploaded resume is
+          attached to this email for review.
+        </p>
+
+        <p>Please review the application and proceed with the recruitment process.</p>
+
+        <p>
+          Regards,<br/>
+          <strong>Mayabious Careers Portal</strong>
+        </p>
+      </div>
+
+      <div style="background-color: #f9fafb; padding: 16px; text-align: center; font-size: 12px; color: #6b7280; border-top: 1px solid #e5e7eb;">
+        Automated recruitment notification. Please handle candidate information confidentially.
+      </div>
+
+    </div>
+  `,
+
+      attachments: [
+        {
+          filename: req.file.originalname,
+          path: req.file.path,
+          contentType: req.file.mimetype,
+        },
+      ],
+    };
+
+    // Send both emails
+    await Promise.all([
+      transporter.sendMail(candidateMailOptions),
+      transporter.sendMail(hrMailOptions),
+    ]);
+
     return res.status(201).json({
       status: true,
-      message: "Candidate applied successfully",
+      message: "Candidate applied and email sent successfully",
       data: candidateData,
     });
   } catch (error) {
@@ -2217,7 +2321,7 @@ module.exports = {
   deleteDesignation,
 
   // jobtype
-    addJobType,
+  addJobType,
   getAllJobType,
   getSingleJobType,
   updateJobType,

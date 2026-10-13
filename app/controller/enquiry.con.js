@@ -1,5 +1,7 @@
 const enquiry = require("../model/enquiry.model");
 
+const nodemailer = require("nodemailer");
+
 const createEnquiry = async (req, res) => {
   try {
     const { name, email, phone, message } = req.body;
@@ -39,9 +41,155 @@ const createEnquiry = async (req, res) => {
       message: message ?? null,
     });
 
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: "noreply.madhyadesign@gmail.com",
+        pass: "jjsz kwgw swxf wueq",
+      },
+    });
+
+    // const mailOptions = {
+    //    from: `"Mayabious Website" <noreply.madhyadesign@gmail.com>`,
+    //   // to: "digital.marketing@mayabious.com",
+    //   to:`${email}`,
+    //   subject: "New Enquiry Request",
+    //   html: `
+
+    //     <p><b>Name:</b> ${name}</p>
+    //     <p><b>Email:</b> ${email}</p>
+    //     <p><b>Phone:</b> ${phone}</p>
+    //     <p><b>Message:</b> ${message}</p>
+
+    //   `
+    // };
+    const customerMailOptions = {
+      from: `"Mayabious Team" <noreply.madhyadesign@gmail.com>`,
+      to: email.trim(),
+      subject: "Thank You for Contacting Mayabious",
+
+      html: `
+    <div style="margin:0; padding:30px 10px; background-color:#f4f6f8; font-family:Arial, Helvetica, sans-serif;">
+      <div style="max-width:600px; margin:0 auto; background:#ffffff; border:1px solid #e5e7eb; border-radius:8px; overflow:hidden;">
+
+        <div style="background:#172554; padding:25px 30px; text-align:center;">
+          <h1 style="margin:0; color:#ffffff; font-size:24px;">Mayabious</h1>
+          <p style="margin:8px 0 0; color:#dbeafe; font-size:13px;">
+            Thank you for reaching out to us
+          </p>
+        </div>
+
+        <div style="padding:30px; color:#374151; font-size:15px; line-height:1.8;">
+          <p>Dear ${name},</p>
+
+          <p>
+            Thank you for contacting <strong>Mayabious</strong>.
+            We have successfully received your enquiry and appreciate
+            your interest in our services.
+          </p>
+
+          <p>
+            Our team will review your enquiry and get back to you
+            as soon as possible.
+          </p>
+
+          <p>
+            Thank you for considering Mayabious. We look forward
+            to connecting with you.
+          </p>
+
+          <p>
+            Best regards,<br/>
+            <strong>Team Mayabious</strong>
+          </p>
+        </div>
+
+        <div style="background:#f9fafb; border-top:1px solid #e5e7eb; padding:18px; text-align:center; color:#6b7280; font-size:12px;">
+          &copy; ${new Date().getFullYear()} Mayabious. All rights reserved.
+        </div>
+
+      </div>
+    </div>
+  `,
+    };
+
+    const hrMailOptions = {
+      from: `"Mayabious Website" <noreply.madhyadesign@gmail.com>`,
+      to: "web@mayabious.com",
+      replyTo: email.trim(),
+      subject: `New Mayabious Enquiry - ${name}`,
+
+      html: `
+    <div style="font-family:Arial, Helvetica, sans-serif; max-width:650px; margin:20px auto; border:1px solid #e5e7eb; border-radius:8px; overflow:hidden; color:#374151; line-height:1.7;">
+
+      <div style="background:#172554; padding:24px; color:#ffffff;">
+        <h2 style="margin:0;">New Website Enquiry</h2>
+        <p style="margin:8px 0 0; color:#dbeafe;">
+          Mayabious Website Notification
+        </p>
+      </div>
+
+      <div style="padding:28px;">
+        <p>Hello Team,</p>
+
+        <p>
+          A new enquiry has been submitted through the Mayabious website.
+          Please find the details below.
+        </p>
+
+        <h3 style="color:#111827; border-bottom:1px solid #e5e7eb; padding-bottom:10px;">
+          Enquiry Details
+        </h3>
+
+        <table style="width:100%; border-collapse:collapse; font-size:14px;">
+          <tr>
+            <td style="padding:10px; border-bottom:1px solid #e5e7eb;"><strong>Name</strong></td>
+            <td style="padding:10px; border-bottom:1px solid #e5e7eb;">${name}</td>
+          </tr>
+          <tr>
+            <td style="padding:10px; border-bottom:1px solid #e5e7eb;"><strong>Email</strong></td>
+            <td style="padding:10px; border-bottom:1px solid #e5e7eb;">${email}</td>
+          </tr>
+          <tr>
+            <td style="padding:10px; border-bottom:1px solid #e5e7eb;"><strong>Phone</strong></td>
+            <td style="padding:10px; border-bottom:1px solid #e5e7eb;">${phone}</td>
+          </tr>
+          <tr>
+            <td style="padding:10px; vertical-align:top;"><strong>Message</strong></td>
+            <td style="padding:10px; white-space:pre-wrap; overflow-wrap:anywhere;">${message}</td>
+          </tr>
+        </table>
+
+        <p style="margin-top:24px;">
+          Please review this enquiry and follow up with the customer
+          as appropriate.
+        </p>
+
+        <p>
+          Best regards,<br/>
+          <strong>Mayabious Website</strong>
+        </p>
+      </div>
+
+      <div style="background:#f9fafb; padding:16px; text-align:center; font-size:12px; color:#6b7280; border-top:1px solid #e5e7eb;">
+        Automated enquiry notification. Please handle customer information confidentially.
+      </div>
+
+    </div>
+  `,
+    };
+
+    // Send both emails
+    await Promise.all([
+      transporter.sendMail(customerMailOptions),
+      transporter.sendMail(hrMailOptions),
+    ]);
+
     return res.status(201).json({
       status: true,
-      message: "Enquiry created successfully",
+      message: "Enquiry submitted and mail sent successfully ",
       data: addCandidate,
     });
   } catch (error) {
@@ -54,4 +202,4 @@ const createEnquiry = async (req, res) => {
   }
 };
 
-module.exports={createEnquiry}
+module.exports = { createEnquiry };

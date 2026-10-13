@@ -1,5 +1,6 @@
 const sequelize = require("../config/db")
 
+const chalk = require("chalk");
 // ADMIN
 const admin = require("../model/admin.model")
 // homevideo
@@ -39,7 +40,8 @@ const {
 } = require("../model/career.model");
 // enquiry
 const enquiry = require("../model/enquiry.model")
-
+// stay-connected
+const stayconnected = require("../model/stayconnected.model")
 
 // category-subcategory
 servicecategory.hasMany(serviceSubCategory,{
@@ -225,5 +227,5 @@ homeGalleryBigImg.belongsTo(homeImageGallery, {
 
 
 sequelize.sync()
-.then(()=>{console.log("Db Synced Successfully")})
-.catch((error)=>{console.log("Db Not Synced ",error)})
+.then(()=>{console.log(chalk.cyan("🔄 Db Synced Successfully"));})
+.catch((error)=>{console.log(chalk.red("❌ Database Connection Failed"), err)})
