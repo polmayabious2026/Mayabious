@@ -40,11 +40,19 @@ const createStayConnected = async (req, res) => {
 };
 const allStayConnected = async (req, res) => {
   try {
-    const allData = await stayconnected.findAll();
+    const page = parseInt(req.query.page) || 1;
+    const limit = 20;
+    const offset = (page - 1) * limit;
+
+    const allData = await stayconnected.findAll({
+      order: [["id", "ASC"]],
+      limit,
+      offset,
+    });
 
     return res.status(200).json({
       status: true,
-      message: "All Stay Conneceted fetched successfully",
+      message: `Page:${page} Stay Conneceted fetched successfully`,
       data: allData,
     });
   } catch (error) {
