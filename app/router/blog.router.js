@@ -18,6 +18,9 @@ const {
   getSingleCategory,
   updateBlogCategory,
   deleteBlogCategory,
+
+    // admin-pannel
+  getallBlogFrontend
 } = require("../controller/blog.con");
 
 const uploadImage = require("../middleware/fileupload_image");
@@ -61,5 +64,8 @@ router.delete("/blogcategory/:id",adminCheck, deleteBlogCategory);
 
 // frontend
 router.get("/get-blogs", getallBlog);
+
+// admin-pannel
+router.get("/get-blogs-frontend", getallBlogFrontend);
 
 module.exports = router;

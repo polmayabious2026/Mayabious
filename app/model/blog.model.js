@@ -15,11 +15,14 @@ const blogModel = sequelize.define(
     },
     heading: {
       type: DataTypes.STRING,
-      allowNull: false,
+      // allowNull: false,
     },
     title: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    author: {
+      type: DataTypes.STRING,
     },
     description: {
       type: DataTypes.TEXT("long"),

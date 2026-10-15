@@ -52,8 +52,10 @@ const createBlog = async (req, res) => {
       date,
       heading,
       title,
+      author,
       description,
       popular_blogs,
+      home_display,
       category_ids,
       category_id,
     } = req.body;
@@ -68,14 +70,14 @@ const createBlog = async (req, res) => {
       });
     }
 
-    if (!heading || !String(heading).trim()) {
-      await transaction.rollback();
+    // if (!heading || !String(heading).trim()) {
+    //   await transaction.rollback();
 
-      return res.status(400).json({
-        status: false,
-        message: "Please provide heading",
-      });
-    }
+    //   return res.status(400).json({
+    //     status: false,
+    //     message: "Please provide heading",
+    //   });
+    // }
 
     if (!title || !String(title).trim()) {
       await transaction.rollback();
@@ -254,10 +256,12 @@ const createBlog = async (req, res) => {
       {
         date: String(date).trim(),
 
-        heading: String(heading).trim().toUpperCase(),
+        heading: heading ?? null,
 
         title: String(title).trim().toUpperCase(),
-
+        
+          author: author ?? null,
+          
         description: String(description).trim(),
 
         small_image: smallImage.filename,
@@ -265,6 +269,8 @@ const createBlog = async (req, res) => {
         big_image: bigImage.filename,
 
         popular_blogs: String(popular),
+        
+        home_display:String(home_display),
       },
       {
         transaction,
@@ -353,6 +359,38 @@ const getallBlog = async (req, res) => {
     });
   }
 };
+const getallBlogFrontend = async (req, res) => {
+  try {
+    const allData = await blogModel.findAll({
+      // order: [["id", "DESC"]],
+       include: [
+        {
+          model: blogcategory,
+          as: "blogcategories",
+          attributes: ["id", "title"],
+
+          // Hide blognblogcategory data
+          through: {
+            attributes: [],
+          },
+        },
+      ],
+    });
+    return res.status(200).json({
+      status: true,
+      message: "All blogs fetched successfully",
+      allData,
+    });
+  } catch (error) {
+    console.log("getallBlogFrontend Error:", error);
+
+    return res.status(500).json({
+      status: false,
+      message: "Something went wrong",
+      error: error.message,
+    });
+  }
+};
 const getsingleBlog = async (req, res) => {
   try {
     const { id } = req.params;
@@ -406,8 +444,10 @@ const updateBlog = async (req, res) => {
       date,
       heading,
       title,
+      author,
       description,
       popular_blogs,
+       home_display,
       category_ids,
       category_id,
     } = req.body;
@@ -482,6 +522,10 @@ const updateBlog = async (req, res) => {
 
       updateData.title = String(title).trim().toUpperCase();
     }
+    // AUTHOR
+    if (author!== undefined) {
+      updateData.author = author;
+    }
 
     // DESCRIPTION
     if (description !== undefined) {
@@ -513,6 +557,15 @@ const updateBlog = async (req, res) => {
 
       updateData.popular_blogs = String(popular_blogs);
     }
+    
+    // =====================================================
+    // HOME DISPLAY
+    // =====================================================
+     if (home_display!== undefined) {
+      
+      updateData.home_display = String(home_display);
+    }
+    
 
     // =====================================================
     // SMALL IMAGE
@@ -1058,4 +1111,7 @@ module.exports = {
   getSingleCategory,
   updateBlogCategory,
   deleteBlogCategory,
+
+  // admin-pannel
+  getallBlogFrontend
 };

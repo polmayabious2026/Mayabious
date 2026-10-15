@@ -51,73 +51,60 @@ const createEnquiry = async (req, res) => {
       },
     });
 
-    // const mailOptions = {
-    //    from: `"Mayabious Website" <noreply.madhyadesign@gmail.com>`,
-    //   // to: "digital.marketing@mayabious.com",
-    //   to:`${email}`,
-    //   subject: "New Enquiry Request",
-    //   html: `
+  //   const customerMailOptions = {
+  //     from: `"Mayabious Team" <noreply.madhyadesign@gmail.com>`,
+  //     to: email.trim(),
+  //     subject: "Thank You for Contacting Mayabious",
 
-    //     <p><b>Name:</b> ${name}</p>
-    //     <p><b>Email:</b> ${email}</p>
-    //     <p><b>Phone:</b> ${phone}</p>
-    //     <p><b>Message:</b> ${message}</p>
+  //     html: `
+  //   <div style="margin:0; padding:30px 10px; background-color:#f4f6f8; font-family:Arial, Helvetica, sans-serif;">
+  //     <div style="max-width:600px; margin:0 auto; background:#ffffff; border:1px solid #e5e7eb; border-radius:8px; overflow:hidden;">
 
-    //   `
-    // };
-    const customerMailOptions = {
-      from: `"Mayabious Team" <noreply.madhyadesign@gmail.com>`,
-      to: email.trim(),
-      subject: "Thank You for Contacting Mayabious",
+  //       <div style="background:#172554; padding:25px 30px; text-align:center;">
+  //         <h1 style="margin:0; color:#ffffff; font-size:24px;">Mayabious</h1>
+  //         <p style="margin:8px 0 0; color:#dbeafe; font-size:13px;">
+  //           Thank you for reaching out to us
+  //         </p>
+  //       </div>
 
-      html: `
-    <div style="margin:0; padding:30px 10px; background-color:#f4f6f8; font-family:Arial, Helvetica, sans-serif;">
-      <div style="max-width:600px; margin:0 auto; background:#ffffff; border:1px solid #e5e7eb; border-radius:8px; overflow:hidden;">
+  //       <div style="padding:30px; color:#374151; font-size:15px; line-height:1.8;">
+  //         <p>Dear ${name},</p>
 
-        <div style="background:#172554; padding:25px 30px; text-align:center;">
-          <h1 style="margin:0; color:#ffffff; font-size:24px;">Mayabious</h1>
-          <p style="margin:8px 0 0; color:#dbeafe; font-size:13px;">
-            Thank you for reaching out to us
-          </p>
-        </div>
+  //         <p>
+  //           Thank you for contacting <strong>Mayabious</strong>.
+  //           We have successfully received your enquiry and appreciate
+  //           your interest in our services.
+  //         </p>
 
-        <div style="padding:30px; color:#374151; font-size:15px; line-height:1.8;">
-          <p>Dear ${name},</p>
+  //         <p>
+  //           Our team will review your enquiry and get back to you
+  //           as soon as possible.
+  //         </p>
 
-          <p>
-            Thank you for contacting <strong>Mayabious</strong>.
-            We have successfully received your enquiry and appreciate
-            your interest in our services.
-          </p>
+  //         <p>
+  //           Thank you for considering Mayabious. We look forward
+  //           to connecting with you.
+  //         </p>
 
-          <p>
-            Our team will review your enquiry and get back to you
-            as soon as possible.
-          </p>
+  //         <p>
+  //           Best regards,<br/>
+  //           <strong>Team Mayabious</strong>
+  //         </p>
+  //       </div>
 
-          <p>
-            Thank you for considering Mayabious. We look forward
-            to connecting with you.
-          </p>
+  //       <div style="background:#f9fafb; border-top:1px solid #e5e7eb; padding:18px; text-align:center; color:#6b7280; font-size:12px;">
+  //         &copy; ${new Date().getFullYear()} Mayabious. All rights reserved.
+  //       </div>
 
-          <p>
-            Best regards,<br/>
-            <strong>Team Mayabious</strong>
-          </p>
-        </div>
+  //     </div>
+  //   </div>
+  // `,
+  //   };
 
-        <div style="background:#f9fafb; border-top:1px solid #e5e7eb; padding:18px; text-align:center; color:#6b7280; font-size:12px;">
-          &copy; ${new Date().getFullYear()} Mayabious. All rights reserved.
-        </div>
-
-      </div>
-    </div>
-  `,
-    };
-
-    const hrMailOptions = {
+    const contactusMailOptions = {
       from: `"Mayabious Website" <noreply.madhyadesign@gmail.com>`,
-      to: "web@mayabious.com",
+      to: "contactus@mayabious.com,digital.marketing@mayabious.com",
+      // to: "web@mayabious.com,pol.sarkar.mayabious@gmail.com",
       replyTo: email.trim(),
       subject: `New Mayabious Enquiry - ${name}`,
 
@@ -183,8 +170,8 @@ const createEnquiry = async (req, res) => {
 
     // Send both emails
     await Promise.all([
-      transporter.sendMail(customerMailOptions),
-      transporter.sendMail(hrMailOptions),
+      // transporter.sendMail(customerMailOptions),
+      transporter.sendMail(contactusMailOptions),
     ]);
 
     return res.status(201).json({
@@ -201,5 +188,21 @@ const createEnquiry = async (req, res) => {
     });
   }
 };
-
-module.exports = { createEnquiry };
+const getAllEnquiry =async (req,res) =>{
+  try{
+   const findData = await enquiry.findAll()
+   return res.status(200).json({
+    status:true,
+    message:"All Enquiry fetched successfully",
+    data:findData,
+   })
+  }catch (error) {
+    console.log("getAllEnquiry:", error);
+    return res.status(400).json({
+      status: false,
+      message: "Something Went wrong",
+      error: error.message,
+    });
+  }
+}
+module.exports = { createEnquiry,getAllEnquiry};
