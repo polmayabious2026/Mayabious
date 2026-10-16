@@ -54,8 +54,9 @@ const createBlog = async (req, res) => {
       title,
       author,
       description,
-      popular_blogs,
-      home_display,
+      popular_blogs = "0",
+      home_display = "0",
+      status = "1",
       category_ids,
       category_id,
     } = req.body;
@@ -245,36 +246,30 @@ const createBlog = async (req, res) => {
     // GET IMAGES
     // =====================================================
 
-    const smallImage = req.files.small_image[0];
-    const bigImage = req.files.big_image[0];
-
-    // =====================================================
+    // GET IMAGES
+    const smallImage = req.files?.small_image?.[0];
+    const bigImage = req.files?.big_image?.[0];
+    
     // CREATE BLOG
-    // =====================================================
-
     const blogData = await blogModel.create(
       {
+        // VARCHAR(255): stores dates such as "March 20, 2019"
         date: String(date).trim(),
-
-        heading: heading ?? null,
-
+    
+        // Nullable fields
+        heading: heading?.trim() || null,
+        author: author?.trim() || null,
+        big_image: bigImage?.filename || null,
+    
         title: String(title).trim().toUpperCase(),
-        
-          author: author ?? null,
-          
         description: String(description).trim(),
-
         small_image: smallImage.filename,
-
-        big_image: bigImage.filename,
-
-        popular_blogs: String(popular),
-        
-        home_display:String(home_display),
+    
+        popular_blogs: String(popular_blogs),
+        home_display: String(home_display),
+        status: String(status),
       },
-      {
-        transaction,
-      },
+      { transaction }
     );
 
     // =====================================================
@@ -331,6 +326,9 @@ const getallBlog = async (req, res) => {
   try {
     const allData = await blogModel.findAll({
       // order: [["id", "DESC"]],
+      where:{
+          status:"1"
+      },
        include: [
         {
           model: blogcategory,
@@ -359,11 +357,46 @@ const getallBlog = async (req, res) => {
     });
   }
 };
+
+const getallBlogForAdmin = async (req, res) => {
+  try {
+    const allData = await blogModel.findAll({
+      // order: [["id", "DESC"]],
+    
+       include: [
+        {
+          model: blogcategory,
+          as: "blogcategories",
+          attributes: ["id", "title"],
+
+          // Hide blognblogcategory data
+          through: {
+            attributes: [],
+          },
+        },
+      ],
+    });
+    return res.status(200).json({
+      status: true,
+      message: "All blogs fetched successfully",
+      allData,
+    });
+  } catch (error) {
+    console.log("getallBlog Error:", error);
+
+    return res.status(500).json({
+      status: false,
+      message: "Something went wrong",
+      error: error.message,
+    });
+  }
+};
+
 const getallBlogFrontend = async (req, res) => {
   try {
     const allData = await blogModel.findAll({
       // order: [["id", "DESC"]],
-       include: [
+      include: [
         {
           model: blogcategory,
           as: "blogcategories",
@@ -447,7 +480,8 @@ const updateBlog = async (req, res) => {
       author,
       description,
       popular_blogs,
-       home_display,
+      home_display,
+      status,
       category_ids,
       category_id,
     } = req.body;
@@ -564,6 +598,14 @@ const updateBlog = async (req, res) => {
      if (home_display!== undefined) {
       
       updateData.home_display = String(home_display);
+    }
+    
+    // =====================================================
+    // STATUS
+    // =====================================================
+     if (status!== undefined) {
+      
+      updateData.status = String(status);
     }
     
 
@@ -1101,6 +1143,7 @@ module.exports = {
   // Blog
   createBlog,
   getallBlog,
+  getallBlogForAdmin,
   getsingleBlog,
   updateBlog,
   deleteBlog,
@@ -1111,7 +1154,7 @@ module.exports = {
   getSingleCategory,
   updateBlogCategory,
   deleteBlogCategory,
-
+  
   // admin-pannel
   getallBlogFrontend
 };

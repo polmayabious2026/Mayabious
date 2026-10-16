@@ -5,6 +5,7 @@ const adminCheck = require("../middleware/admin_check")
 const {
   createContact,
   getAllContacts,
+  getSingleContact,
   updateContact,
   deleteContact,
 } = require("../controller/contact.con");
@@ -12,13 +13,11 @@ const {
 
 router.post("/createcontact", adminCheck,createContact);
 
-
+router.get("/getcontact", getAllContacts);
+router.get("/get-single-contact/:id", getSingleContact);
 
 router.put("/updatecontact/:id", adminCheck,updateContact);
 
 router.delete("/deletecontact/:id", adminCheck,deleteContact);
-
-// frontend
-router.get("/getcontact", getAllContacts);
 
 module.exports = router;

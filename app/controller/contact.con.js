@@ -64,6 +64,27 @@ const getAllContacts = async (req, res) => {
   }
 };
 
+const getSingleContact = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const data = await Contact.findByPk(id);
+
+    return res.status(200).json({
+      status: true,
+      message: "Contact fetched successfully",
+      data,
+    });
+  } catch (error) {
+    console.log("getSingleContact Error:", error);
+
+    return res.status(400).json({
+      status: false,
+      message: "Something went wrong",
+      error: error.message,
+    });
+  }
+};
+
 // Update Contact
 const updateContact = async (req, res) => {
   try {
@@ -150,6 +171,7 @@ const deleteContact = async (req, res) => {
 module.exports = {
   createContact,
   getAllContacts,
+  getSingleContact,
   updateContact,
   deleteContact,
 };

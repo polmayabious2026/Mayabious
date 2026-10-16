@@ -188,21 +188,53 @@ const createEnquiry = async (req, res) => {
     });
   }
 };
-const getAllEnquiry =async (req,res) =>{
-  try{
-   const findData = await enquiry.findAll()
-   return res.status(200).json({
-    status:true,
-    message:"All Enquiry fetched successfully",
-    data:findData,
-   })
-  }catch (error) {
-    console.log("getAllEnquiry:", error);
-    return res.status(400).json({
+const getAllEnquiry = async (req, res) => {
+  try {
+    const page = Math.max(parseInt(req.query.page, 10) || 1, 1);
+    const limit = Math.min(
+      Math.max(parseInt(req.query.limit, 10) || 10, 1),
+      100
+    );
+
+
+    const offset = (page - 1) * limit;
+
+
+    const { count, rows } = await enquiry.findAndCountAll({
+      order: [["id", "ASC"]],
+      limit,
+      offset,
+    });
+
+
+    const totalPages = Math.ceil(count / limit);
+
+
+    return res.status(200).json({
+      status: true,
+      message: "All Enquiry fetched successfully",
+      data: rows,
+      pagination: {
+        totalItems: count,
+        totalPages,
+        currentPage: page,
+        limit,
+        hasNextPage: page < totalPages,
+        hasPreviousPage: page > 1,
+      },
+    });
+  } catch (error) {
+    console.error("getAllEnquiry:", error);
+
+
+    return res.status(500).json({
       status: false,
-      message: "Something Went wrong",
+      message: "Something went wrong",
       error: error.message,
     });
   }
-}
-module.exports = { createEnquiry,getAllEnquiry};
+};
+module.exports = { createEnquiry,
+getAllEnquiry
+    
+};
