@@ -209,6 +209,139 @@ const getSingleVideo = async (req, res) => {
     });
   }
 };
+// old update logic
+// const updateVideo = async (req, res) => {
+//   const transaction = await sequelize.transaction();
+
+//   try {
+//     const { id } = req.params;
+//     const { position } = req.body;
+
+//     // --------------------------------------------------
+//     // FIND VIDEO
+//     // --------------------------------------------------
+
+//     const videoData = await homeVideo.findByPk(id, {
+//       transaction,
+//     });
+
+//     if (!videoData) {
+//       await transaction.rollback();
+
+//       return res.status(404).json({
+//         status: false,
+//         message: "Video not found",
+//       });
+//     }
+
+//     const oldVideo = videoData.video;
+
+//     const updateData = {};
+
+//     // --------------------------------------------------
+//     // VALIDATE POSITION
+//     // --------------------------------------------------
+
+//     if (position !== undefined) {
+//       if (
+//         position === null ||
+//         String(position).trim() === ""
+//       ) {
+//         await transaction.rollback();
+
+//         return res.status(400).json({
+//           status: false,
+//           message: "Please provide position",
+//         });
+//       }
+
+//       if (!Number.isInteger(Number(position))) {
+//         await transaction.rollback();
+
+//         return res.status(400).json({
+//           status: false,
+//           message: "Position must be a valid number",
+//         });
+//       }
+
+//       updateData.position = Number(position);
+//     }
+
+//     // --------------------------------------------------
+//     // NEW VIDEO
+//     // --------------------------------------------------
+
+//     if (req.file) {
+//       updateData.video = req.file.filename;
+//     }
+
+//     // --------------------------------------------------
+//     // NOTHING TO UPDATE
+//     // --------------------------------------------------
+
+//     if (!Object.keys(updateData).length) {
+//       await transaction.rollback();
+
+//       return res.status(400).json({
+//         status: false,
+//         message: "Please provide data to update",
+//       });
+//     }
+
+//     // --------------------------------------------------
+//     // UPDATE
+//     // --------------------------------------------------
+
+//     await videoData.update(updateData, {
+//       transaction,
+//     });
+
+//     // --------------------------------------------------
+//     // COMMIT
+//     // --------------------------------------------------
+
+//     await transaction.commit();
+
+//     // --------------------------------------------------
+//     // DELETE OLD VIDEO AFTER SUCCESSFUL DB UPDATE
+//     // --------------------------------------------------
+
+//     if (
+//       updateData.video &&
+//       oldVideo &&
+//       oldVideo !== updateData.video
+//     ) {
+//       deleteVideoFile(oldVideo);
+//     }
+
+//     // --------------------------------------------------
+//     // GET UPDATED DATA
+//     // --------------------------------------------------
+
+//     const updatedVideo = await homeVideo.findByPk(id);
+
+//     return res.status(200).json({
+//       status: true,
+//       message: "Video updated successfully",
+//       data: updatedVideo,
+//     });
+//   } catch (error) {
+//     if (transaction && !transaction.finished) {
+//       await transaction.rollback();
+//     }
+
+//     console.log("updateVideo Error:", error);
+
+//     return res.status(500).json({
+//       status: false,
+//       message: "Something went wrong",
+//       error: error.message,
+//     });
+//   }
+// };
+
+// ********************
+// new update logic 
 const updateVideo = async (req, res) => {
   const transaction = await sequelize.transaction();
 
@@ -216,10 +349,9 @@ const updateVideo = async (req, res) => {
     const { id } = req.params;
     const { position } = req.body;
 
-    // --------------------------------------------------
-    // FIND VIDEO
-    // --------------------------------------------------
+    let videoSetMapping = null;
 
+    // 1. Find current video
     const videoData = await homeVideo.findByPk(id, {
       transaction,
     });
@@ -234,50 +366,106 @@ const updateVideo = async (req, res) => {
     }
 
     const oldVideo = videoData.video;
+    const oldPosition = Number(videoData.position);
 
     const updateData = {};
 
-    // --------------------------------------------------
-    // VALIDATE POSITION
-    // --------------------------------------------------
+    // 2. Find video set mapping
+    videoSetMapping = await homeVideo_nhomeVideoSet.findOne({
+      where: {
+        homevideo_id: id,
+      },
+      transaction,
+    });
 
-    if (position !== undefined) {
-      if (
-        position === null ||
-        String(position).trim() === ""
-      ) {
-        await transaction.rollback();
+    if (!videoSetMapping) {
+      await transaction.rollback();
 
-        return res.status(400).json({
-          status: false,
-          message: "Please provide position",
-        });
-      }
-
-      if (!Number.isInteger(Number(position))) {
-        await transaction.rollback();
-
-        return res.status(400).json({
-          status: false,
-          message: "Position must be a valid number",
-        });
-      }
-
-      updateData.position = Number(position);
+      return res.status(404).json({
+        status: false,
+        message: "Home Video Set mapping not found",
+      });
     }
 
-    // --------------------------------------------------
-    // NEW VIDEO
-    // --------------------------------------------------
+    const homevideoset_id = videoSetMapping.homevideoset_id;
 
+
+// 1. Validate position if provided
+if (position !== undefined) {
+  const newPosition = Number(position);
+
+  if (
+    position === null ||
+    String(position).trim() === "" ||
+    !Number.isInteger(newPosition) ||
+    newPosition < 1 ||
+    newPosition > 9
+  ) {
+    await transaction.rollback();
+
+    return res.status(400).json({
+      status: false,
+      message: "Position must be a number between 1 and 9",
+    });
+  }
+
+  // Always assign the requested position
+  updateData.position = newPosition;
+
+  // Swap only if position actually changes
+  if (newPosition !== oldPosition) {
+    const existingVideo = await homeVideo.findOne({
+      where: {
+        position: newPosition,
+      },
+      include: [
+        {
+          model: homeVideoSet,
+          as: "homevideosets",
+          through: {
+            attributes: [],
+          },
+          where: {
+            id: homevideoset_id,
+          },
+          required: true,
+        },
+      ],
+      transaction,
+    });
+
+    if (existingVideo) {
+      await existingVideo.update(
+        {
+          position: oldPosition,
+        },
+        { transaction }
+      );
+    }
+  }
+}
+
+// 2. Update video file if provided
+if (req.file) {
+  updateData.video = req.file.filename;
+}
+
+// 3. Check update data
+if (!Object.keys(updateData).length) {
+  await transaction.rollback();
+
+  return res.status(400).json({
+    status: false,
+    message: "Please provide data to update",
+  });
+}
+
+    // 4. Update video file
     if (req.file) {
       updateData.video = req.file.filename;
     }
 
-    // --------------------------------------------------
-    // NOTHING TO UPDATE
-    // --------------------------------------------------
-
+    // 5. Nothing to update
     if (!Object.keys(updateData).length) {
       await transaction.rollback();
 
@@ -287,24 +475,15 @@ const updateVideo = async (req, res) => {
       });
     }
 
-    // --------------------------------------------------
-    // UPDATE
-    // --------------------------------------------------
-
+    // 6. Update current video
     await videoData.update(updateData, {
       transaction,
     });
 
-    // --------------------------------------------------
-    // COMMIT
-    // --------------------------------------------------
-
+    // 7. Commit
     await transaction.commit();
 
-    // --------------------------------------------------
-    // DELETE OLD VIDEO AFTER SUCCESSFUL DB UPDATE
-    // --------------------------------------------------
-
+    // 8. Delete old video after successful update
     if (
       updateData.video &&
       oldVideo &&
@@ -313,17 +492,28 @@ const updateVideo = async (req, res) => {
       deleteVideoFile(oldVideo);
     }
 
-    // --------------------------------------------------
-    // GET UPDATED DATA
-    // --------------------------------------------------
-
-    const updatedVideo = await homeVideo.findByPk(id);
+    // 9. Fetch updated set
+    const updatedVideoSet = await homeVideoSet.findByPk(
+      homevideoset_id,
+      {
+        include: [
+          {
+            model: homeVideo,
+            as: "homevideos",
+            through: {
+              attributes: [],
+            },
+          },
+        ],
+      }
+    );
 
     return res.status(200).json({
       status: true,
       message: "Video updated successfully",
-      data: updatedVideo,
+      data: updatedVideoSet,
     });
+
   } catch (error) {
     if (transaction && !transaction.finished) {
       await transaction.rollback();
@@ -338,6 +528,7 @@ const updateVideo = async (req, res) => {
     });
   }
 };
+
 const deleteVideo = async (req, res) => {
   const transaction = await sequelize.transaction();
 
@@ -437,6 +628,39 @@ const addhomeVideoSet = async (req, res) => {
     console.log("addhomeVideoSet Error:", error);
 
     return res.status(500).json({
+      status: false,
+      message: "Something went wrong",
+      error: error.message,
+    });
+  }
+};
+// allhomevideoset for admin no random
+const getallVideoSet = async (req, res) => {
+  try {
+    const allData = await homeVideoSet.findAll({
+      include: {
+        model: homeVideo,
+        as: "homevideos",
+        through: {
+          attributes: [],
+        },
+      },
+    });
+
+    // Sort videos by position after getting the random set
+    if (allData?.homevideos) {
+      allData.homevideos.sort((a, b) => a.position - b.position);
+    }
+
+    return res.status(200).json({
+      status: true,
+      message: "Home video set fetched successfully",
+      data: allData,
+    });
+  } catch (error) {
+    console.log("gethomeVideoSet Error:", error);
+
+    return res.status(400).json({
       status: false,
       message: "Something went wrong",
       error: error.message,
@@ -623,6 +847,8 @@ module.exports = {
 
   // homevideoSet
   addhomeVideoSet,
+  // allhomevideoset for admin no random
+  getallVideoSet,
   gethomeVideoSet,
   getSingleHomeVideoSet,
   updatehomeVideoSet,

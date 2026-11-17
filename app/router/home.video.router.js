@@ -11,6 +11,8 @@ const {
   deleteVideo,
     // homevideoSet
   addhomeVideoSet,
+    // allhomevideoset for admin no random
+  getallVideoSet,
   gethomeVideoSet,
   getSingleHomeVideoSet,
   updatehomeVideoSet,
@@ -34,6 +36,10 @@ router.delete("/delete-video/:id",adminCheck, deleteVideo);
 
 // homevideoset
 router.post("/add-videoset",adminCheck,addhomeVideoSet);
+
+  // allhomevideoset for admin no random
+router.get("/all-videosets", getallVideoSet);
+
 router.get("/getall-videoset",  gethomeVideoSet);
 router.get("/getsingle-videoset/:id",adminCheck,getSingleHomeVideoSet);
 router.put("/update-videoset/:id",adminCheck,  updatehomeVideoSet);

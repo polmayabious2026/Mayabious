@@ -353,6 +353,9 @@ const createServices = async (req, res) => {
 const getallServices = async (req, res) => {
   try {
     const data = await services.findAll({
+               order: [
+        [sequelize.literal("CAST(position AS UNSIGNED)"), "ASC"]
+      ],
       attributes: ["id", "title", "small_image","big_image","description","youtube_link"],
       include: [
         {

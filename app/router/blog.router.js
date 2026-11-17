@@ -8,6 +8,7 @@ const {
   // blog
   createBlog,
   getallBlog,
+  getallBlogForAdmin,
   getsingleBlog,
   updateBlog,
   deleteBlog,
@@ -18,14 +19,13 @@ const {
   getSingleCategory,
   updateBlogCategory,
   deleteBlogCategory,
-
-    // admin-pannel
+  
+      // admin-pannel
   getallBlogFrontend
 } = require("../controller/blog.con");
 
 const uploadImage = require("../middleware/fileupload_image");
 
-// blog
 router.post(
   "/add-blogs",
   uploadImage.fields([
@@ -35,9 +35,9 @@ router.post(
   adminCheck,
   createBlog,
 );
-// router.get("/get-blogs", getallBlog);
-
-router.get("/get-singleblogs/:id",adminCheck, getsingleBlog);
+router.get("/get-blogs", getallBlog);
+router.get("/get-all-blogs", adminCheck, getallBlogForAdmin);
+router.get("/get-singleblogs/:custom_url",adminCheck, getsingleBlog);
 
 router.put(
   "/update-blogs/:id",
@@ -62,10 +62,8 @@ router.put("/blogcategory/:id",adminCheck, updateBlogCategory);
 
 router.delete("/blogcategory/:id",adminCheck, deleteBlogCategory);
 
-// frontend
-router.get("/get-blogs", getallBlog);
-
 // admin-pannel
 router.get("/get-blogs-frontend", getallBlogFrontend);
+
 
 module.exports = router;

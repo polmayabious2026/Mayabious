@@ -6,7 +6,7 @@ const fs = require("fs");
 
 const addNews = async (req, res) => {
   try {
-    const { channel_name, description, date, status, type, url } = req.body;
+    const { channel_name, description, date, status, type, url,position } = req.body;
 
     // Channel name
     if (!channel_name?.trim()) {
@@ -56,6 +56,7 @@ const addNews = async (req, res) => {
       status: status || "1",
       type: type || "1",
       url: url.trim(),
+      position:position ?? null,
     });
 
     return res.status(201).json({
@@ -147,7 +148,7 @@ const updateNews = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const { channel_name, description, date, status, type, url } = req.body;
+    const { channel_name, description, date, status, type, url,position } = req.body;
 
     const data = await news.findByPk(id);
 
@@ -218,6 +219,19 @@ const updateNews = async (req, res) => {
       }
 
       updateData.url = url.trim();
+    }
+    // POSITION
+    if (position !== undefined) {
+      if (!position.trim()) {
+        await transaction.rollback();
+
+        return res.status(400).json({
+          status: false,
+          message: "POSITION cannot be empty",
+        });
+      }
+
+      updateData.position = position.trim();
     }
 
     // Status

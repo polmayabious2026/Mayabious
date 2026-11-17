@@ -52,6 +52,7 @@ const createBlog = async (req, res) => {
       date,
       heading,
       title,
+      custom_url,
       author,
       description,
       popular_blogs = "0",
@@ -262,6 +263,7 @@ const createBlog = async (req, res) => {
         big_image: bigImage?.filename || null,
     
         title: String(title).trim().toUpperCase(),
+        custom_url:String(custom_url) || null,
         description: String(description).trim(),
         small_image: smallImage.filename,
     
@@ -325,7 +327,7 @@ const createBlog = async (req, res) => {
 const getallBlog = async (req, res) => {
   try {
     const allData = await blogModel.findAll({
-      // order: [["id", "DESC"]],
+       order: [["date", "DESC"]],
       where:{
           status:"1"
       },
@@ -426,11 +428,11 @@ const getallBlogFrontend = async (req, res) => {
 };
 const getsingleBlog = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { custom_url} = req.params;
 
     const blogData = await blogModel.findOne({
       where: {
-        id: id,
+        custom_url:custom_url,
       },
       include: [
         {
@@ -477,6 +479,7 @@ const updateBlog = async (req, res) => {
       date,
       heading,
       title,
+      custom_url,
       author,
       description,
       popular_blogs,
@@ -559,6 +562,10 @@ const updateBlog = async (req, res) => {
     // AUTHOR
     if (author!== undefined) {
       updateData.author = author;
+    }
+    // custom_url
+    if (custom_url!== undefined) {
+      updateData.custom_url = custom_url;
     }
 
     // DESCRIPTION

@@ -25,6 +25,9 @@ const newsModel = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    position: {
+      type: DataTypes.STRING,
+    },
     status: {
       type: DataTypes.STRING,
       comment: "1 = active, 0 = inactive",

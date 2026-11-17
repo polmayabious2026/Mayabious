@@ -15,14 +15,18 @@ const blogModel = sequelize.define(
     },
     heading: {
       type: DataTypes.STRING,
-      // allowNull: false,
+    allowNull: true,
     },
     title: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    author: {
+    custom_url: {
       type: DataTypes.STRING,
+    },
+      author: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     description: {
       type: DataTypes.TEXT("long"),
@@ -41,6 +45,16 @@ const blogModel = sequelize.define(
       type: DataTypes.STRING,
       comment: "1 = yes,0 = no",
       defaultValue: "0",
+    },
+    home_display: {
+      type: DataTypes.STRING,
+      comment: "1 = yes,0 = no",
+      defaultValue: "0",
+    },
+    status:{
+         type: DataTypes.STRING,
+      comment: "0 = inactive,1 =active",
+      defaultValue: "1", 
     },
     created_at: {
       type: DataTypes.DATE,
